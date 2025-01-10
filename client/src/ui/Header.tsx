@@ -15,10 +15,10 @@ function Header() {
   const navigate = useNavigate();
   return (
     <StyledHeader>
-      <Button onClick={() => navigate("/sign-up")} type="header-button">
+      <Button onClick={() => navigate("/signup")} type="header-button">
         Sign up
       </Button>
-      <Button onClick={() => navigate("/log-in")} type="header-button">
+      <Button onClick={() => navigate("/login")} type="header-button">
         Log in
       </Button>
     </StyledHeader>

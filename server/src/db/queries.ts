@@ -8,8 +8,12 @@ export const getUsers = async () => {
   return users;
 };
 export const getFolders = async () => {
-  const folders = await prisma.folder.findMany();
-  return folders;
+  try {
+    const folders = await prisma.folder.findMany();
+    return folders;
+  } catch (error) {
+    throw new Error("Error fetching");
+  }
 };
 
 export const getUserById = async (userId: number) => {

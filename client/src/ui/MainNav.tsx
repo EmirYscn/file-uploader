@@ -1,4 +1,4 @@
-import { HiOutlineHome } from "react-icons/hi";
+import { FaHome } from "react-icons/fa";
 import { RiFolderCloudLine } from "react-icons/ri";
 import { NavLink } from "react-router";
 import styled from "styled-components";
@@ -32,6 +32,10 @@ const StyledNavLink = styled(NavLink)`
     border-radius: var(--border-radius-sm);
   }
 
+  & svg {
+    font-size: 2.3rem;
+  }
+
   &:hover svg,
   &:active svg,
   &.active:link svg,
@@ -46,7 +50,7 @@ function MainNav() {
       <NavList>
         <li>
           <StyledNavLink to="home">
-            <HiOutlineHome />
+            <FaHome />
             <span>Home</span>
           </StyledNavLink>
         </li>

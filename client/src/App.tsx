@@ -3,6 +3,9 @@ import AppLayout from "./ui/AppLayout";
 import Home from "./pages/Home";
 import GlobalStyles from "./styles/GlobalStyles";
 import Shared from "./pages/Shared";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import PageNotFound from "./pages/PageNotFound";
 
 function App() {
   return (
@@ -15,8 +18,9 @@ function App() {
             <Route path="home" element={<Home />} />
             <Route path="shared" element={<Shared />} />
           </Route>
-          {/* <Route path="login" element={<Login />} />
-        <Route path="*" element={<PageNotFound />} /> */}
+          <Route path="login" element={<Login />} />
+          <Route path="signup" element={<Signup />} />
+          <Route path="*" element={<PageNotFound />} />
         </Routes>
       </BrowserRouter>
     </>

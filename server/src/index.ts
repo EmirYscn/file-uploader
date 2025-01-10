@@ -22,8 +22,13 @@ app.get("/api/users", async (req: Request, res: Response) => {
 });
 
 app.get("/api/folders", async (req: Request, res: Response) => {
-  const users = await getFolders();
-  res.send(users);
+  try {
+    const folders = await getFolders();
+    res.send(folders);
+  } catch (error) {
+    // throw new Error(error);
+    console.log(error);
+  }
 });
 
 app.get("/api/users/:userId", async (req: Request, res: Response) => {

@@ -1,17 +1,26 @@
-import styled from "styled-components";
+import { Link } from "react-router";
+import styled, { css } from "styled-components";
 
 const StyledLogo = styled.div`
   text-align: center;
 `;
-const Img = styled.img`
+const Img = styled.img<{ imgType: string }>`
   height: 6.6rem;
+  ${(props) =>
+    props.imgType === "wall" &&
+    css`
+      height: 15rem;
+    `}
+
   width: auto;
 `;
 
-function Logo() {
+function Logo({ type }: { type: string }) {
   return (
     <StyledLogo>
-      <Img src="/logo.svg" alt="logo" />
+      <Link to="/home">
+        <Img src="/logo.svg" alt="logo" imgType={type} />
+      </Link>
     </StyledLogo>
   );
 }
