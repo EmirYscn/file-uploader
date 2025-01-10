@@ -1,9 +1,13 @@
-import { NextFunction, Request, Response } from "express-serve-static-core";
+import { NextFunction, Request, Response } from "express";
 import * as db from "../db/queries";
 
-export const getUserFolders = async (req: Request, res: Response) => {
+export const getFolders = async (req: Request, res: Response): Promise<any> => {
   const { userId } = req.params;
-  const folders = await db.getFoldersById(+userId);
-  console.log(folders);
-  res.send(folders);
+  console.log("in server", userId);
+  try {
+    const folders = await db.getFoldersById(Number(userId));
+    return res.status(200).json(folders);
+  } catch (error) {
+    console.log(error);
+  }
 };

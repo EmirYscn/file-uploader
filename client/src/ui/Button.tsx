@@ -6,12 +6,14 @@ const types = {
     color: white;
   `,
   "form-button-submit": css`
-    background-color: #0c68ca;
-    color: white;
+    background-color: var(--color-grey-50);
+    color: black;
+    box-shadow: var(--shadow-lg);
   `,
   "form-button-cancel": css`
     background-color: #df5b5b;
     color: white;
+    box-shadow: var(--shadow-lg);
   `,
 };
 
@@ -27,17 +29,21 @@ const StyledButton = styled.button<{ buttontype: ButtonTypes }>`
   font-size: small;
 
   ${(props) => types[props.buttontype]}
+
+  &:hover {
+    opacity: 0.9;
+  }
 `;
 
 type ButtonProps = {
   onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
-  type: "header-button" | "form-button-submit" | "form-button-cancel";
+  styletype: "header-button" | "form-button-submit" | "form-button-cancel";
   children: string;
-};
+} & Omit<React.ComponentProps<"button">, "children">;
 
-function Button({ onClick, type, children }: ButtonProps) {
+function Button({ onClick, styletype, children }: ButtonProps) {
   return (
-    <StyledButton onClick={onClick} buttontype={type}>
+    <StyledButton onClick={onClick} buttontype={styletype}>
       {children}
     </StyledButton>
   );

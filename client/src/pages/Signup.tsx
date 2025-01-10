@@ -6,10 +6,13 @@ import { useForm } from "react-hook-form";
 import { User } from "../types/models";
 import Button from "../ui/Button";
 import Wall from "../ui/Wall";
+import { createUser } from "../services/apiUser";
+import { useNavigate } from "react-router";
+import { useState } from "react";
 
 const StyledSignup = styled.div`
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: auto 1fr;
   height: 100vh;
 `;
 
@@ -25,14 +28,26 @@ type SignupData = User & { confirmPassword: string };
 
 function Signup() {
   const { register, handleSubmit, getValues, reset } = useForm<SignupData>();
-  function onSubmit(data: SignupData) {
-    console.log(data);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const navigate = useNavigate();
+  async function onSubmit(data: SignupData) {
+    try {
+      setIsLoading(true);
+      await createUser(data);
+      navigate("/login");
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
   }
   function onError(errors) {
     // console.log(errors);
   }
   return (
     <StyledSignup>
+      <Wall />
       <FormContainer>
         <Form onSubmit={handleSubmit(onSubmit, onError)}>
           <FormRow>
@@ -78,14 +93,19 @@ function Signup() {
             />
           </FormRow>
           <FormRow>
-            <Button type="form-button-cancel" onClick={() => reset()}>
+            <Button
+              styletype="form-button-cancel"
+              disabled={isLoading}
+              onClick={() => reset()}
+            >
               Reset
             </Button>
-            <Button type="form-button-submit">Submit</Button>
+            <Button styletype="form-button-submit" disabled={isLoading}>
+              Submit
+            </Button>
           </FormRow>
         </Form>
       </FormContainer>
-      <Wall />
     </StyledSignup>
   );
 }

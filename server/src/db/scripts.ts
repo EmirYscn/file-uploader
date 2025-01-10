@@ -20,7 +20,7 @@ async function main() {
       name: "testFolder2",
       fileCount: 3,
       size: 10.2,
-      user_id: 8,
+      user_id: 10,
     },
   });
   const allFolders = await prisma.folder.findMany();

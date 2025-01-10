@@ -4,10 +4,10 @@ import styled, { css } from "styled-components";
 const StyledLogo = styled.div`
   text-align: center;
 `;
-const Img = styled.img<{ imgType: string }>`
+const Img = styled.img<{ imgtype: string }>`
   height: 6.6rem;
   ${(props) =>
-    props.imgType === "wall" &&
+    props.imgtype === "wall" &&
     css`
       height: 15rem;
     `}
@@ -19,7 +19,7 @@ function Logo({ type }: { type: string }) {
   return (
     <StyledLogo>
       <Link to="/home">
-        <Img src="/logo.svg" alt="logo" imgType={type} />
+        <Img src="/logo.svg" alt="logo" imgtype={type} />
       </Link>
     </StyledLogo>
   );

@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import Button from "./Button";
 import { useNavigate } from "react-router";
+import { useContext } from "react";
+import { UserContext } from "../contexts/userContext";
 
 const StyledHeader = styled.header`
   background-color: var(--color-grey-0);
@@ -13,14 +15,21 @@ const StyledHeader = styled.header`
 
 function Header() {
   const navigate = useNavigate();
+  const { user } = useContext(UserContext);
   return (
     <StyledHeader>
-      <Button onClick={() => navigate("/signup")} type="header-button">
+      <Button onClick={() => navigate("/signup")} styletype="header-button">
         Sign up
       </Button>
-      <Button onClick={() => navigate("/login")} type="header-button">
-        Log in
-      </Button>
+      {user ? (
+        <Button onClick={() => navigate("/logout")} styletype="header-button">
+          Log out
+        </Button>
+      ) : (
+        <Button onClick={() => navigate("/login")} styletype="header-button">
+          Log in
+        </Button>
+      )}
     </StyledHeader>
   );
 }
