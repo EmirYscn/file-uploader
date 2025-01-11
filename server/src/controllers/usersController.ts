@@ -11,3 +11,14 @@ export const getFolders = async (req: Request, res: Response): Promise<any> => {
     console.log(error);
   }
 };
+
+export const getFolder = async (req: Request, res: Response): Promise<any> => {
+  const { folderId } = req.params;
+  try {
+    const folder = await db.getFolderById(+folderId);
+    console.log(folder);
+    return res.status(200).json(folder);
+  } catch (error) {
+    console.log(error);
+  }
+};

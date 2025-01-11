@@ -15,16 +15,17 @@ async function main() {
   // const allUsers = await prisma.user.findMany();
   // console.dir(allUsers, { depth: null });
 
-  await prisma.folder.create({
+  await prisma.file.create({
     data: {
-      name: "testFolder2",
-      fileCount: 3,
-      size: 10.2,
+      name: "TestFile",
+      size: 10,
+      url: "blabla",
+      folder_id: 3,
       user_id: 10,
     },
   });
-  const allFolders = await prisma.folder.findMany();
-  console.dir(allFolders, { depth: null });
+  const allFiles = await prisma.file.findMany();
+  console.dir(allFiles, { depth: null });
 }
 
 main()

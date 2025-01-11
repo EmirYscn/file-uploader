@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { getFolders } from "../services/apiFolders";
 import { Folder } from "../types/models";
 import { UserContext } from "../contexts/userContext";
+import Folders from "../ui/Folders";
 
 function Home() {
   const [folders, setFolders] = useState<Folder[] | undefined>([]);
@@ -19,21 +20,7 @@ function Home() {
     if (user) fetchFolders();
   }, [user]);
 
-  return (
-    <>
-      {folders && folders?.length > 0 && (
-        <div>
-          {folders.map((folder) => (
-            <div key={folder.id}>
-              <h1>{folder.name}</h1>
-              <p>{folder.size}</p>
-              <p>{folder.fileCount}</p>
-            </div>
-          ))}
-        </div>
-      )}
-    </>
-  );
+  return folders && <Folders folders={folders} />;
 }
 
 export default Home;

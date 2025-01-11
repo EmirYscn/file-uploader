@@ -18,6 +18,7 @@ app.post("/api/signup", authController.signup);
 app.post("/api/login", authController.login);
 
 app.get("/api/folders/:userId", usersController.getFolders);
+app.get("/api/folder/:folderId", usersController.getFolder);
 
 app.all("*", (req: Request, res: Response, next: NextFunction) => {
   res.status(404).json({

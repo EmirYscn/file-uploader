@@ -9,3 +9,13 @@ export const getFolders = async (userId: number) => {
     console.log(error);
   }
 };
+
+export const getFolder = async (folderId: number) => {
+  try {
+    const res = await fetch(`/api/folder/${folderId}`);
+    const folder: Folder = await res.json();
+    return folder;
+  } catch (error) {
+    console.log(error);
+  }
+};

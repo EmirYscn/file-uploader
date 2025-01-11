@@ -38,7 +38,7 @@ const StyledButton = styled.button<{ buttontype: ButtonTypes }>`
 type ButtonProps = {
   onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
   styletype: "header-button" | "form-button-submit" | "form-button-cancel";
-  children: string;
+  children: string | React.ReactNode;
 } & Omit<React.ComponentProps<"button">, "children">;
 
 function Button({ onClick, styletype, children }: ButtonProps) {

@@ -7,6 +7,7 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import PageNotFound from "./pages/PageNotFound";
 import UserContextProvider from "./contexts/userContext";
+import Folder from "./ui/Folder";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
             <Route element={<AppLayout />}>
               <Route index element={<Navigate replace to="home" />} />
               <Route path="home" element={<Home />} />
+              <Route path="folder/:folderId" element={<Folder />} />
               <Route path="shared" element={<Shared />} />
             </Route>
             <Route path="login" element={<Login />} />
