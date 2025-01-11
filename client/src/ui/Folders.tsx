@@ -1,7 +1,5 @@
 import styled from "styled-components";
 import { Folder } from "../types/models";
-import { SlOptionsVertical } from "react-icons/sl";
-import Button from "./Button";
 import { HiEllipsisVertical } from "react-icons/hi2";
 import { Link } from "react-router";
 

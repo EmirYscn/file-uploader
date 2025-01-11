@@ -34,7 +34,7 @@ function Login() {
     try {
       const user = await login(data);
       setUser(user);
-      navigate("/home");
+      navigate("/all");
     } catch (error) {
       console.log(error);
     }

@@ -49,15 +49,21 @@ function MainNav() {
     <nav>
       <NavList>
         <li>
-          <StyledNavLink to="home">
+          <StyledNavLink to="all">
             <FaHome />
-            <span>Home</span>
+            <span>All</span>
+          </StyledNavLink>
+        </li>
+        <li>
+          <StyledNavLink to="myFolders">
+            <RiFolderCloudLine />
+            <span>My Folders/Files</span>
           </StyledNavLink>
         </li>
         <li>
           <StyledNavLink to="shared">
             <RiFolderCloudLine />
-            <span>Shared</span>
+            <span>Shared to Me</span>
           </StyledNavLink>
         </li>
       </NavList>
