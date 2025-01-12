@@ -27,29 +27,6 @@ export const findUser = async (email: string) => {
   }
 };
 
-// export const getUsers = async () => {
-//   const users = await prisma.user.findMany();
-//   console.log(users);
-//   return users;
-// };
-
-// export const getFolders = async () => {
-//   try {
-//     const folders = await prisma.folder.findMany();
-//     return folders;
-//   } catch (error) {
-//     throw new Error("Error fetching");
-//   }
-// };
-
-// export const getUserById = async (userId: number) => {
-//   const user = await prisma.user.findFirst({
-//     where: { id: userId },
-//   });
-//   console.log(user);
-//   return user;
-// };
-
 export const getFoldersById = async (userId: number) => {
   try {
     const folders = await prisma.folder.findMany({
@@ -72,5 +49,17 @@ export const getFolderById = async (folderId: number) => {
     return folder;
   } catch (error) {
     console.log(error);
+  }
+};
+
+export const deleteFile = async (fileId: number) => {
+  try {
+    await prisma.file.delete({
+      where: { id: fileId },
+    });
+    console.log(`File with ID ${fileId} deleted successfully.`);
+  } catch (error) {
+    console.error("Error deleting file:", error);
+    throw new Error("Failed to delete file");
   }
 };

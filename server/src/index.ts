@@ -1,8 +1,10 @@
 import express, { NextFunction, Request, Response } from "express";
 import dotenv from "dotenv";
 import path from "node:path";
-import * as usersController from "./controllers/usersController";
+
 import * as authController from "./controllers/authController";
+import * as usersController from "./controllers/usersController";
+import * as filesController from "./controllers/filesController";
 import * as db from "./db/queries";
 
 dotenv.config({ path: "./.env" });
@@ -19,6 +21,11 @@ app.post("/api/login", authController.login);
 
 app.get("/api/folders/:userId", usersController.getFolders);
 app.get("/api/folder/:folderId", usersController.getFolder);
+// app.post("/api/folder/:folderId", usersController.getFolder);
+// app.delete("/api/folder/:folderId", usersController.getFolder);
+
+// app.get("/api/files/:fileId", usersController.getFolder);
+app.delete("/api/files/:fileId", filesController.deleteFile);
 
 app.all("*", (req: Request, res: Response, next: NextFunction) => {
   res.status(404).json({

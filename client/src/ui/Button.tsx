@@ -15,12 +15,24 @@ const types = {
     color: white;
     box-shadow: var(--shadow-lg);
   `,
+  "modal-button-cancel": css`
+    background-color: #df5b5b;
+    color: white;
+    box-shadow: var(--shadow-lg);
+  `,
+  "modal-button-confirm": css`
+    background-color: var(--color-green-700);
+    color: white;
+    box-shadow: var(--shadow-lg);
+  `,
 };
 
 type ButtonTypes =
   | "header-button"
   | "form-button-cancel"
-  | "form-button-submit";
+  | "form-button-submit"
+  | "modal-button-cancel"
+  | "modal-button-confirm";
 
 const StyledButton = styled.button<{ buttontype: ButtonTypes }>`
   padding: 0.5em 1em;
@@ -37,7 +49,7 @@ const StyledButton = styled.button<{ buttontype: ButtonTypes }>`
 
 type ButtonProps = {
   onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
-  styletype: "header-button" | "form-button-submit" | "form-button-cancel";
+  styletype: ButtonTypes;
   children: string | React.ReactNode;
 } & Omit<React.ComponentProps<"button">, "children">;
 

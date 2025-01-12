@@ -57,7 +57,7 @@ function MainNav() {
         <li>
           <StyledNavLink to="myFolders">
             <RiFolderCloudLine />
-            <span>My Folders/Files</span>
+            <span>My Folders / Files</span>
           </StyledNavLink>
         </li>
         <li>

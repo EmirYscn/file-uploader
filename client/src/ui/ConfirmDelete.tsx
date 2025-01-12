@@ -43,14 +43,14 @@ function ConfirmDelete({
 
       <div>
         <Button
-          styletype="form-button-cancel"
+          styletype="modal-button-cancel"
           disabled={disabled}
           onClick={onCloseModal}
         >
           Cancel
         </Button>
         <Button
-          styletype="form-button-cancel"
+          styletype="modal-button-confirm"
           disabled={disabled}
           onClick={onConfirm}
         >

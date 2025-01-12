@@ -10,10 +10,14 @@ import { RiDeleteBin2Line } from "react-icons/ri";
 import ConfirmDelete from "./ConfirmDelete";
 import { AiOutlineDownload } from "react-icons/ai";
 import { MdDriveFileRenameOutline, MdPersonAddAlt1 } from "react-icons/md";
+import { deleteFile } from "../services/apiFiles";
+import Spinner from "./Spinner";
+import useFolder from "../hooks/useFolder";
 
 const StyledFolder = styled.div`
   display: grid;
   grid-template-columns: repeat(8, minmax(auto, 100px));
+  gap: 3rem;
 `;
 
 const File = styled.div`
@@ -68,74 +72,91 @@ const BackButton = styled.button`
 `;
 
 function Folder() {
-  const { folderId } = useParams();
-  const [folder, setFolder] = useState<FolderType | undefined>();
+  const { folder, setFolder, isLoading, setIsLoading } = useFolder();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    async function fetchFolder() {
-      try {
-        const folder = await getFolder(Number(folderId));
-        setFolder(folder);
-      } catch (error) {
-        console.log(error);
-      }
+  async function handleDeleteFile(fileId: number) {
+    try {
+      setIsLoading(true);
+      await deleteFile(fileId);
+      setFolder((prevFolder) => {
+        if (!prevFolder) return prevFolder;
+
+        const updatedFiles = prevFolder.files.filter(
+          (file) => file.id !== fileId
+        );
+        const newFolder = { ...prevFolder, files: updatedFiles };
+        return newFolder;
+      });
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
     }
-    fetchFolder();
-  }, [folderId]);
+  }
+
+  // async function handleRenameFile(fileId: number) {}
 
   return (
     <>
       <BackButton onClick={() => navigate(-1)}>
         <FaArrowAltCircleLeft />
       </BackButton>
-      <StyledFolder>
-        {folder?.files.map((file) => (
-          <File key={file.id}>
-            <Img src="/file.svg" />
-            <Details>
-              <span>{file.name}</span>
-              <Modal>
-                <Menus>
-                  <Menus.Menu>
-                    <Menus.Toggle id={file.id} />
-                    <Menus.List id={file.id}>
-                      <Menus.Button icon={<AiOutlineDownload />}>
-                        Download
-                      </Menus.Button>
-                      <Modal.Open opens="rename">
-                        <Menus.Button icon={<MdDriveFileRenameOutline />}>
-                          Rename
+      {isLoading ? (
+        <Spinner />
+      ) : (
+        <StyledFolder>
+          {folder?.files.map((file) => (
+            <File key={file.id}>
+              <Img src="/file.svg" />
+              <Details>
+                <span>{file.name}</span>
+                <Modal>
+                  <Menus>
+                    <Menus.Menu>
+                      <Menus.Toggle id={file.id} />
+                      <Menus.List id={file.id}>
+                        <Menus.Button icon={<AiOutlineDownload />}>
+                          Download
                         </Menus.Button>
-                      </Modal.Open>
-                      <Modal.Open opens="share">
-                        <Menus.Button icon={<MdPersonAddAlt1 />}>
-                          Share
-                        </Menus.Button>
-                      </Modal.Open>
-                      <Modal.Open opens="delete">
-                        <Menus.Button icon={<RiDeleteBin2Line />}>
-                          Delete
-                        </Menus.Button>
-                      </Modal.Open>
-                    </Menus.List>
+                        <Modal.Open opens="rename">
+                          <Menus.Button icon={<MdDriveFileRenameOutline />}>
+                            Rename
+                          </Menus.Button>
+                        </Modal.Open>
+                        <Modal.Open opens="share">
+                          <Menus.Button icon={<MdPersonAddAlt1 />}>
+                            Share
+                          </Menus.Button>
+                        </Modal.Open>
+                        <Modal.Open opens="delete">
+                          <Menus.Button icon={<RiDeleteBin2Line />}>
+                            Delete
+                          </Menus.Button>
+                        </Modal.Open>
+                      </Menus.List>
 
-                    {/* <Modal.Window name="rename">
+                      {/* <Modal.Window name="rename">
                     <RenameFileForm />
                     </Modal.Window>
                     <Modal.Window name="share">
                     <ShareFileForm />
                     </Modal.Window> */}
-                    <Modal.Window name="delete">
-                      <ConfirmDelete resourceName={file.name} />
-                    </Modal.Window>
-                  </Menus.Menu>
-                </Menus>
-              </Modal>
-            </Details>
-          </File>
-        ))}
-      </StyledFolder>
+                      <Modal.Window name="delete">
+                        <ConfirmDelete
+                          resourceName={file.name}
+                          disabled={isLoading}
+                          onConfirm={() => handleDeleteFile(file.id)}
+                        />
+                      </Modal.Window>
+                    </Menus.Menu>
+                  </Menus>
+                </Modal>
+              </Details>
+            </File>
+          ))}
+        </StyledFolder>
+      )}
     </>
   );
 }
