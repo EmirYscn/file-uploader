@@ -48,7 +48,9 @@ const StyledButton = styled.button<{ buttontype: ButtonTypes }>`
 `;
 
 type ButtonProps = {
-  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  onClick?: (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => void | ((data: string) => Promise<void> | undefined);
   styletype: ButtonTypes;
   children: string | React.ReactNode;
 } & Omit<React.ComponentProps<"button">, "children">;

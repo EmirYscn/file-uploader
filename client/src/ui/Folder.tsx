@@ -1,18 +1,20 @@
-import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router";
-import { getFolder } from "../services/apiFolders";
-import { Folder as FolderType } from "../types/models";
+import { useNavigate } from "react-router";
 import styled from "styled-components";
 import { FaArrowAltCircleLeft } from "react-icons/fa";
-import Modal from "./Modal";
-import Menus from "./Menus";
 import { RiDeleteBin2Line } from "react-icons/ri";
-import ConfirmDelete from "./ConfirmDelete";
 import { AiOutlineDownload } from "react-icons/ai";
 import { MdDriveFileRenameOutline, MdPersonAddAlt1 } from "react-icons/md";
-import { deleteFile } from "../services/apiFiles";
+
+import Modal from "./Modal";
+import Menus from "./Menus";
 import Spinner from "./Spinner";
+
+import ConfirmDelete from "./ConfirmDelete";
 import useFolder from "../hooks/useFolder";
+import useDeleteFile from "../hooks/useDeleteFile";
+import { renameFile } from "../services/apiFiles";
+import RenameFileForm from "./RenameFileForm";
+import { File as FileType } from "../types/models";
 
 const StyledFolder = styled.div`
   display: grid;
@@ -37,26 +39,6 @@ const Details = styled.div`
   align-items: center;
 `;
 
-const StyledToggle = styled.button`
-  background: none;
-  border: none;
-  padding: 0.4rem;
-  border-radius: var(--border-radius-sm);
-  transform: translateX(0.8rem);
-  transition: all 0.2s;
-  /* align-items: end; */
-
-  &:hover {
-    background-color: var(--color-grey-100);
-  }
-
-  & svg {
-    width: 2.2rem;
-    height: 2.2rem;
-    color: var(--color-grey-700);
-  }
-`;
-
 const BackButton = styled.button`
   padding: 0.5em 1em;
   border: none;
@@ -72,30 +54,27 @@ const BackButton = styled.button`
 `;
 
 function Folder() {
-  const { folder, setFolder, isLoading, setIsLoading } = useFolder();
+  const { folder, setFolder, isLoading } = useFolder();
+  const { handleDeleteFile, isLoading: isDeleting } = useDeleteFile(setFolder);
   const navigate = useNavigate();
 
-  async function handleDeleteFile(fileId: number) {
+  async function handleRenameFile(fileId: number, data: FileType) {
     try {
-      setIsLoading(true);
-      await deleteFile(fileId);
+      console.log(data);
+      await renameFile(fileId, data);
       setFolder((prevFolder) => {
         if (!prevFolder) return prevFolder;
 
-        const updatedFiles = prevFolder.files.filter(
-          (file) => file.id !== fileId
+        const updatedFiles = prevFolder.files.map((file) =>
+          file.id === fileId ? { ...file, name: data.name } : file
         );
         const newFolder = { ...prevFolder, files: updatedFiles };
         return newFolder;
       });
     } catch (error) {
       console.log(error);
-    } finally {
-      setIsLoading(false);
     }
   }
-
-  // async function handleRenameFile(fileId: number) {}
 
   return (
     <>
@@ -136,16 +115,21 @@ function Folder() {
                         </Modal.Open>
                       </Menus.List>
 
-                      {/* <Modal.Window name="rename">
-                    <RenameFileForm />
-                    </Modal.Window>
-                    <Modal.Window name="share">
+                      <Modal.Window name="rename">
+                        <RenameFileForm
+                          resourceName={file.name}
+                          onConfirm={(data: FileType) =>
+                            handleRenameFile(file.id, data)
+                          }
+                        />
+                      </Modal.Window>
+                      {/* <Modal.Window name="share">
                     <ShareFileForm />
                     </Modal.Window> */}
                       <Modal.Window name="delete">
                         <ConfirmDelete
                           resourceName={file.name}
-                          disabled={isLoading}
+                          disabled={isDeleting}
                           onConfirm={() => handleDeleteFile(file.id)}
                         />
                       </Modal.Window>

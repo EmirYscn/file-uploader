@@ -1,4 +1,4 @@
-import { Prisma, PrismaClient } from "@prisma/client";
+import { File, Prisma, PrismaClient } from "@prisma/client";
 
 export const prisma = new PrismaClient();
 
@@ -61,5 +61,18 @@ export const deleteFile = async (fileId: number) => {
   } catch (error) {
     console.error("Error deleting file:", error);
     throw new Error("Failed to delete file");
+  }
+};
+
+export const updateFile = async (fileId: number, data: File) => {
+  try {
+    await prisma.file.update({
+      where: { id: fileId },
+      data: data,
+    });
+    console.log(`File with ID ${fileId} updated successfully.`);
+  } catch (error) {
+    console.error("Error updating file:", error);
+    throw new Error("Failed to update file");
   }
 };

@@ -2,10 +2,17 @@ import styled from "styled-components";
 import { Folder } from "../types/models";
 import { HiEllipsisVertical } from "react-icons/hi2";
 import { Link } from "react-router";
+import Spinner from "./Spinner";
+import Modal from "./Modal";
+import Menus from "./Menus";
+import { MdDriveFileRenameOutline, MdPersonAddAlt1 } from "react-icons/md";
+import { RiDeleteBin2Line } from "react-icons/ri";
+import ConfirmDelete from "./ConfirmDelete";
 
 const StyledFolders = styled.div`
   display: grid;
   grid-template-columns: repeat(8, minmax(auto, 100px));
+  gap: 3rem;
 `;
 
 const StyledFolder = styled.div`
@@ -46,10 +53,13 @@ const StyledToggle = styled.button`
 
 type FoldersProps = {
   folders: Folder[];
+  isLoading: boolean;
 };
 
-function Folders({ folders }: FoldersProps) {
-  return (
+function Folders({ folders, isLoading }: FoldersProps) {
+  return isLoading ? (
+    <Spinner />
+  ) : (
     <StyledFolders>
       {folders.map((folder) => (
         <StyledFolder key={folder.id}>
@@ -58,9 +68,37 @@ function Folders({ folders }: FoldersProps) {
           </Link>
           <Details>
             <span>{folder.name}</span>
-            <StyledToggle>
-              <HiEllipsisVertical />
-            </StyledToggle>
+            <Modal>
+              <Menus>
+                <Menus.Menu>
+                  <Menus.Toggle id={folder.id} />
+                  <Menus.List id={folder.id}>
+                    <Modal.Open opens="rename">
+                      <Menus.Button icon={<MdDriveFileRenameOutline />}>
+                        Rename
+                      </Menus.Button>
+                    </Modal.Open>
+                    <Modal.Open opens="share">
+                      <Menus.Button icon={<MdPersonAddAlt1 />}>
+                        Share
+                      </Menus.Button>
+                    </Modal.Open>
+                    <Modal.Open opens="delete">
+                      <Menus.Button icon={<RiDeleteBin2Line />}>
+                        Delete
+                      </Menus.Button>
+                    </Modal.Open>
+                  </Menus.List>
+                  <Modal.Window name="delete">
+                    <ConfirmDelete
+                      resourceName={folder.name}
+                      // disabled={isDeleting}
+                      // onConfirm={() => handleDeleteFile(file.id)}
+                    />
+                  </Modal.Window>
+                </Menus.Menu>
+              </Menus>
+            </Modal>
           </Details>
         </StyledFolder>
       ))}

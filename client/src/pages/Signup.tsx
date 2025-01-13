@@ -9,6 +9,7 @@ import Wall from "../ui/Wall";
 import { createUser } from "../services/apiUser";
 import { useNavigate } from "react-router";
 import { useState } from "react";
+import useCreateUser from "../hooks/useCreateUser";
 
 const StyledSignup = styled.div`
   display: grid;
@@ -28,23 +29,24 @@ type SignupData = User & { confirmPassword: string };
 
 function Signup() {
   const { register, handleSubmit, getValues, reset } = useForm<SignupData>();
-  const [isLoading, setIsLoading] = useState(false);
+  const { onSubmit, onError, isLoading } = useCreateUser();
+  // const [isLoading, setIsLoading] = useState(false);
 
-  const navigate = useNavigate();
-  async function onSubmit(data: SignupData) {
-    try {
-      setIsLoading(true);
-      await createUser(data);
-      navigate("/login");
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsLoading(false);
-    }
-  }
-  function onError(errors) {
-    // console.log(errors);
-  }
+  // const navigate = useNavigate();
+  // async function onSubmit(data: SignupData) {
+  //   try {
+  //     setIsLoading(true);
+  //     await createUser(data);
+  //     navigate("/login");
+  //   } catch (error) {
+  //     console.log(error);
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // }
+  // function onError(errors) {
+  //   // console.log(errors);
+  // }
   return (
     <StyledSignup>
       <Wall />

@@ -25,6 +25,7 @@ app.get("/api/folder/:folderId", usersController.getFolder);
 // app.delete("/api/folder/:folderId", usersController.getFolder);
 
 // app.get("/api/files/:fileId", usersController.getFolder);
+app.patch("/api/files/:fileId", filesController.renameFile);
 app.delete("/api/files/:fileId", filesController.deleteFile);
 
 app.all("*", (req: Request, res: Response, next: NextFunction) => {

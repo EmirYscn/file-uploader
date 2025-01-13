@@ -7,7 +7,7 @@ export const signup = async (
   res: Response
 ): Promise<any> => {
   const user = req.body;
-  console.log(user);
+  console.log("Created User: ", user);
   try {
     await db.createUser(user);
     return res
@@ -28,7 +28,6 @@ export const login = async (
 
   try {
     const user = await db.findUser(email);
-    console.log(user);
     if (password !== user?.password) {
       return res.status(400).json({
         error: {
