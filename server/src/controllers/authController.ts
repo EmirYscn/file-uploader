@@ -1,11 +1,23 @@
 import { Request, Response } from "express";
-import * as db from "../db/user.queries";
 import { User } from "@prisma/client";
+import { validationResult } from "express-validator";
+
+import * as db from "../db/user.queries";
 
 export const signup = async (
   req: Request<{}, {}, User>,
   res: Response
 ): Promise<any> => {
+  // Validate Result, If Error send error back to client
+  const result = validationResult(req);
+  if (!result.isEmpty()) {
+    return res.status(403).json({
+      body: { ...req.body, password: null },
+      error: result.array(),
+    });
+  }
+
+  // Create User
   const user = req.body;
   console.log("Created User: ", user);
   try {

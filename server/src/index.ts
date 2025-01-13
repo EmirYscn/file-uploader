@@ -6,6 +6,7 @@ import * as authController from "./controllers/authController";
 import * as usersController from "./controllers/usersController";
 import * as filesController from "./controllers/filesController";
 import * as db from "./db/queries";
+import { validateForm } from "./middlewares/validateForm";
 
 dotenv.config({ path: "./.env" });
 
@@ -16,7 +17,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "../public")));
 
-app.post("/api/signup", authController.signup);
+app.post("/api/signup", validateForm, authController.signup);
 app.post("/api/login", authController.login);
 
 app.get("/api/folders/:userId", usersController.getFolders);

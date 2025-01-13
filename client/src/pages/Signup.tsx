@@ -28,72 +28,115 @@ const FormContainer = styled.div`
 type SignupData = User & { confirmPassword: string };
 
 function Signup() {
-  const { register, handleSubmit, getValues, reset } = useForm<SignupData>();
-  const { onSubmit, onError, isLoading } = useCreateUser();
-  // const [isLoading, setIsLoading] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    getValues,
+    reset,
+    formState: { errors },
+  } = useForm<SignupData>();
 
-  // const navigate = useNavigate();
-  // async function onSubmit(data: SignupData) {
-  //   try {
-  //     setIsLoading(true);
-  //     await createUser(data);
-  //     navigate("/login");
-  //   } catch (error) {
-  //     console.log(error);
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // }
-  // function onError(errors) {
-  //   // console.log(errors);
-  // }
+  const { onSubmit, errors: apiErrors, isLoading } = useCreateUser();
+  console.log(apiErrors);
+  console.log(apiErrors?.error?.find((err) => err.path === "email"));
   return (
     <StyledSignup>
       <Wall />
       <FormContainer>
-        <Form onSubmit={handleSubmit(onSubmit, onError)}>
+        <Form onSubmit={handleSubmit(onSubmit)}>
           <FormRow>
             <h1>Sign Up</h1>
           </FormRow>
           <FormRow label="Email">
-            <Input
-              type="text"
-              id="email"
-              {...register("email", {
-                required: "This field is required",
-              })}
-            />
+            <>
+              <Input
+                type="text"
+                id="email"
+                {...register("email", {
+                  required: "This field is required",
+                })}
+              />
+              {errors.email && <p>{errors.email.message}</p>}
+              {apiErrors?.error?.find((err) => err.path === "email") && (
+                <p>
+                  {apiErrors?.error?.find((err) => err.path === "email")?.msg}
+                </p>
+              )}
+            </>
           </FormRow>
           <FormRow label="Username">
-            <Input
-              type="text"
-              id="username"
-              {...register("username", {
-                required: "This field is required",
-              })}
-            />
+            <>
+              <Input
+                type="text"
+                id="username"
+                {...register("username", {
+                  required: "This field is required",
+                })}
+              />
+              {errors.username && <p>{errors.username.message}</p>}
+              {apiErrors?.error?.find((err) => err.path === "username") && (
+                <p>
+                  {
+                    apiErrors?.error?.find((err) => err.path === "username")
+                      ?.msg
+                  }
+                </p>
+              )}
+            </>
           </FormRow>
           <FormRow label="Password">
-            <Input
-              type="password"
-              id="password"
-              {...register("password", {
-                required: "This field is required",
-              })}
-            />
+            <>
+              <Input
+                type="password"
+                id="password"
+                {...register("password", {
+                  required: "This field is required",
+                })}
+              />
+              {errors.password && <p>{errors.password.message}</p>}
+              {apiErrors?.error?.find((err) => err.path === "password") && (
+                <p>
+                  {
+                    apiErrors?.error?.find((err) => err.path === "password")
+                      ?.msg
+                  }
+                </p>
+              )}
+            </>
           </FormRow>
           <FormRow label="Confirm Password">
-            <Input
-              type="password"
-              id="confirmPassword"
-              {...register("confirmPassword", {
-                required: "This field is required",
-                validate: (value) =>
-                  value === getValues().password ||
-                  "Password and Confirm Password must match",
-              })}
-            />
+            <>
+              <Input
+                type="password"
+                id="confirmPassword"
+                {...register("confirmPassword", {
+                  required: "This field is required",
+                  validate: (value) =>
+                    value === getValues().password ||
+                    "Password and Confirm Password must match",
+                })}
+              />
+              {errors.confirmPassword && (
+                <p>{errors.confirmPassword.message}</p>
+              )}
+              {apiErrors?.error?.find(
+                (err) => err.path === "confirmPassword"
+              ) && (
+                <p>
+                  {
+                    apiErrors?.error?.find(
+                      (err) => err.path === "confirmPassword"
+                    )?.msg
+                  }
+                </p>
+              )}
+            </>
           </FormRow>
+          {/* {apiErrors && apiErrors.errors && (
+            <FormRow>
+              <p>{apiErrors.errors.join(", ")}</p>
+            </FormRow>
+          )} */}
           <FormRow>
             <Button
               styletype="form-button-cancel"
