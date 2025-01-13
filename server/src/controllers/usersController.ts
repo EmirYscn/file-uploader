@@ -1,5 +1,5 @@
-import { NextFunction, Request, Response } from "express";
-import * as db from "../db/queries";
+import { Request, Response } from "express";
+import * as db from "../db/folder.queries";
 
 export const getFolders = async (req: Request, res: Response): Promise<any> => {
   const { userId } = req.params;

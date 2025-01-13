@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import * as db from "../db/queries";
+import * as db from "../db/file.queries";
 
 export const deleteFile = async (req: Request, res: Response): Promise<any> => {
   const { fileId } = req.params;

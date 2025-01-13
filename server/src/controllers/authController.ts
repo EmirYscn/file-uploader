@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import * as db from "../db/queries";
+import * as db from "../db/user.queries";
 import { User } from "@prisma/client";
 
 export const signup = async (
