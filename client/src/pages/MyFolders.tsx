@@ -1,10 +1,18 @@
-import Folders from "../ui/Folders";
-import useFolders from "../hooks/useFolders";
+import { Outlet } from "react-router";
+import Heading from "../ui/Heading";
 
 function MyFolders() {
-  const { folders, isLoading } = useFolders();
+  return (
+    <>
+      <Heading as={"h1"} type={"bg"}>
+        My Folders
+      </Heading>
 
-  return folders && <Folders folders={folders} isLoading={isLoading} />;
+      <div>
+        <Outlet />
+      </div>
+    </>
+  );
 }
 
 export default MyFolders;

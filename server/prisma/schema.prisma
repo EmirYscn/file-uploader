@@ -28,10 +28,10 @@ model File {
   url        String
   size       Float
   uploadDate DateTime @default(now())
-  uploadedBy User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  user_id    Int
-  folder     Folder?  @relation(fields: [folder_id], references: [id], onDelete: SetNull)
-  folder_id  Int?
+  uploadedBy User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    Int
+  folder     Folder?  @relation(fields: [folderId], references: [id], onDelete: SetNull)
+  folderId  Int?
 }
 
 model Folder {
@@ -40,9 +40,12 @@ model Folder {
   fileCount Int      @default(0)
   size      Float    @default(0.0)
   createdAt DateTime @default(now())
+  parent    Folder?  @relation("ParentFolder",fields: [parentId], references: [id], onDelete: Cascade)
+  parentId  Int? 
+  children  Folder[] @relation("ParentFolder")
   files     File[]
-  createdBy User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  user_id   Int
+  createdBy User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId   Int
 }
 
 model Session {

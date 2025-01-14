@@ -3,7 +3,7 @@ import { prisma } from "./queries";
 export const getFoldersById = async (userId: number) => {
   try {
     const folders = await prisma.folder.findMany({
-      where: { user_id: userId },
+      where: { userId, parentId: null },
     });
     return folders;
   } catch (error) {
@@ -16,6 +16,7 @@ export const getFolderById = async (folderId: number) => {
     const folder = await prisma.folder.findFirst({
       where: { id: folderId },
       select: {
+        children: true,
         files: true,
       },
     });

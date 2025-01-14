@@ -1,9 +1,9 @@
 import { prisma } from "./queries";
 
 async function main() {
+  // await prisma.user.deleteMany();
   // await prisma.folder.deleteMany();
   // await prisma.file.deleteMany();
-
   // CREATE
   // await prisma.user.create({
   //   data: {
@@ -12,64 +12,62 @@ async function main() {
   //     password: "test",
   //   },
   // });
-
   // const allUsers = await prisma.user.findMany();
   // console.dir(allUsers, { depth: null });
-
-  // await prisma.folder.createMany({
-  //   data: [
-  //     {
-  //       name: "School",
-  //       fileCount: 10,
-  //       size: 12.2,
-  //       user_id: 16,
-  //     },
-  //     {
-  //       name: "Work",
-  //       fileCount: 10,
-  //       size: 12.2,
-  //       user_id: 16,
-  //     },
-  //     {
-  //       name: "Fitness",
-  //       fileCount: 10,
-  //       size: 12.2,
-  //       user_id: 16,
-  //     },
-  //   ],
-  // });
-
-  // const allFiles = await prisma.folder.findMany();
-  // console.dir(allFiles, { depth: null });
-
-  await prisma.file.createMany({
+  await prisma.folder.createMany({
     data: [
       {
-        name: "TestFile2",
-        size: 10,
-        url: "blabla",
-        folder_id: 13,
-        user_id: 16,
+        name: "Math",
+        fileCount: 10,
+        size: 12.2,
+        userId: 17,
+        parentId: 19,
       },
       {
-        name: "TestFile3",
-        size: 10,
-        url: "blabla",
-        folder_id: 14,
-        user_id: 16,
+        name: "prevQuarter.csv",
+        fileCount: 10,
+        size: 12.2,
+        userId: 17,
+        parentId: 20,
       },
       {
-        name: "TestFile4",
-        size: 10,
-        url: "blabla",
-        folder_id: 15,
-        user_id: 16,
+        name: "Chest",
+        fileCount: 10,
+        size: 12.2,
+        userId: 17,
+        parentId: 21,
       },
     ],
   });
-
-  const allFiles = await prisma.file.findMany();
+  const allFiles = await prisma.folder.findMany();
   console.dir(allFiles, { depth: null });
+  // await prisma.file.createMany({
+  //   data: [
+  //     {
+  //       name: "TestFile2",
+  //       size: 10,
+  //       url: "blabla",
+  //       folderId: 16,
+  //       userId: 17,
+  //     },
+  //     {
+  //       name: "TestFile3",
+  //       size: 10,
+  //       url: "blabla",
+  //       folderId: 17,
+  //       userId: 17,
+  //     },
+  //     {
+  //       name: "TestFile4",
+  //       size: 10,
+  //       url: "blabla",
+  //       folderId: 18,
+  //       userId: 17,
+  //     },
+  //   ],
+  // });
+  // const allFiles = await prisma.file.findMany();
+  // console.dir(allFiles, { depth: null });
 }
 
 main()

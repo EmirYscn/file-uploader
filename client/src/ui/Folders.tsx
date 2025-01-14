@@ -1,13 +1,14 @@
-import styled from "styled-components";
-import { Folder } from "../types/models";
-import { HiEllipsisVertical } from "react-icons/hi2";
 import { Link } from "react-router";
+import styled from "styled-components";
+import { MdDriveFileRenameOutline, MdPersonAddAlt1 } from "react-icons/md";
+import { RiDeleteBin2Line } from "react-icons/ri";
+
+import { Folder } from "../types/models";
 import Spinner from "./Spinner";
 import Modal from "./Modal";
 import Menus from "./Menus";
-import { MdDriveFileRenameOutline, MdPersonAddAlt1 } from "react-icons/md";
-import { RiDeleteBin2Line } from "react-icons/ri";
 import ConfirmDelete from "./ConfirmDelete";
+import useFolders from "../hooks/useFolders";
 
 const StyledFolders = styled.div`
   display: grid;
@@ -32,38 +33,25 @@ const Details = styled.div`
   justify-content: space-between;
 `;
 
-const StyledToggle = styled.button`
-  background: none;
-  border: none;
-  padding: 0.4rem;
-  border-radius: var(--border-radius-sm);
-  transform: translateX(0.8rem);
-  transition: all 0.2s;
+// type FoldersProps = {
+//   folders: Folder[];
+//   isLoading: boolean;
+// };
 
-  &:hover {
-    background-color: var(--color-grey-100);
+function Folders() {
+  const { folders, isLoading } = useFolders();
+  function handleDeleteFolder(folderId: number) {
+    // try {
+    // } catch (error) {}
   }
 
-  & svg {
-    width: 2.2rem;
-    height: 2.2rem;
-    color: var(--color-grey-700);
-  }
-`;
-
-type FoldersProps = {
-  folders: Folder[];
-  isLoading: boolean;
-};
-
-function Folders({ folders, isLoading }: FoldersProps) {
   return isLoading ? (
     <Spinner />
   ) : (
     <StyledFolders>
-      {folders.map((folder) => (
+      {folders?.map((folder) => (
         <StyledFolder key={folder.id}>
-          <Link to={`/folder/${folder.id}`}>
+          <Link to={`folder/${folder.id}`}>
             <Img src="/folder.svg" alt="" />
           </Link>
           <Details>
@@ -93,7 +81,7 @@ function Folders({ folders, isLoading }: FoldersProps) {
                     <ConfirmDelete
                       resourceName={folder.name}
                       // disabled={isDeleting}
-                      // onConfirm={() => handleDeleteFile(file.id)}
+                      onConfirm={() => handleDeleteFolder(folder.id)}
                     />
                   </Modal.Window>
                 </Menus.Menu>

@@ -4,6 +4,7 @@ import { useNavigate } from "react-router";
 import { useContext } from "react";
 import { UserContext } from "../contexts/userContext";
 import { logout } from "../services/apiUser";
+import CurrentRouteDisplay from "./CurrentRouteDisplay";
 
 const StyledHeader = styled.header`
   background-color: var(--color-grey-0);
@@ -11,7 +12,12 @@ const StyledHeader = styled.header`
   border-bottom: 1px solid var(--color-grey-100);
   display: flex;
   gap: 1.2rem;
-  justify-content: end;
+  justify-content: space-between;
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  gap: 1.2rem;
 `;
 
 function Header() {
@@ -24,18 +30,21 @@ function Header() {
   }
   return (
     <StyledHeader>
-      <Button onClick={() => navigate("/signup")} styletype="header-button">
-        Sign up
-      </Button>
-      {user ? (
-        <Button onClick={handleLogout} styletype="header-button">
-          Log out
+      <CurrentRouteDisplay />
+      <ButtonContainer>
+        <Button onClick={() => navigate("/signup")} styletype="header-button">
+          Sign up
         </Button>
-      ) : (
-        <Button onClick={() => navigate("/login")} styletype="header-button">
-          Log in
-        </Button>
-      )}
+        {user ? (
+          <Button onClick={handleLogout} styletype="header-button">
+            Log out
+          </Button>
+        ) : (
+          <Button onClick={() => navigate("/login")} styletype="header-button">
+            Log in
+          </Button>
+        )}
+      </ButtonContainer>
     </StyledHeader>
   );
 }

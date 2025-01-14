@@ -1,6 +1,4 @@
-import { useNavigate } from "react-router";
 import styled from "styled-components";
-import { FaArrowAltCircleLeft } from "react-icons/fa";
 import { RiDeleteBin2Line } from "react-icons/ri";
 import { AiOutlineDownload } from "react-icons/ai";
 import { MdDriveFileRenameOutline, MdPersonAddAlt1 } from "react-icons/md";
@@ -8,14 +6,16 @@ import { MdDriveFileRenameOutline, MdPersonAddAlt1 } from "react-icons/md";
 import Modal from "./Modal";
 import Menus from "./Menus";
 import Spinner from "./Spinner";
+import BackButton from "./BackButton";
 
 import ConfirmDelete from "./ConfirmDelete";
+import RenameFileForm from "./RenameFileForm";
+
 import useFolder from "../hooks/useFolder";
 import useDeleteFile from "../hooks/useDeleteFile";
-import { renameFile } from "../services/apiFiles";
-import RenameFileForm from "./RenameFileForm";
+import useRenameFile from "../hooks/useRenameFile";
 import { File as FileType } from "../types/models";
-import BackButton from "./BackButton";
+import { Link } from "react-router";
 
 const StyledFolder = styled.div`
   display: grid;
@@ -40,29 +40,18 @@ const Details = styled.div`
   align-items: center;
 `;
 
+const SubFolder = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
 function Folder() {
   const { folder, setFolder, isLoading } = useFolder();
   const { handleDeleteFile, isLoading: isDeleting } = useDeleteFile(setFolder);
-  const navigate = useNavigate();
-
-  async function handleRenameFile(fileId: number, data: FileType) {
-    try {
-      console.log(data);
-      await renameFile(fileId, data);
-      setFolder((prevFolder) => {
-        if (!prevFolder) return prevFolder;
-
-        const updatedFiles = prevFolder.files.map((file) =>
-          file.id === fileId ? { ...file, name: data.name } : file
-        );
-        const newFolder = { ...prevFolder, files: updatedFiles };
-        return newFolder;
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
+  const { handleRenameFile, isLoading: isRenaming } = useRenameFile(setFolder);
+  // const { handleDeleteFolder, isLoading: isFolderDeleting } =
+  //   useDeleteFolder(setFolder);
   return (
     <>
       <BackButton />
@@ -70,6 +59,47 @@ function Folder() {
         <Spinner />
       ) : (
         <StyledFolder>
+          {folder?.children?.map((folder) => (
+            <SubFolder key={folder.id}>
+              <Link to={`folder/${folder.id}`}>
+                <Img src="/folder.svg" alt="" />
+              </Link>
+              <Details>
+                <span>{folder.name}</span>
+                <Modal>
+                  <Menus>
+                    <Menus.Menu>
+                      <Menus.Toggle id={folder.id} />
+                      <Menus.List id={folder.id}>
+                        <Modal.Open opens="rename">
+                          <Menus.Button icon={<MdDriveFileRenameOutline />}>
+                            Rename
+                          </Menus.Button>
+                        </Modal.Open>
+                        <Modal.Open opens="share">
+                          <Menus.Button icon={<MdPersonAddAlt1 />}>
+                            Share
+                          </Menus.Button>
+                        </Modal.Open>
+                        <Modal.Open opens="delete">
+                          <Menus.Button icon={<RiDeleteBin2Line />}>
+                            Delete
+                          </Menus.Button>
+                        </Modal.Open>
+                      </Menus.List>
+                      <Modal.Window name="delete">
+                        <ConfirmDelete
+                          resourceName={folder.name}
+                          // disabled={isDeleting}
+                          onConfirm={() => handleDeleteFolder(folder.id)}
+                        />
+                      </Modal.Window>
+                    </Menus.Menu>
+                  </Menus>
+                </Modal>
+              </Details>
+            </SubFolder>
+          ))}
           {folder?.files.map((file) => (
             <File key={file.id}>
               <Img src="/file.svg" />
@@ -103,14 +133,13 @@ function Folder() {
                       <Modal.Window name="rename">
                         <RenameFileForm
                           resourceName={file.name}
+                          disabled={isRenaming}
                           onConfirm={(data: FileType) =>
                             handleRenameFile(file.id, data)
                           }
                         />
                       </Modal.Window>
-                      {/* <Modal.Window name="share">
-                    <ShareFileForm />
-                    </Modal.Window> */}
+
                       <Modal.Window name="delete">
                         <ConfirmDelete
                           resourceName={file.name}

@@ -5,7 +5,7 @@ import styled, { css } from "styled-components";
 //   ${10 > 5 && "background-color: blue"}
 // `;
 
-const Heading = styled.h1`
+const Heading = styled.h1<{ type: string }>`
   ${(props) =>
     props.as === "h1" &&
     css`
@@ -25,6 +25,18 @@ const Heading = styled.h1`
     css`
       font-size: 1rem;
       font-weight: 500;
+    `}
+
+    ${(props) =>
+    props.type === "bg" &&
+    css`
+      font-size: 5em;
+      opacity: 0.1;
+      position: absolute;
+      left: -11rem;
+      top: -7.7rem;
+      color: var(--color-grey-400);
+      pointer-events: none;
     `}
 
   line-height: 1.4

@@ -1,32 +1,17 @@
-import { useEffect, useState } from "react";
-import { Folder } from "../types/models";
-import { getFolders } from "../services/apiFolders";
+import { Outlet } from "react-router";
+import Heading from "../ui/Heading";
 
 function Shared() {
-  // const [folders, setFolders] = useState<Folder[]>([]);
-  // useEffect(() => {
-  //   async function fetchFolders() {
-  //     try {
-  //       const folders = await getFolders();
-  //       setFolders(folders);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   }
-  //   fetchFolders();
-  // }, []);
-  // return (
-  //   <div>
-  //     {folders.map((folder) => (
-  //       <div key={folder.id}>
-  //         <h1>{folder.name}</h1>
-  //         <p>{folder.size}</p>
-  //         <p>{folder.fileCount}</p>
-  //       </div>
-  //     ))}
-  //   </div>
-  // );
-  return <div>Shared</div>;
+  return (
+    <>
+      <Heading as={"h1"} type={"bg"}>
+        Shared to me
+      </Heading>
+      <div>
+        <Outlet />
+      </div>
+    </>
+  );
 }
 
 export default Shared;
