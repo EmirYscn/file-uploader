@@ -3,6 +3,7 @@ import Button from "./Button";
 import { useNavigate } from "react-router";
 import { useContext } from "react";
 import { UserContext } from "../contexts/userContext";
+import { logout } from "../services/apiUser";
 
 const StyledHeader = styled.header`
   background-color: var(--color-grey-0);
@@ -15,14 +16,19 @@ const StyledHeader = styled.header`
 
 function Header() {
   const navigate = useNavigate();
-  const { user } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
+
+  async function handleLogout() {
+    await logout();
+    setUser(null);
+  }
   return (
     <StyledHeader>
       <Button onClick={() => navigate("/signup")} styletype="header-button">
         Sign up
       </Button>
       {user ? (
-        <Button onClick={() => navigate("/logout")} styletype="header-button">
+        <Button onClick={handleLogout} styletype="header-button">
           Log out
         </Button>
       ) : (

@@ -15,6 +15,7 @@ import useDeleteFile from "../hooks/useDeleteFile";
 import { renameFile } from "../services/apiFiles";
 import RenameFileForm from "./RenameFileForm";
 import { File as FileType } from "../types/models";
+import BackButton from "./BackButton";
 
 const StyledFolder = styled.div`
   display: grid;
@@ -37,20 +38,6 @@ const Img = styled.img`
 const Details = styled.div`
   display: flex;
   align-items: center;
-`;
-
-const BackButton = styled.button`
-  padding: 0.5em 1em;
-  border: none;
-  border-radius: 6px;
-  font-size: small;
-  position: absolute;
-  left: -3rem;
-  top: -3rem;
-
-  &:hover {
-    background-color: #fffb09a0;
-  }
 `;
 
 function Folder() {
@@ -78,9 +65,7 @@ function Folder() {
 
   return (
     <>
-      <BackButton onClick={() => navigate(-1)}>
-        <FaArrowAltCircleLeft />
-      </BackButton>
+      <BackButton />
       {isLoading ? (
         <Spinner />
       ) : (

@@ -1,7 +1,8 @@
 import { prisma } from "./queries";
 
 async function main() {
-  // await prisma.user.deleteMany();
+  // await prisma.folder.deleteMany();
+  // await prisma.file.deleteMany();
 
   // CREATE
   // await prisma.user.create({
@@ -21,19 +22,19 @@ async function main() {
   //       name: "School",
   //       fileCount: 10,
   //       size: 12.2,
-  //       user_id: 14,
+  //       user_id: 16,
   //     },
   //     {
   //       name: "Work",
   //       fileCount: 10,
   //       size: 12.2,
-  //       user_id: 14,
+  //       user_id: 16,
   //     },
   //     {
   //       name: "Fitness",
   //       fileCount: 10,
   //       size: 12.2,
-  //       user_id: 14,
+  //       user_id: 16,
   //     },
   //   ],
   // });
@@ -47,22 +48,22 @@ async function main() {
         name: "TestFile2",
         size: 10,
         url: "blabla",
-        folder_id: 4,
-        user_id: 14,
+        folder_id: 13,
+        user_id: 16,
       },
       {
         name: "TestFile3",
         size: 10,
         url: "blabla",
-        folder_id: 5,
-        user_id: 14,
+        folder_id: 14,
+        user_id: 16,
       },
       {
         name: "TestFile4",
         size: 10,
         url: "blabla",
-        folder_id: 6,
-        user_id: 14,
+        folder_id: 15,
+        user_id: 16,
       },
     ],
   });

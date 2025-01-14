@@ -44,3 +44,10 @@ model Folder {
   createdBy User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id   Int
 }
+
+model Session {
+  id        String   @id
+  sid       String   @unique
+  data      String
+  expiresAt DateTime
+}

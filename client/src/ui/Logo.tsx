@@ -18,7 +18,7 @@ const Img = styled.img<{ imgtype: string }>`
 function Logo({ type }: { type: string }) {
   return (
     <StyledLogo>
-      <Link to="/home">
+      <Link to="/all">
         <Img src="/logo.svg" alt="logo" imgtype={type} />
       </Link>
     </StyledLogo>

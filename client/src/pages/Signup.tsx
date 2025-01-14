@@ -10,6 +10,7 @@ import { createUser } from "../services/apiUser";
 import { useNavigate } from "react-router";
 import { useState } from "react";
 import useCreateUser from "../hooks/useCreateUser";
+import BackButton from "../ui/BackButton";
 
 const StyledSignup = styled.div`
   display: grid;
@@ -18,6 +19,7 @@ const StyledSignup = styled.div`
 `;
 
 const FormContainer = styled.div`
+  position: relative;
   padding: 2em;
   display: flex;
   justify-content: center;
@@ -40,72 +42,75 @@ function Signup() {
   console.log(apiErrors);
   console.log(apiErrors?.error?.find((err) => err.path === "email"));
   return (
-    <StyledSignup>
-      <Wall />
-      <FormContainer>
-        <Form onSubmit={handleSubmit(onSubmit)}>
-          <FormRow>
-            <h1>Sign Up</h1>
-          </FormRow>
-          <FormRow label="Email">
-            <>
+    <>
+      <StyledSignup>
+        <Wall />
+        <FormContainer>
+          <BackButton posContext="signup" />
+          <Form onSubmit={handleSubmit(onSubmit)}>
+            <FormRow>
+              <h1>Sign Up</h1>
+            </FormRow>
+            <FormRow
+              label="Email"
+              apiError={
+                apiErrors?.error?.find((err) => err.path === "email")?.msg
+              }
+              formError={errors?.email?.message}
+            >
               <Input
                 type="text"
                 id="email"
                 {...register("email", {
                   required: "This field is required",
+                  pattern: {
+                    value: /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/,
+                    message: "Please enter a valid email",
+                  },
                 })}
               />
-              {errors.email && <p>{errors.email.message}</p>}
-              {apiErrors?.error?.find((err) => err.path === "email") && (
-                <p>
-                  {apiErrors?.error?.find((err) => err.path === "email")?.msg}
-                </p>
-              )}
-            </>
-          </FormRow>
-          <FormRow label="Username">
-            <>
+            </FormRow>
+            <FormRow
+              label="Username"
+              apiError={
+                apiErrors?.error?.find((err) => err.path === "username")?.msg
+              }
+              formError={errors?.username?.message}
+            >
               <Input
                 type="text"
                 id="username"
                 {...register("username", {
                   required: "This field is required",
+                  minLength: 2,
+                  maxLength: 30,
                 })}
               />
-              {errors.username && <p>{errors.username.message}</p>}
-              {apiErrors?.error?.find((err) => err.path === "username") && (
-                <p>
-                  {
-                    apiErrors?.error?.find((err) => err.path === "username")
-                      ?.msg
-                  }
-                </p>
-              )}
-            </>
-          </FormRow>
-          <FormRow label="Password">
-            <>
+            </FormRow>
+            <FormRow
+              label="Password"
+              apiError={
+                apiErrors?.error?.find((err) => err.path === "password")?.msg
+              }
+              formError={errors?.password?.message}
+            >
               <Input
                 type="password"
                 id="password"
                 {...register("password", {
                   required: "This field is required",
+                  minLength: 8,
                 })}
               />
-              {errors.password && <p>{errors.password.message}</p>}
-              {apiErrors?.error?.find((err) => err.path === "password") && (
-                <p>
-                  {
-                    apiErrors?.error?.find((err) => err.path === "password")
-                      ?.msg
-                  }
-                </p>
-              )}
-            </>
-          </FormRow>
-          <FormRow label="Confirm Password">
-            <>
+            </FormRow>
+            <FormRow
+              label="Confirm Password"
+              apiError={
+                apiErrors?.error?.find((err) => err.path === "confirmPassword")
+                  ?.msg
+              }
+              formError={errors?.confirmPassword?.message}
+            >
               <Input
                 type="password"
                 id="confirmPassword"
@@ -116,42 +121,16 @@ function Signup() {
                     "Password and Confirm Password must match",
                 })}
               />
-              {errors.confirmPassword && (
-                <p>{errors.confirmPassword.message}</p>
-              )}
-              {apiErrors?.error?.find(
-                (err) => err.path === "confirmPassword"
-              ) && (
-                <p>
-                  {
-                    apiErrors?.error?.find(
-                      (err) => err.path === "confirmPassword"
-                    )?.msg
-                  }
-                </p>
-              )}
-            </>
-          </FormRow>
-          {/* {apiErrors && apiErrors.errors && (
-            <FormRow>
-              <p>{apiErrors.errors.join(", ")}</p>
             </FormRow>
-          )} */}
-          <FormRow>
-            <Button
-              styletype="form-button-cancel"
-              disabled={isLoading}
-              onClick={() => reset()}
-            >
-              Reset
-            </Button>
-            <Button styletype="form-button-submit" disabled={isLoading}>
-              Submit
-            </Button>
-          </FormRow>
-        </Form>
-      </FormContainer>
-    </StyledSignup>
+            <FormRow>
+              <Button styletype="form-button-submit" disabled={isLoading}>
+                Submit
+              </Button>
+            </FormRow>
+          </Form>
+        </FormContainer>
+      </StyledSignup>
+    </>
   );
 }
 

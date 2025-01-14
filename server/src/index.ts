@@ -1,12 +1,13 @@
 import express, { NextFunction, Request, Response } from "express";
 import dotenv from "dotenv";
 import path from "node:path";
+import { validateForm } from "./middlewares/validateForm";
 
 import * as authController from "./controllers/authController";
 import * as usersController from "./controllers/usersController";
 import * as filesController from "./controllers/filesController";
-import * as db from "./db/queries";
-import { validateForm } from "./middlewares/validateForm";
+import { sessionMiddleware } from "./middlewares/session";
+import passport from "./strategies/passport";
 
 dotenv.config({ path: "./.env" });
 
@@ -17,9 +18,24 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "../public")));
 
-app.post("/api/signup", validateForm, authController.signup);
-app.post("/api/login", authController.login);
+app.use(sessionMiddleware);
+app.use(passport.initialize());
+app.use(passport.session());
 
+app.post("/api/signup", validateForm, authController.signup);
+app.post("/api/login", usersController.login);
+
+app.get("/api/current-user", (req, res) => {
+  if (req.isAuthenticated()) {
+    res.json(req.user);
+  } else {
+    res.status(401).json({ message: "Not authenticated" });
+  }
+});
+
+app.get("/api/logout", usersController.logout);
+
+// app.use(authController.isAuth);
 app.get("/api/folders/:userId", usersController.getFolders);
 app.get("/api/folder/:folderId", usersController.getFolder);
 // app.post("/api/folder/:folderId", usersController.getFolder);

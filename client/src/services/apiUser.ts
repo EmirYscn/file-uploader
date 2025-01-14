@@ -46,12 +46,36 @@ export const login = async (data: User): Promise<User> => {
     });
 
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      const errorData = await response.json();
+      throw new Error(
+        errorData.error || `HTTP error! status: ${response.status}`
+      );
     }
 
     return await response.json();
   } catch (error) {
     console.error("Failed to login user:", error);
+    throw error; // Rethrow the error after logging it
+  }
+};
+
+export const logout = async () => {
+  try {
+    const response = await fetch("/api/logout", {
+      method: "GET",
+      credentials: "include",
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(
+        errorData.error || `HTTP error! status: ${response.status}`
+      );
+    }
+
+    // return await response.json();
+  } catch (error) {
+    console.error("Failed to log out user:", error);
     throw error; // Rethrow the error after logging it
   }
 };

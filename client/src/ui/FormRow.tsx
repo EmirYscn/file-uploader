@@ -3,10 +3,11 @@ import styled from "styled-components";
 const StyledFormRow = styled.div`
   display: grid;
   align-items: center;
-  grid-template-columns: 24rem 25rem 1.2fr;
-  gap: 2.4rem;
+  grid-template-columns: auto 35rem;
+  gap: 1rem;
   padding: 1.2rem 0;
-  color: white;
+  /* color: var(--color-brand-700); */
+  color: black
 
   &:not(:last-child) {
     border-top: 1px solid var(--color-grey-100);
@@ -35,23 +36,35 @@ const Label = styled.label`
   font-weight: 500;
 `;
 
-const Error = styled.span`
+const ApiError = styled.span`
   font-size: 1.4rem;
   color: var(--color-red-700);
+  grid-column: 2 / -1;
+  text-align: end;
+`;
+
+const FormError = styled.span`
+  font-size: 1.4rem;
+  color: var(--color-red-700);
+
+  grid-column: 2 / -1;
+  text-align: end;
 `;
 
 type FormRowProps = {
   label?: string;
-  error?: string;
+  apiError?: string;
+  formError?: string;
   children: React.ReactNode;
 };
 
-function FormRow({ label, error, children }: FormRowProps) {
+function FormRow({ label, apiError, formError, children }: FormRowProps) {
   return (
     <StyledFormRow>
       {label && children && <Label htmlFor={children.props.id}>{label}</Label>}
       {children}
-      {error && <Error>{error}</Error>}
+      {formError && <ApiError>*{formError}</ApiError>}
+      {apiError && <FormError>*{apiError}</FormError>}
     </StyledFormRow>
   );
 }

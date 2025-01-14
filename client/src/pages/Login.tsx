@@ -33,6 +33,7 @@ function Login() {
   async function onSubmit(data: User) {
     try {
       const user = await login(data);
+      console.log(user);
       setUser(user);
       navigate("/all");
     } catch (error) {

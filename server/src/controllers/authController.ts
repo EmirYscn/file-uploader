@@ -1,6 +1,7 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { User } from "@prisma/client";
 import { validationResult } from "express-validator";
+import bcrypt from "bcryptjs";
 
 import * as db from "../db/user.queries";
 
@@ -18,7 +19,12 @@ export const signup = async (
   }
 
   // Create User
-  const user = req.body;
+
+  // Hash Password
+  const { password } = req.body;
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  const user = { ...req.body, password: hashedPassword };
   console.log("Created User: ", user);
   try {
     await db.createUser(user);
@@ -51,4 +57,9 @@ export const login = async (
   } catch (error) {
     console.log(error);
   }
+};
+
+export const isAuth = (req: Request, res: Response, next: NextFunction) => {
+  if (req.isAuthenticated()) next();
+  else res.status(401).json({ msg: "You are not authorized" });
 };

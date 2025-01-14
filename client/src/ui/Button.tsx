@@ -6,8 +6,8 @@ const types = {
     color: white;
   `,
   "form-button-submit": css`
-    background-color: var(--color-grey-50);
-    color: black;
+    background-color: var(--color-brand-700);
+    color: white;
     box-shadow: var(--shadow-lg);
   `,
   "form-button-cancel": css`
