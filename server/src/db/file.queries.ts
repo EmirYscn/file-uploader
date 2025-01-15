@@ -1,5 +1,28 @@
 import { prisma } from "./queries";
 
+export const getFilesByUserId = async (userId: number) => {
+  try {
+    const files = await prisma.file.findMany({
+      where: { userId, folderId: null },
+    });
+    return files;
+  } catch (error) {
+    console.error("Error deleting file:", error);
+    throw new Error("Failed to delete file");
+  }
+};
+export const getFilesByFolderId = async (folderId: number) => {
+  try {
+    const files = await prisma.file.findMany({
+      where: { folderId },
+    });
+    return files;
+  } catch (error) {
+    console.error("Error deleting file:", error);
+    throw new Error("Failed to delete file");
+  }
+};
+
 export const deleteFile = async (fileId: number) => {
   try {
     await prisma.file.delete({

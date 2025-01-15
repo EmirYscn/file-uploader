@@ -11,11 +11,14 @@ import BackButton from "./BackButton";
 import ConfirmDelete from "./ConfirmDelete";
 import RenameFileForm from "./RenameFileForm";
 
-import useFolder from "../hooks/useFolder";
+import useFolder from "../hooks/useFiles";
 import useDeleteFile from "../hooks/useDeleteFile";
 import useRenameFile from "../hooks/useRenameFile";
 import { File as FileType } from "../types/models";
 import { Link } from "react-router";
+import useDeleteFolder from "../hooks/useDeleteFolder";
+import useFolders from "../hooks/useFolders";
+import useFiles from "../hooks/useFiles";
 
 const StyledFolder = styled.div`
   display: grid;
@@ -47,19 +50,22 @@ const SubFolder = styled.div`
 `;
 
 function Folder() {
-  const { folder, setFolder, isLoading } = useFolder();
-  const { handleDeleteFile, isLoading: isDeleting } = useDeleteFile(setFolder);
-  const { handleRenameFile, isLoading: isRenaming } = useRenameFile(setFolder);
+  const { folders, setFolders, isLoading: isFoldersLoading } = useFolders();
+  const { files, setFiles, isLoading } = useFiles();
+  // const { handleDeleteFile, isLoading: isDeleting } = useDeleteFile(setFolder);
+  // const { handleRenameFile, isLoading: isRenaming } = useRenameFile(setFolder);
+  // const { handleDeleteFolder, isLoading: isDeletingFolder } =
+  //   useDeleteFolder(setFolders);
   // const { handleDeleteFolder, isLoading: isFolderDeleting } =
   //   useDeleteFolder(setFolder);
   return (
     <>
       <BackButton />
-      {isLoading ? (
+      {isFoldersLoading ? (
         <Spinner />
       ) : (
         <StyledFolder>
-          {folder?.children?.map((folder) => (
+          {folders?.map((folder) => (
             <SubFolder key={folder.id}>
               <Link to={`folder/${folder.id}`}>
                 <Img src="/folder.svg" alt="" />
@@ -90,8 +96,8 @@ function Folder() {
                       <Modal.Window name="delete">
                         <ConfirmDelete
                           resourceName={folder.name}
-                          // disabled={isDeleting}
-                          onConfirm={() => handleDeleteFolder(folder.id)}
+                          // disabled={isDeletingFolder}
+                          // onConfirm={() => handleDeleteFolder(folder.id)}
                         />
                       </Modal.Window>
                     </Menus.Menu>
@@ -100,7 +106,7 @@ function Folder() {
               </Details>
             </SubFolder>
           ))}
-          {folder?.files.map((file) => (
+          {files?.map((file) => (
             <File key={file.id}>
               <Img src="/file.svg" />
               <Details>
@@ -133,18 +139,18 @@ function Folder() {
                       <Modal.Window name="rename">
                         <RenameFileForm
                           resourceName={file.name}
-                          disabled={isRenaming}
-                          onConfirm={(data: FileType) =>
-                            handleRenameFile(file.id, data)
-                          }
+                          // disabled={isRenaming}
+                          // onConfirm={(data: FileType) =>
+                          //   handleRenameFile(file.id, data)
+                          // }
                         />
                       </Modal.Window>
 
                       <Modal.Window name="delete">
                         <ConfirmDelete
                           resourceName={file.name}
-                          disabled={isDeleting}
-                          onConfirm={() => handleDeleteFile(file.id)}
+                          // disabled={isDeleting}
+                          // onConfirm={() => handleDeleteFile(file.id)}
                         />
                       </Modal.Window>
                     </Menus.Menu>

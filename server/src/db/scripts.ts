@@ -3,7 +3,9 @@ import { prisma } from "./queries";
 async function main() {
   // await prisma.user.deleteMany();
   // await prisma.folder.deleteMany();
-  // await prisma.file.deleteMany();
+  await prisma.file.delete({
+    where: { id: 48 },
+  });
   // CREATE
   // await prisma.user.create({
   //   data: {
@@ -14,54 +16,51 @@ async function main() {
   // });
   // const allUsers = await prisma.user.findMany();
   // console.dir(allUsers, { depth: null });
-  await prisma.folder.createMany({
-    data: [
-      {
-        name: "Math",
-        fileCount: 10,
-        size: 12.2,
-        userId: 17,
-        parentId: 19,
-      },
-      {
-        name: "prevQuarter.csv",
-        fileCount: 10,
-        size: 12.2,
-        userId: 17,
-        parentId: 20,
-      },
-      {
-        name: "Chest",
-        fileCount: 10,
-        size: 12.2,
-        userId: 17,
-        parentId: 21,
-      },
-    ],
-  });
-  const allFiles = await prisma.folder.findMany();
-  console.dir(allFiles, { depth: null });
+  // await prisma.folder.createMany({
+  //   data: [
+  //     {
+  //       name: "Math",
+  //       fileCount: 10,
+  //       size: 12.2,
+  //       userId: 17,
+  //       parentId: 19,
+  //     },
+  //     {
+  //       name: "prevQuarter.csv",
+  //       fileCount: 10,
+  //       size: 12.2,
+  //       userId: 17,
+  //       parentId: 20,
+  //     },
+  //     {
+  //       name: "Chest",
+  //       fileCount: 10,
+  //       size: 12.2,
+  //       userId: 17,
+  //       parentId: 21,
+  //     },
+  //   ],
+  // });
+  // const allFiles = await prisma.folder.findMany();
+  // console.dir(allFiles, { depth: null });
   // await prisma.file.createMany({
   //   data: [
   //     {
   //       name: "TestFile2",
   //       size: 10,
   //       url: "blabla",
-  //       folderId: 16,
   //       userId: 17,
   //     },
   //     {
   //       name: "TestFile3",
   //       size: 10,
   //       url: "blabla",
-  //       folderId: 17,
   //       userId: 17,
   //     },
   //     {
   //       name: "TestFile4",
   //       size: 10,
   //       url: "blabla",
-  //       folderId: 18,
   //       userId: 17,
   //     },
   //   ],

@@ -9,6 +9,10 @@ import Modal from "./Modal";
 import Menus from "./Menus";
 import ConfirmDelete from "./ConfirmDelete";
 import useFolders from "../hooks/useFolders";
+import useDeleteFolder from "../hooks/useDeleteFolder";
+import useFiles from "../hooks/useFiles";
+import RenameFileForm from "./RenameFileForm";
+import { AiOutlineDownload } from "react-icons/ai";
 
 const StyledFolders = styled.div`
   display: grid;
@@ -17,6 +21,12 @@ const StyledFolders = styled.div`
 `;
 
 const StyledFolder = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const File = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -39,11 +49,10 @@ const Details = styled.div`
 // };
 
 function Folders() {
-  const { folders, isLoading } = useFolders();
-  function handleDeleteFolder(folderId: number) {
-    // try {
-    // } catch (error) {}
-  }
+  const { folders, setFolders, isLoading } = useFolders();
+  const { files, setFiles, isLoading: isFilesLoading } = useFiles();
+  const { handleDeleteFolder, isLoading: isDeletingFolder } =
+    useDeleteFolder(setFolders);
 
   return isLoading ? (
     <Spinner />
@@ -80,7 +89,7 @@ function Folders() {
                   <Modal.Window name="delete">
                     <ConfirmDelete
                       resourceName={folder.name}
-                      // disabled={isDeleting}
+                      disabled={isDeletingFolder}
                       onConfirm={() => handleDeleteFolder(folder.id)}
                     />
                   </Modal.Window>
@@ -89,6 +98,59 @@ function Folders() {
             </Modal>
           </Details>
         </StyledFolder>
+      ))}
+      {files?.map((file) => (
+        <File key={file.id}>
+          <Img src="/file.svg" />
+          <Details>
+            <span>{file.name}</span>
+            <Modal>
+              <Menus>
+                <Menus.Menu>
+                  <Menus.Toggle id={file.id} />
+                  <Menus.List id={file.id}>
+                    <Menus.Button icon={<AiOutlineDownload />}>
+                      Download
+                    </Menus.Button>
+                    <Modal.Open opens="rename">
+                      <Menus.Button icon={<MdDriveFileRenameOutline />}>
+                        Rename
+                      </Menus.Button>
+                    </Modal.Open>
+                    <Modal.Open opens="share">
+                      <Menus.Button icon={<MdPersonAddAlt1 />}>
+                        Share
+                      </Menus.Button>
+                    </Modal.Open>
+                    <Modal.Open opens="delete">
+                      <Menus.Button icon={<RiDeleteBin2Line />}>
+                        Delete
+                      </Menus.Button>
+                    </Modal.Open>
+                  </Menus.List>
+
+                  <Modal.Window name="rename">
+                    <RenameFileForm
+                      resourceName={file.name}
+                      // disabled={isRenaming}
+                      // onConfirm={(data: FileType) =>
+                      //   handleRenameFile(file.id, data)
+                      // }
+                    />
+                  </Modal.Window>
+
+                  <Modal.Window name="delete">
+                    <ConfirmDelete
+                      resourceName={file.name}
+                      // disabled={isDeleting}
+                      // onConfirm={() => handleDeleteFile(file.id)}
+                    />
+                  </Modal.Window>
+                </Menus.Menu>
+              </Menus>
+            </Modal>
+          </Details>
+        </File>
       ))}
     </StyledFolders>
   );

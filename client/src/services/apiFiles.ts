@@ -1,8 +1,27 @@
 import { File } from "../types/models";
 
+export const getFilesByUserId = async (folderId: number) => {
+  try {
+    const res = await fetch(`/api/files/byUserId/${folderId}`);
+    const files: File[] = await res.json();
+    return files;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getFilesByFolderId = async (folderId: number) => {
+  try {
+    const res = await fetch(`/api/files/byFolderId/${folderId}`);
+    const files: File[] = await res.json();
+    return files;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const deleteFile = async (fileId: number) => {
   try {
-    console.log("in deleteFIle");
     const response = await fetch(`/api/files/${fileId}`, {
       method: "DELETE",
     });
@@ -18,7 +37,6 @@ export const deleteFile = async (fileId: number) => {
 
 export const renameFile = async (fileId: number, data: File) => {
   try {
-    console.log(fileId);
     const response = await fetch(`/api/files/${fileId}`, {
       method: "PATCH",
       headers: {

@@ -6,6 +6,7 @@ import { validateForm } from "./middlewares/validateForm";
 import * as authController from "./controllers/authController";
 import * as usersController from "./controllers/usersController";
 import * as filesController from "./controllers/filesController";
+import * as foldersController from "./controllers/foldersController";
 import { sessionMiddleware } from "./middlewares/session";
 import passport from "./strategies/passport";
 
@@ -36,12 +37,17 @@ app.get("/api/current-user", (req, res) => {
 app.get("/api/logout", usersController.logout);
 
 // app.use(authController.isAuth);
-app.get("/api/folders/:userId", usersController.getFolders);
-app.get("/api/folder/:folderId", usersController.getFolder);
+app.get(
+  "/api/folders/byFolderId/:folderId",
+  foldersController.getFoldersByFolderId
+);
+app.get("/api/folders/byUserId/:userId", foldersController.getFoldersByUserId);
+app.get("/api/folder/:folderId", foldersController.getFolder);
+app.delete("/api/folder/:folderId", foldersController.deleteFolder);
 // app.post("/api/folder/:folderId", usersController.getFolder);
-// app.delete("/api/folder/:folderId", usersController.getFolder);
 
-// app.get("/api/files/:fileId", usersController.getFolder);
+app.get("/api/files/byUserId/:userId", filesController.getFilesByUserId);
+app.get("/api/files/byFolderId/:folderId", filesController.getFilesByFolderId);
 app.patch("/api/files/:fileId", filesController.renameFile);
 app.delete("/api/files/:fileId", filesController.deleteFile);
 
