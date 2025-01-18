@@ -1,4 +1,5 @@
 import styled, { css } from "styled-components";
+import { Folder } from "../types/models";
 
 const types = {
   "header-button": css`
@@ -47,10 +48,13 @@ const StyledButton = styled.button<{ buttontype: ButtonTypes }>`
   }
 `;
 
+type ButtonOnClickTypes =
+  | ((data: string) => Promise<void> | undefined)
+  | ((event: React.MouseEvent<HTMLButtonElement>) => void)
+  | (() => Promise<void> | undefined);
+
 type ButtonProps = {
-  onClick?: (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => void | ((data: string) => Promise<void> | undefined);
+  onClick?: ButtonOnClickTypes;
   styletype: ButtonTypes;
   children: string | React.ReactNode;
 } & Omit<React.ComponentProps<"button">, "children">;

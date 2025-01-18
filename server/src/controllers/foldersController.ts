@@ -40,6 +40,20 @@ export const getFolder = async (req: Request, res: Response): Promise<any> => {
   }
 };
 
+export const createFolder = async (
+  req: Request,
+  res: Response
+): Promise<any> => {
+  const folderData = req.body;
+  try {
+    const folder = await db.createFolder(folderData);
+    return res.status(200).json(folder);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Failed to create folder" });
+  }
+};
+
 export const deleteFolder = async (
   req: Request,
   res: Response

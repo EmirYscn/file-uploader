@@ -5,7 +5,7 @@ import styled, { css } from "styled-components";
 //   ${10 > 5 && "background-color: blue"}
 // `;
 
-const Heading = styled.h1<{ type: string }>`
+const Heading = styled.h1<{ type?: string }>`
   ${(props) =>
     props.as === "h1" &&
     css`

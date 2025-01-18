@@ -1,3 +1,4 @@
+import { Folder } from "@prisma/client";
 import { prisma } from "./queries";
 
 export const getFoldersById = async (userId: number) => {
@@ -34,6 +35,20 @@ export const getFolderById = async (folderId: number) => {
     return folder;
   } catch (error) {
     console.log(error);
+  }
+};
+
+export const createFolder = async (folderData: Folder) => {
+  console.log(folderData);
+  try {
+    const folder = await prisma.folder.create({
+      data: folderData,
+    });
+    console.log(`Folder created successfully.`);
+    return folder;
+  } catch (error) {
+    console.error("Error creating folder:", error);
+    throw new Error("Failed to create folder");
   }
 };
 

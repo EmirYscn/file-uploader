@@ -49,10 +49,12 @@ const SubFolder = styled.div`
   align-items: center;
 `;
 
+//TODO: Seperate Files and Folders Components
 function Folder() {
   const { folders, setFolders, isLoading: isFoldersLoading } = useFolders();
-  const { files, setFiles, isLoading } = useFiles();
-  // const { handleDeleteFile, isLoading: isDeleting } = useDeleteFile(setFolder);
+  const { files, setFiles, isLoading: isFilesLoading } = useFiles();
+  const { handleDeleteFile, isLoading: isDeletingFile } =
+    useDeleteFile(setFiles);
   // const { handleRenameFile, isLoading: isRenaming } = useRenameFile(setFolder);
   // const { handleDeleteFolder, isLoading: isDeletingFolder } =
   //   useDeleteFolder(setFolders);
@@ -108,7 +110,9 @@ function Folder() {
           ))}
           {files?.map((file) => (
             <File key={file.id}>
-              <Img src="/file.svg" />
+              <Link to={`file/${file.id}`}>
+                <Img src="/file.svg" />
+              </Link>
               <Details>
                 <span>{file.name}</span>
                 <Modal>
@@ -149,8 +153,8 @@ function Folder() {
                       <Modal.Window name="delete">
                         <ConfirmDelete
                           resourceName={file.name}
-                          // disabled={isDeleting}
-                          // onConfirm={() => handleDeleteFile(file.id)}
+                          disabled={isDeletingFile}
+                          onConfirm={() => handleDeleteFile(file.id)}
                         />
                       </Modal.Window>
                     </Menus.Menu>

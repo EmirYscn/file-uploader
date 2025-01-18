@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { Folder as FolderType } from "../types/models";
+import { File as FileType } from "../types/models";
 import { deleteFile } from "../services/apiFiles";
 
 function useDeleteFile(
-  setFolder: React.Dispatch<React.SetStateAction<FolderType | undefined>>
+  setFiles: React.Dispatch<React.SetStateAction<FileType[] | undefined>>
 ) {
   const [isLoading, setIsLoading] = useState(false);
 
@@ -11,14 +11,11 @@ function useDeleteFile(
     try {
       setIsLoading(true);
       await deleteFile(fileId);
-      setFolder((prevFolder) => {
-        if (!prevFolder) return prevFolder;
+      setFiles((prevFiles) => {
+        if (!prevFiles) return prevFiles;
 
-        const updatedFiles = prevFolder.files.filter(
-          (file) => file.id !== fileId
-        );
-        const newFolder = { ...prevFolder, files: updatedFiles };
-        return newFolder;
+        const updatedFiles = prevFiles.filter((file) => file.id !== fileId);
+        return updatedFiles;
       });
     } catch (error) {
       console.log(error);

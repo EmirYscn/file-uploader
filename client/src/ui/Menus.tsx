@@ -105,9 +105,10 @@ function Menus({ children }: MenusProps) {
 
 type ToggleProps = {
   id: number | string;
+  children?: React.ReactNode;
 };
 
-function Toggle({ id }: ToggleProps) {
+function Toggle({ id, children }: ToggleProps) {
   const context = useContext(MenusContext);
   if (!context) {
     throw new Error("Toggle must be used within a MenusProvider");
@@ -125,6 +126,10 @@ function Toggle({ id }: ToggleProps) {
       if (openId === "" || openId !== id) open(id);
       else close();
     }
+  }
+
+  if (children) {
+    return <StyledToggle onClick={handleClick}>{children}</StyledToggle>;
   }
 
   return (

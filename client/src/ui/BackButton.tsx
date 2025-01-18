@@ -1,5 +1,5 @@
 import { FaArrowAltCircleLeft } from "react-icons/fa";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import styled, { css } from "styled-components";
 
 const StyledBackButton = styled.button<{ poscontext: string }>`
@@ -29,19 +29,21 @@ type BackButtonProps = {
   posContext: "signup" | "other";
 };
 
-function BackButton({ posContext }: BackButtonProps) {
+function BackButton({ posContext = "other" }: BackButtonProps) {
   const navigate = useNavigate();
+  const location = useLocation();
+  const pathSegments = location.pathname.split("/");
+  pathSegments.shift();
+  const isSubRoot = pathSegments.length > 1;
   return (
-    <>
-      <StyledBackButton onClick={() => navigate(-1)} poscontext={posContext}>
-        <FaArrowAltCircleLeft />
-      </StyledBackButton>
-    </>
+    isSubRoot && (
+      <>
+        <StyledBackButton onClick={() => navigate(-1)} poscontext={posContext}>
+          <FaArrowAltCircleLeft />
+        </StyledBackButton>
+      </>
+    )
   );
 }
-
-BackButton.defaultProps = {
-  posContext: "other",
-};
 
 export default BackButton;

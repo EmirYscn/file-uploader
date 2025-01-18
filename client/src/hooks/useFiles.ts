@@ -27,7 +27,7 @@ function useFiles(): {
 
         const pathSegments = location.pathname.split("/");
         const folderId = Number(pathSegments[pathSegments.length - 1]);
-
+        const type = pathSegments[1];
         const files = isNaN(folderId)
           ? await getFilesByUserId(user!.id)
           : await getFilesByFolderId(folderId);

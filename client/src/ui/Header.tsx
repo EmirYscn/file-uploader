@@ -5,6 +5,7 @@ import { useContext } from "react";
 import { UserContext } from "../contexts/userContext";
 import { logout } from "../services/apiUser";
 import CurrentRouteDisplay from "./CurrentRouteDisplay";
+import Profile from "./Profile";
 
 const StyledHeader = styled.header`
   background-color: var(--color-grey-0);
@@ -17,6 +18,7 @@ const StyledHeader = styled.header`
 
 const ButtonContainer = styled.div`
   display: flex;
+  align-items: center;
   gap: 1.2rem;
 `;
 
@@ -36,9 +38,12 @@ function Header() {
           Sign up
         </Button>
         {user ? (
-          <Button onClick={handleLogout} styletype="header-button">
-            Log out
-          </Button>
+          <>
+            <Profile />
+            <Button onClick={handleLogout} styletype="header-button">
+              Log out
+            </Button>
+          </>
         ) : (
           <Button onClick={() => navigate("/login")} styletype="header-button">
             Log in

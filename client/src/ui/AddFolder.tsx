@@ -1,16 +1,20 @@
 import styled from "styled-components";
-import Button from "./Button";
 import Heading from "./Heading";
-import { useForm, SubmitHandler } from "react-hook-form";
-import FormRow from "./FormRow";
+import { useForm } from "react-hook-form";
+import { Folder } from "../types/models";
 import Input from "./Input";
-import { File } from "../types/models";
+import Button from "./Button";
 
-const StyledConfirmDelete = styled.div`
+const StyledAddFolder = styled.div`
   width: 40rem;
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
+
+  & p {
+    color: var(--color-grey-500);
+    margin-bottom: 1.2rem;
+  }
 
   & div {
     display: flex;
@@ -25,31 +29,25 @@ const Form = styled.form`
   gap: 1.2rem;
 `;
 
-type FormData = File;
+type FormData = Folder;
 
-type RenameFileProps = {
-  resourceName: string;
-  onConfirm?: (data: File) => Promise<void>;
+type AddFolderProps = {
+  onConfirm?: (data: Folder) => Promise<void>;
   disabled?: boolean;
   onCloseModal?: () => void;
 };
 
-function RenameFileForm({
-  resourceName,
-  onConfirm,
-  disabled,
-  onCloseModal,
-}: RenameFileProps) {
+function AddFolder({ onConfirm, disabled, onCloseModal }: AddFolderProps) {
   const { handleSubmit, register } = useForm<FormData>();
-
   async function onSubmit(data: FormData) {
+    console.log(data);
     await onConfirm?.(data);
     onCloseModal?.();
   }
 
   return (
-    <StyledConfirmDelete>
-      <Heading as="h3">Rename {resourceName}</Heading>
+    <StyledAddFolder>
+      <Heading as="h3">Add Folder</Heading>
       <Form onSubmit={handleSubmit(onSubmit)}>
         <Input id="name" type="text" {...register("name")} width={"100%"} />
         <div>
@@ -69,8 +67,8 @@ function RenameFileForm({
           </Button>
         </div>
       </Form>
-    </StyledConfirmDelete>
+    </StyledAddFolder>
   );
 }
 
-export default RenameFileForm;
+export default AddFolder;

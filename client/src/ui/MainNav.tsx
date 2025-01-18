@@ -2,6 +2,7 @@ import { FaHome } from "react-icons/fa";
 import { RiFolderCloudLine } from "react-icons/ri";
 import { NavLink } from "react-router";
 import styled from "styled-components";
+import NewButton from "./NewButton";
 
 const NavList = styled.ul`
   display: flex;
@@ -46,28 +47,31 @@ const StyledNavLink = styled(NavLink)`
 
 function MainNav() {
   return (
-    <nav>
-      <NavList>
-        <li>
-          <StyledNavLink to="all">
-            <FaHome />
-            <span>All</span>
-          </StyledNavLink>
-        </li>
-        <li>
-          <StyledNavLink to="myFolders">
-            <RiFolderCloudLine />
-            <span>My Folders / Files</span>
-          </StyledNavLink>
-        </li>
-        <li>
-          <StyledNavLink to="shared">
-            <RiFolderCloudLine />
-            <span>Shared to Me</span>
-          </StyledNavLink>
-        </li>
-      </NavList>
-    </nav>
+    <>
+      <NewButton />
+      <nav>
+        <NavList>
+          <li>
+            <StyledNavLink to="all">
+              <FaHome />
+              <span>All</span>
+            </StyledNavLink>
+          </li>
+          <li>
+            <StyledNavLink to="myFolders">
+              <RiFolderCloudLine />
+              <span>My Folders / Files</span>
+            </StyledNavLink>
+          </li>
+          <li>
+            <StyledNavLink to="shared">
+              <RiFolderCloudLine />
+              <span>Shared to Me</span>
+            </StyledNavLink>
+          </li>
+        </NavList>
+      </nav>
+    </>
   );
 }
 
