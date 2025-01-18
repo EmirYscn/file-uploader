@@ -1,7 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { Folder } from "../types/models";
 import {
-  getFolders,
   getFoldersByFolderId,
   getFoldersByUserId,
 } from "../services/apiFolders";
@@ -14,7 +13,6 @@ function useFolders(): {
   isLoading: boolean;
 } {
   const location = useLocation();
-
   const [folders, setFolders] = useState<Folder[] | undefined>([]);
   const [isLoading, setIsLoading] = useState(false);
   const { user } = useContext(UserContext);
@@ -27,6 +25,7 @@ function useFolders(): {
         const pathSegments = location.pathname.split("/");
         const folderId = Number(pathSegments[pathSegments.length - 1]);
         const type = pathSegments[1];
+
         const folders = isNaN(folderId)
           ? await getFoldersByUserId(user!.id)
           : await getFoldersByFolderId(folderId);

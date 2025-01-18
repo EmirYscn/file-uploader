@@ -1,10 +1,10 @@
-import { createContext } from "react";
-import { Folder } from "../types/models";
+// import { createContext } from "react";
 
-type FolderContextType = {
-  folders: Folder[] | undefined;
-  setFolders: React.Dispatch<React.SetStateAction<Folder[] | undefined>>;
-  isLoading: boolean;
-};
+// export type FolderContextType = {
+//   folderId: number | string | undefined;
+//   setFolderId: React.Dispatch<
+//     React.SetStateAction<number | string | undefined>
+//   >;
+// };
 
-export const FolderContext = createContext({} as FolderContextType);
+// export const FolderContext = createContext({} as FolderContextType);

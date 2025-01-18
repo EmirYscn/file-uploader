@@ -34,8 +34,8 @@ function CurrentRouteDisplay() {
   return (
     <StyledCurrentRouteDisplay>
       {<Link to={`/${mainRoute}`}>{mainRoute} </Link>}
-      {path.map((path) => (
-        <Link to={`/${mainRoute}/${path}`}>
+      {path.map((path, index) => (
+        <Link to={`/${mainRoute}/${path}`} key={index}>
           <span>
             <Img src="/right-arrow.svg" alt="" /> {path}
           </span>

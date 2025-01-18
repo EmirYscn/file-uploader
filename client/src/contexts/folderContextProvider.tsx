@@ -1,17 +1,22 @@
-import useFolders from "../hooks/useFolders";
-import { FolderContext } from "./folderContext";
+// import { useState } from "react";
+// import { FolderContext } from "./folderContext";
+// import { useLocation } from "react-router";
 
-type FolderContextProviderProps = {
-  children: React.ReactNode;
-};
+// type FolderContextProviderProps = {
+//   children: React.ReactNode;
+// };
 
-function FolderContextProvider({ children }: FolderContextProviderProps) {
-  const { folders, setFolders, isLoading } = useFolders();
-  return (
-    <FolderContext.Provider value={{ folders, setFolders, isLoading }}>
-      {children}
-    </FolderContext.Provider>
-  );
-}
+// function FolderContextProvider({ children }: FolderContextProviderProps) {
+//   const location = useLocation();
+//   const pathSegments = location.pathname.split("/");
+//   const [folderId, setFolderId] = useState<number | string | undefined>(
+//     pathSegments[1]
+//   );
+//   return (
+//     <FolderContext.Provider value={{ folderId, setFolderId }}>
+//       {children}
+//     </FolderContext.Provider>
+//   );
+// }
 
-export default FolderContextProvider;
+// export default FolderContextProvider;

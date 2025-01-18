@@ -13,7 +13,10 @@ import RenameFileForm from "./RenameFileForm";
 
 import useDeleteFile from "../hooks/useDeleteFile";
 import { Link } from "react-router";
-import useFiles from "../hooks/useFiles";
+import { useContext } from "react";
+import { FilesContext } from "../contexts/filesContext";
+import useRenameFile from "../hooks/useRenameFile";
+import { File as FileType } from "../types/models";
 
 const StyledFiles = styled.div`
   display: grid;
@@ -39,10 +42,15 @@ const Details = styled.div`
 `;
 
 function Files() {
-  const { files, setFiles, isLoading: isFilesLoading } = useFiles();
+  const {
+    files,
+    setFiles,
+    isLoading: isFilesLoading,
+  } = useContext(FilesContext);
+
   const { handleDeleteFile, isLoading: isDeletingFile } =
     useDeleteFile(setFiles);
-  // const { handleRenameFile, isLoading: isRenaming } = useRenameFile(setFolder);
+  const { handleRenameFile, isLoading: isRenaming } = useRenameFile(setFiles);
 
   return (
     <>
@@ -86,10 +94,10 @@ function Files() {
                       <Modal.Window name="rename">
                         <RenameFileForm
                           resourceName={file.name}
-                          // disabled={isRenaming}
-                          // onConfirm={(data: FileType) =>
-                          //   handleRenameFile(file.id, data)
-                          // }
+                          disabled={isRenaming}
+                          onConfirm={(data: FileType) =>
+                            handleRenameFile(file.id, data)
+                          }
                         />
                       </Modal.Window>
 

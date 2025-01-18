@@ -5,11 +5,12 @@ import { GoPlus } from "react-icons/go";
 import styled from "styled-components";
 import Modal from "./Modal";
 import AddFolder from "./AddFolder";
-import { useContext } from "react";
-import { FolderContext } from "../contexts/folderContext";
+import { useContext, useRef } from "react";
+import { FoldersContext } from "../contexts/foldersContext";
 import { createFolder } from "../services/apiFolders";
 import { Folder } from "../types/models";
 import useCreateFolder from "../hooks/useCreateFolder";
+import Input from "./Input";
 
 const StyledNewButton = styled.div`
   display: flex;
@@ -44,7 +45,8 @@ const Button = styled.button`
 `;
 
 function NewButton() {
-  const { folders, setFolders, isLoading } = useContext(FolderContext);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const { folders, setFolders, isLoading } = useContext(FoldersContext);
   const { handleCreateFolder, isLoading: isCreatingFolder } =
     useCreateFolder(setFolders);
 
@@ -52,7 +54,15 @@ function NewButton() {
   //   console.log(data);
   //   // await handleCreateFolder(data);
   // }
-  function handleAddFile() {}
+  function handleAddFile() {
+    fileInputRef.current?.click();
+  }
+  function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+    if (file) {
+      console.log("File", file);
+    }
+  }
   return (
     <StyledNewButton>
       <Modal>
@@ -71,6 +81,12 @@ function NewButton() {
 
       <Button onClick={handleAddFile}>
         <BsFileEarmarkPlusFill />
+        <input
+          type="file"
+          ref={fileInputRef}
+          style={{ display: "none" }}
+          onChange={handleFileChange}
+        />
       </Button>
     </StyledNewButton>
   );

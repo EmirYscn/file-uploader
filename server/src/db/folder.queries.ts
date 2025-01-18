@@ -63,3 +63,16 @@ export const deleteFolder = async (folderId: number) => {
     throw new Error("Failed to delete file");
   }
 };
+
+export const updateFolder = async (folderId: number, data: Folder) => {
+  try {
+    await prisma.folder.update({
+      where: { id: folderId },
+      data: data,
+    });
+    console.log(`Folder with ID ${folderId} updated successfully.`);
+  } catch (error) {
+    console.error("Error updating folder:", error);
+    throw new Error("Failed to update folder");
+  }
+};

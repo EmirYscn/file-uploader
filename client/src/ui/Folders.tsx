@@ -1,4 +1,4 @@
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 import styled from "styled-components";
 import { MdDriveFileRenameOutline, MdPersonAddAlt1 } from "react-icons/md";
 import { RiDeleteBin2Line } from "react-icons/ri";
@@ -7,16 +7,13 @@ import Spinner from "./Spinner";
 import Modal from "./Modal";
 import Menus from "./Menus";
 import ConfirmDelete from "./ConfirmDelete";
-import useFolders from "../hooks/useFolders";
 import useDeleteFolder from "../hooks/useDeleteFolder";
 import { useContext } from "react";
-import { FolderContext } from "../contexts/folderContext";
-
-const StyledFolders = styled.div`
-  display: grid;
-  grid-template-columns: repeat(8, minmax(auto, 100px));
-  gap: 3rem;
-`;
+import { FoldersContext } from "../contexts/foldersContext";
+import useRenameFolder from "../hooks/useRenameFolder";
+import { Folder } from "../types/models";
+import RenameFileForm from "./RenameFileForm";
+import RenameFolderForm from "./RenameFolderForm";
 
 const StyledFolder = styled.div`
   display: flex;
@@ -36,10 +33,13 @@ const Details = styled.div`
 `;
 
 function Folders() {
-  // const { folders, setFolders, isLoading } = useFolders();
-  const { folders, setFolders, isLoading } = useContext(FolderContext);
+  const { folders, setFolders, isLoading } = useContext(FoldersContext);
   const { handleDeleteFolder, isLoading: isDeletingFolder } =
     useDeleteFolder(setFolders);
+  const { handleRenameFolder, isLoading: isRenamingFolder } =
+    useRenameFolder(setFolders);
+  const location = useLocation();
+  const mainRoute = location.pathname.split("/")[1];
 
   return isLoading ? (
     <Spinner />
@@ -47,7 +47,7 @@ function Folders() {
     <>
       {folders?.map((folder) => (
         <StyledFolder key={folder.id}>
-          <Link to={`folder/${folder.id}`}>
+          <Link to={`/${mainRoute}/folder/${folder.id}`}>
             <Img src="/folder.svg" alt="" />
           </Link>
           <Details>
@@ -78,6 +78,15 @@ function Folders() {
                       resourceName={folder.name}
                       disabled={isDeletingFolder}
                       onConfirm={() => handleDeleteFolder(folder.id)}
+                    />
+                  </Modal.Window>
+                  <Modal.Window name="rename">
+                    <RenameFolderForm
+                      resourceName={folder.name}
+                      disabled={isRenamingFolder}
+                      onConfirm={(data: Folder) =>
+                        handleRenameFolder(folder.id, data)
+                      }
                     />
                   </Modal.Window>
                 </Menus.Menu>

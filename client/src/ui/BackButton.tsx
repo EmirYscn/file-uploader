@@ -26,7 +26,7 @@ const StyledBackButton = styled.button<{ poscontext: string }>`
 `;
 
 type BackButtonProps = {
-  posContext: "signup" | "other";
+  posContext?: "signup" | "other";
 };
 
 function BackButton({ posContext = "other" }: BackButtonProps) {

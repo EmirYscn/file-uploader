@@ -5,7 +5,7 @@ const StyledLogo = styled.div`
   text-align: center;
 `;
 const Img = styled.img<{ imgtype: string }>`
-  height: 6.6rem;
+  height: 10rem;
   ${(props) =>
     props.imgtype === "wall" &&
     css`

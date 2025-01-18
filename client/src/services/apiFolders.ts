@@ -1,7 +1,7 @@
 import { File, Folder } from "../types/models";
 
 export const getFoldersByUserId = async (userId: number) => {
-  console.log("in getFoldersByUserId");
+  console.log("in userId");
   try {
     const res = await fetch(`/api/folders/byUserId/${userId}`);
     const folders: Folder[] = await res.json();
@@ -12,7 +12,7 @@ export const getFoldersByUserId = async (userId: number) => {
 };
 
 export const getFoldersByFolderId = async (folderId: number) => {
-  console.log("in getFoldersByFolderId");
+  console.log("in folderId");
   try {
     const res = await fetch(`/api/folders/byFolderId/${folderId}`);
     const folders: Folder[] = await res.json();
@@ -26,7 +26,6 @@ export const createFolder = async (
   data: Folder
 ): Promise<Folder | undefined> => {
   try {
-    console.log(data);
     const response = await fetch(`/api/folder/createFolder`, {
       method: "POST",
       headers: {
@@ -55,6 +54,25 @@ export const deleteFolder = async (folderId: number) => {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     console.log("folder deleted");
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const renameFolder = async (folderId: number, data: Folder) => {
+  console.log(data);
+  try {
+    const response = await fetch(`/api/folder/${folderId}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
   } catch (error) {
     console.log(error);
   }

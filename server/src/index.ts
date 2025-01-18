@@ -45,6 +45,7 @@ app.get("/api/folders/byUserId/:userId", foldersController.getFoldersByUserId);
 app.get("/api/folder/:folderId", foldersController.getFolder);
 app.delete("/api/folder/:folderId", foldersController.deleteFolder);
 app.post("/api/folder/createFolder", foldersController.createFolder);
+app.patch("/api/folder/:folderId", foldersController.renameFolder);
 
 app.get("/api/files/byUserId/:userId", filesController.getFilesByUserId);
 app.get("/api/files/byFolderId/:folderId", filesController.getFilesByFolderId);

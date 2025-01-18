@@ -1,11 +1,7 @@
 import { useContext, useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router";
+import { useLocation } from "react-router";
 import { File as FilesType } from "../types/models";
-import {
-  getFiles,
-  getFilesByFolderId,
-  getFilesByUserId,
-} from "../services/apiFiles";
+import { getFilesByFolderId, getFilesByUserId } from "../services/apiFiles";
 import { UserContext } from "../contexts/userContext";
 
 function useFiles(): {
@@ -15,19 +11,19 @@ function useFiles(): {
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
 } {
   const location = useLocation();
-  // const { folderId } = useParams();
   const [files, setFiles] = useState<FilesType[] | undefined>();
   const [isLoading, setIsLoading] = useState(false);
   const { user } = useContext(UserContext);
 
   useEffect(() => {
-    async function fetchFolder() {
+    async function fetchFiles() {
       try {
         setIsLoading(true);
 
         const pathSegments = location.pathname.split("/");
         const folderId = Number(pathSegments[pathSegments.length - 1]);
         const type = pathSegments[1];
+
         const files = isNaN(folderId)
           ? await getFilesByUserId(user!.id)
           : await getFilesByFolderId(folderId);
@@ -39,8 +35,8 @@ function useFiles(): {
         setIsLoading(false);
       }
     }
-    fetchFolder();
-  }, [location.pathname]);
+    if (user) fetchFiles();
+  }, [user, location.pathname]);
 
   return { files, setFiles, isLoading, setIsLoading };
 }
