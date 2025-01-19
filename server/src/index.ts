@@ -9,6 +9,9 @@ import * as filesController from "./controllers/filesController";
 import * as foldersController from "./controllers/foldersController";
 import { sessionMiddleware } from "./middlewares/session";
 import passport from "./strategies/passport";
+import { router as folderRouter } from "./routes/folderRoutes";
+import { router as fileRouter } from "./routes/fileRoutes";
+import { router as userRouter } from "./routes/userRoutes";
 
 dotenv.config({ path: "./.env" });
 
@@ -23,34 +26,10 @@ app.use(sessionMiddleware);
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.post("/api/signup", validateForm, authController.signup);
-app.post("/api/login", usersController.login);
-
-app.get("/api/current-user", (req, res) => {
-  if (req.isAuthenticated()) {
-    res.json(req.user);
-  } else {
-    res.status(401).json({ message: "Not authenticated" });
-  }
-});
-
-app.get("/api/logout", usersController.logout);
-
-// app.use(authController.isAuth);
-app.get(
-  "/api/folders/byFolderId/:folderId",
-  foldersController.getFoldersByFolderId
-);
-app.get("/api/folders/byUserId/:userId", foldersController.getFoldersByUserId);
-app.get("/api/folder/:folderId", foldersController.getFolder);
-app.delete("/api/folder/:folderId", foldersController.deleteFolder);
-app.post("/api/folder/createFolder", foldersController.createFolder);
-app.patch("/api/folder/:folderId", foldersController.renameFolder);
-
-app.get("/api/files/byUserId/:userId", filesController.getFilesByUserId);
-app.get("/api/files/byFolderId/:folderId", filesController.getFilesByFolderId);
-app.patch("/api/files/:fileId", filesController.renameFile);
-app.delete("/api/files/:fileId", filesController.deleteFile);
+app.use(userRouter);
+app.use(authController.isAuth);
+app.use(folderRouter);
+app.use(fileRouter);
 
 app.all("*", (req: Request, res: Response, next: NextFunction) => {
   res.status(404).json({
