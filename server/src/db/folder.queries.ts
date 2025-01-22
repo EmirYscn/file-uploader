@@ -1,11 +1,14 @@
 import { Folder } from "@prisma/client";
 import { prisma } from "./queries";
 
-export const getFoldersById = async (userId: number) => {
+export const getFoldersById = async (userId: number, type?: string) => {
   try {
     const folders = await prisma.folder.findMany({
       where: { userId, parentId: null },
     });
+    // const folders = await prisma.folder.findMany({
+    //   where: { createdBy: userId },
+    // });
     return folders;
   } catch (error) {
     console.log(error);

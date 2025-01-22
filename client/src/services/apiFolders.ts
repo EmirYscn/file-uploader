@@ -1,9 +1,9 @@
 import { File, Folder } from "../types/models";
 
-export const getFoldersByUserId = async (userId: number) => {
+export const getFoldersByUserId = async (userId: number, type: string) => {
   console.log("in userId");
   try {
-    const res = await fetch(`/api/folders/byUserId/${userId}`);
+    const res = await fetch(`/api/folders/${type}/byUserId/${userId}`);
     const folders: Folder[] = await res.json();
     return folders;
   } catch (error) {

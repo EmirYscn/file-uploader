@@ -43,31 +43,31 @@ async function main() {
   // });
   // const allFiles = await prisma.folder.findMany();
   // console.dir(allFiles, { depth: null });
-  await prisma.file.createMany({
-    data: [
-      {
-        name: "day1",
-        size: 10,
-        url: "blabla",
-        userId: 17,
-        folderId: 30,
-      },
-      {
-        name: "day2",
-        size: 10,
-        url: "blabla",
-        userId: 17,
-        folderId: 30,
-      },
-      {
-        name: "day4",
-        size: 10,
-        url: "blabla",
-        userId: 17,
-        folderId: 30,
-      },
-    ],
-  });
+  // await prisma.file.createMany({
+  //   data: [
+  //     {
+  //       name: "day1",
+  //       size: 10,
+  //       url: "blabla",
+  //       userId: 17,
+  //       folderId: 30,
+  //     },
+  //     {
+  //       name: "day2",
+  //       size: 10,
+  //       url: "blabla",
+  //       userId: 17,
+  //       folderId: 30,
+  //     },
+  //     {
+  //       name: "day4",
+  //       size: 10,
+  //       url: "blabla",
+  //       userId: 17,
+  //       folderId: 30,
+  //     },
+  //   ],
+  // });
   const allFiles = await prisma.file.findMany();
   console.dir(allFiles, { depth: null });
 }

@@ -11,6 +11,8 @@ import { createFolder } from "../services/apiFolders";
 import { Folder } from "../types/models";
 import useCreateFolder from "../hooks/useCreateFolder";
 import Input from "./Input";
+import { FilesContext } from "../contexts/filesContext";
+import useCreateFile from "../hooks/useCreateFile";
 
 const StyledNewButton = styled.div`
   display: flex;
@@ -46,21 +48,24 @@ const Button = styled.button`
 
 function NewButton() {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const { folders, setFolders, isLoading } = useContext(FoldersContext);
+
+  const { setFolders, isLoading: isFoldersLoading } =
+    useContext(FoldersContext);
+  const { setFiles, isLoading: isFilesLoading } = useContext(FilesContext);
+
   const { handleCreateFolder, isLoading: isCreatingFolder } =
     useCreateFolder(setFolders);
+  const { handleCreateFile, isLoading: isCreatingFile } =
+    useCreateFile(setFiles);
 
-  // async function handleAddFolder(data: Folder) {
-  //   console.log(data);
-  //   // await handleCreateFolder(data);
-  // }
   function handleAddFile() {
     fileInputRef.current?.click();
   }
-  function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
+  async function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
     if (file) {
       console.log("File", file);
+      handleCreateFile(file);
     }
   }
   return (
@@ -83,6 +88,7 @@ function NewButton() {
         <BsFileEarmarkPlusFill />
         <input
           type="file"
+          name="file"
           ref={fileInputRef}
           style={{ display: "none" }}
           onChange={handleFileChange}

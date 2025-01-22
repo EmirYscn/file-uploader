@@ -27,7 +27,7 @@ function useFolders(): {
         const type = pathSegments[1];
 
         const folders = isNaN(folderId)
-          ? await getFoldersByUserId(user!.id)
+          ? await getFoldersByUserId(user!.id, type)
           : await getFoldersByFolderId(folderId);
 
         setFolders(folders);

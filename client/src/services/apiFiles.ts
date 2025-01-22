@@ -52,3 +52,18 @@ export const renameFile = async (fileId: number, data: File) => {
     console.log(error);
   }
 };
+
+export const createFile = async (data: FormData) => {
+  try {
+    const res = await fetch("/api/files/upload", {
+      method: "POST",
+      body: data,
+    });
+    if (!res.ok) {
+      throw new Error("Error uploading data");
+    }
+    return await res.json();
+  } catch (error) {
+    console.log(error);
+  }
+};

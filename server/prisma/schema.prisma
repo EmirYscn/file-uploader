@@ -14,12 +14,13 @@ datasource db {
 }
 
 model User {
-  id       Int      @id @default(autoincrement())
-  username String
-  email    String   @unique
-  password String
-  files    File[]
-  folders  Folder[]
+  id          Int           @id @default(autoincrement())
+  username    String
+  email       String        @unique
+  password    String
+  files       File[]
+  folders     Folder[]
+  folderShare FolderShare[]
 }
 
 model File {
@@ -29,22 +30,31 @@ model File {
   size       Float
   uploadDate DateTime @default(now())
   uploadedBy User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId    Int
+  userId     Int
   folder     Folder?  @relation(fields: [folderId], references: [id], onDelete: Cascade)
-  folderId  Int?
+  folderId   Int?
 }
 
 model Folder {
-  id        Int      @id @default(autoincrement())
+  id        Int           @id @default(autoincrement())
   name      String
-  fileCount Int      @default(0)
-  size      Float    @default(0.0)
-  createdAt DateTime @default(now())
-  parent    Folder?  @relation("ParentFolder",fields: [parentId], references: [id], onDelete: Cascade)
-  parentId  Int? 
-  children  Folder[] @relation("ParentFolder")
+  fileCount Int           @default(0)
+  size      Float         @default(0.0)
+  createdAt DateTime      @default(now())
+  parent    Folder?       @relation("ParentFolder", fields: [parentId], references: [id], onDelete: Cascade)
+  parentId  Int?
+  children  Folder[]      @relation("ParentFolder")
   files     File[]
-  createdBy User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdBy User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    Int
+  sharedTo  FolderShare[]
+}
+
+model FolderShare {
+  id       Int    @id @default(autoincrement())
+  folder   Folder @relation(fields: [folderId], references: [id], onDelete: Cascade)
+  folderId Int
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId   Int
 }
 

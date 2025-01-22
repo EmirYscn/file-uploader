@@ -1,5 +1,12 @@
 import { Request, Response } from "express";
 import * as db from "../db/file.queries";
+import {
+  deleteFileSB,
+  supabase,
+  supabaseUrl,
+  uploadFileSB,
+} from "../middlewares/supabase";
+import { User } from "@prisma/client";
 
 export const getFilesByUserId = async (
   req: Request,
@@ -31,7 +38,8 @@ export const getFilesByFolderId = async (
 export const deleteFile = async (req: Request, res: Response): Promise<any> => {
   const { fileId } = req.params;
   try {
-    await db.deleteFile(+fileId);
+    const file = await db.deleteFile(+fileId);
+    await deleteFileSB(file.url);
     return res.status(200).json({ message: "File deleted successfully" });
   } catch (error) {
     console.error(error);
@@ -47,5 +55,25 @@ export const renameFile = async (req: Request, res: Response): Promise<any> => {
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: "Failed to update file" });
+  }
+};
+
+export const uploadFile = async (req: Request, res: Response): Promise<any> => {
+  if (!req.file) return res.status(400).json({ message: "No file uploaded" });
+
+  const { userId, folderId } = req.body;
+
+  try {
+    const fileUrl = await uploadFileSB(req.file, userId);
+    const file = await db.createFile(
+      req.file,
+      fileUrl,
+      +userId,
+      folderId === "" ? null : +folderId
+    );
+    return res.status(201).json(file);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Failed to create file" });
   }
 };

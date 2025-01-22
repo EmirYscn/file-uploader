@@ -8,9 +8,13 @@ router.get(
   foldersController.getFoldersByFolderId
 );
 router.get(
-  "/api/folders/byUserId/:userId",
+  "/api/folders/:type/byUserId/:userId",
   foldersController.getFoldersByUserId
 );
+// router.get(
+//   "/api/folders/myFolders/byUserId/:userId",
+//   foldersController.getOwnFoldersByUserId
+// );
 router.get("/api/folder/:folderId", foldersController.getFolder);
 router.delete("/api/folder/:folderId", foldersController.deleteFolder);
 router.post("/api/folder/createFolder", foldersController.createFolder);
