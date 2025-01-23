@@ -17,6 +17,8 @@ import { useContext } from "react";
 import { FilesContext } from "../contexts/filesContext";
 import useRenameFile from "../hooks/useRenameFile";
 import { File as FileType } from "../types/models";
+import useDownloadFile from "../hooks/useDownloadFile";
+import { formatString } from "../utils/formatString";
 
 const StyledFiles = styled.div`
   display: grid;
@@ -37,8 +39,8 @@ const Img = styled.img`
 `;
 
 const Details = styled.div`
-  display: flex;
-  align-items: center;
+  display: grid;
+  grid-template-columns: auto 1fr;
 `;
 
 function Files() {
@@ -51,6 +53,7 @@ function Files() {
   const { handleDeleteFile, isLoading: isDeletingFile } =
     useDeleteFile(setFiles);
   const { handleRenameFile, isLoading: isRenaming } = useRenameFile(setFiles);
+  const { handleDownloadFile, isLoading: isDownloading } = useDownloadFile();
 
   return (
     <>
@@ -65,13 +68,16 @@ function Files() {
                 <Img src="/file.svg" />
               </Link>
               <Details>
-                <span>{file.name}</span>
+                <span>{formatString(file.name)}</span>
                 <Modal>
                   <Menus>
                     <Menus.Menu>
                       <Menus.Toggle id={file.id} />
                       <Menus.List id={file.id}>
-                        <Menus.Button icon={<AiOutlineDownload />}>
+                        <Menus.Button
+                          icon={<AiOutlineDownload />}
+                          onClick={() => handleDownloadFile(file.id, file.name)}
+                        >
                           Download
                         </Menus.Button>
                         <Modal.Open opens="rename">

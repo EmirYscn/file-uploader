@@ -67,3 +67,27 @@ export const createFile = async (data: FormData) => {
     console.log(error);
   }
 };
+
+export const downloadFile = async (fileId: number, fileName: string) => {
+  try {
+    const res = await fetch(`/api/files/download/${fileId}`);
+    if (!res.ok) {
+      throw new Error("Error downloading file");
+    }
+    const blob = await res.blob();
+    const blobUrl = URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+    link.href = blobUrl;
+    link.download = fileName;
+    document.body.appendChild(link);
+
+    link.click();
+
+    link.remove();
+    URL.revokeObjectURL(blobUrl);
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};

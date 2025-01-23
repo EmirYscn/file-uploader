@@ -84,7 +84,7 @@ function NewButton() {
         </Modal.Window>
       </Modal>
 
-      <Button onClick={handleAddFile}>
+      <Button onClick={handleAddFile} disabled={isCreatingFile}>
         <BsFileEarmarkPlusFill />
         <input
           type="file"

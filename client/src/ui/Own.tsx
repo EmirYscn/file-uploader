@@ -5,7 +5,7 @@ import Folders from "./Folders";
 
 const StyledOwn = styled.div`
   display: grid;
-  grid-template-columns: repeat(8, minmax(auto, 100px));
+  grid-template-columns: repeat(auto-fit, minmax(auto, 140px));
   gap: 3rem;
 `;
 

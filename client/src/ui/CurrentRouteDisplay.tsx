@@ -21,27 +21,23 @@ function CurrentRouteDisplay() {
   const location = useLocation();
   const path = location.pathname.split("/");
   path.shift();
-  // path.pop();
   const mainRoute = path.shift();
-  console.log(path);
-  // let pathString: string = "";
-  // path.forEach((el) => {
-  //   // el = el[0]
-  //   pathString += " / ";
-  //   pathString += el;
-  // });
-  // console.log(pathString);
+  const isInSubRoute = path.length > 0;
   return (
-    <StyledCurrentRouteDisplay>
-      {<Link to={`/${mainRoute}`}>{mainRoute} </Link>}
-      {path.map((path, index) => (
-        <Link to={`/${mainRoute}/${path}`} key={index}>
-          <span>
-            <Img src="/right-arrow.svg" alt="" /> {path}
-          </span>
-        </Link>
-      ))}
-    </StyledCurrentRouteDisplay>
+    <>
+      {isInSubRoute && (
+        <StyledCurrentRouteDisplay>
+          <Link to={`/${mainRoute}`}>{mainRoute}</Link>
+          {path.map((pathSegment, index) => (
+            <Link to={`/${mainRoute}/${pathSegment}`} key={index}>
+              <span>
+                <Img src="/right-arrow.svg" alt="Right arrow" /> {pathSegment}
+              </span>
+            </Link>
+          ))}
+        </StyledCurrentRouteDisplay>
+      )}
+    </>
   );
 }
 

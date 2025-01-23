@@ -23,6 +23,21 @@ export const getFilesByFolderId = async (folderId: number) => {
   }
 };
 
+export const getFileUrl = async (fileId: number) => {
+  try {
+    const file = await prisma.file.findFirst({
+      where: { id: fileId },
+      select: {
+        url: true,
+      },
+    });
+    return file?.url;
+  } catch (error) {
+    console.error("Error getting fileUrl:", error);
+    throw new Error("Failed to get fileUrl");
+  }
+};
+
 export const deleteFile = async (fileId: number) => {
   try {
     const file = await prisma.file.delete({

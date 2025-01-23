@@ -19,6 +19,7 @@ const StyledHeader = styled.header`
 const ButtonContainer = styled.div`
   display: flex;
   align-items: center;
+  margin-left: auto;
   gap: 1.2rem;
 `;
 
