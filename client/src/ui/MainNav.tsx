@@ -3,6 +3,10 @@ import { RiFolderCloudLine } from "react-icons/ri";
 import { NavLink } from "react-router";
 import styled from "styled-components";
 import NewButton from "./NewButton";
+import {
+  PiFolderSimpleUserBold,
+  PiFolderSimpleUserDuotone,
+} from "react-icons/pi";
 
 const NavList = styled.ul`
   display: flex;
@@ -59,7 +63,7 @@ function MainNav() {
           </li>
           <li>
             <StyledNavLink to="myFolders">
-              <RiFolderCloudLine />
+              <PiFolderSimpleUserBold />
               <span>My Folders / Files</span>
             </StyledNavLink>
           </li>

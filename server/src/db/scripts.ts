@@ -68,8 +68,32 @@ async function main() {
   //     },
   //   ],
   // });
-  const allFiles = await prisma.file.findMany();
-  console.dir(allFiles, { depth: null });
+  // const allFiles = await prisma.file.findMany();
+  // console.dir(allFiles, { depth: null });
+  // await prisma.folderShare.createMany({
+  //   data: [
+  //     {
+  //       userId: 17,
+  //       folderId: 42,
+  //     },
+  //     {
+  //       userId: 17,
+  //       folderId: 43,
+  //     },
+  //   ],
+  // });
+  // const allFolderShares = await prisma.folderShare.findMany();
+  // console.dir(allFolderShares, { depth: null });
+  await prisma.fileShare.createMany({
+    data: [
+      {
+        userId: 17,
+        fileId: 81,
+      },
+    ],
+  });
+  const allFileShares = await prisma.fileShare.findMany();
+  console.dir(allFileShares, { depth: null });
 }
 
 main()

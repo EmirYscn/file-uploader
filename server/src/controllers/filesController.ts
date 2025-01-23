@@ -13,9 +13,9 @@ export const getFilesByUserId = async (
   req: Request,
   res: Response
 ): Promise<any> => {
-  const { userId } = req.params;
+  const { type, userId } = req.params;
   try {
-    const files = await db.getFilesByUserId(+userId);
+    const files = await db.getFilesByUserId(+userId, type);
     return res.status(200).json(files);
   } catch (error) {
     console.error(error);

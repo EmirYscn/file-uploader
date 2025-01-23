@@ -25,7 +25,7 @@ function useFiles(): {
         const type = pathSegments[1];
 
         const files = isNaN(folderId)
-          ? await getFilesByUserId(user!.id)
+          ? await getFilesByUserId(user!.id, type)
           : await getFilesByFolderId(folderId);
 
         setFiles(files);

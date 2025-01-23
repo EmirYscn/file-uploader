@@ -21,6 +21,7 @@ model User {
   files       File[]
   folders     Folder[]
   folderShare FolderShare[]
+  fileShare   FileShare[]
 }
 
 model File {
@@ -33,6 +34,7 @@ model File {
   userId     Int
   folder     Folder?  @relation(fields: [folderId], references: [id], onDelete: Cascade)
   folderId   Int?
+  sharedTo   FileShare[]
 }
 
 model Folder {
@@ -54,6 +56,14 @@ model FolderShare {
   id       Int    @id @default(autoincrement())
   folder   Folder @relation(fields: [folderId], references: [id], onDelete: Cascade)
   folderId Int
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId   Int
+}
+
+model FileShare {
+  id       Int    @id @default(autoincrement())
+  file     File   @relation(fields: [fileId], references: [id], onDelete: Cascade)
+  fileId   Int
   user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId   Int
 }

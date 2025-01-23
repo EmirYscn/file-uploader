@@ -63,7 +63,7 @@ function Files() {
       ) : (
         <>
           {files?.map((file) => (
-            <File key={file.id}>
+            <File key={file.id} draggable={true}>
               <Link to={`file/${file.id}`}>
                 <Img src="/file.svg" />
               </Link>

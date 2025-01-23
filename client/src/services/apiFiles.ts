@@ -1,8 +1,8 @@
 import { File } from "../types/models";
 
-export const getFilesByUserId = async (folderId: number) => {
+export const getFilesByUserId = async (folderId: number, type: string) => {
   try {
-    const res = await fetch(`/api/files/byUserId/${folderId}`);
+    const res = await fetch(`/api/files/${type}/byUserId/${folderId}`);
     const files: File[] = await res.json();
     return files;
   } catch (error) {

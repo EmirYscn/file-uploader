@@ -1,10 +1,34 @@
 import { prisma } from "./queries";
 
-export const getFilesByUserId = async (userId: number) => {
+export const getFilesByUserId = async (userId: number, type: string) => {
   try {
-    const files = await prisma.file.findMany({
-      where: { userId, folderId: null },
-    });
+    let files;
+    if (type === "shared") {
+      files = await prisma.file.findMany({
+        where: { sharedTo: { some: { userId: userId } } },
+      });
+      console.log("in shared files", files);
+    } else if (type === "myFolders") {
+      const userFiles = await prisma.user.findFirst({
+        where: { id: userId },
+        include: { files: { where: { folderId: null } } },
+      });
+      files = userFiles?.files;
+      console.log("in own files", files);
+    } else {
+      const userFiles = await prisma.user.findFirst({
+        where: { id: userId },
+        select: {
+          files: { where: { folderId: null } },
+          fileShare: { select: { file: true } },
+        },
+      });
+      files = [
+        ...(userFiles?.files ?? []),
+        ...(userFiles?.fileShare.map((share) => share.file) ?? []),
+      ];
+      console.log("in all files", files);
+    }
     return files;
   } catch (error) {
     console.error("Error deleting file:", error);

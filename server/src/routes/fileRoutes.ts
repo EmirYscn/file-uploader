@@ -6,7 +6,10 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 const router = express.Router();
 
-router.get("/api/files/byUserId/:userId", filesController.getFilesByUserId);
+router.get(
+  "/api/files/:type/byUserId/:userId",
+  filesController.getFilesByUserId
+);
 router.get(
   "/api/files/byFolderId/:folderId",
   filesController.getFilesByFolderId

@@ -3,9 +3,34 @@ import { prisma } from "./queries";
 
 export const getFoldersById = async (userId: number, type?: string) => {
   try {
-    const folders = await prisma.folder.findMany({
-      where: { userId, parentId: null },
-    });
+    let folders;
+    if (type === "shared") {
+      folders = await prisma.folder.findMany({
+        where: { sharedTo: { some: { userId: userId } } },
+      });
+      console.log("in shared", folders);
+    } else if (type === "myFolders") {
+      const userFolders = await prisma.user.findFirst({
+        where: { id: userId },
+        include: { folders: { where: { parentId: null } } },
+      });
+      folders = userFolders?.folders;
+      console.log("in own", folders);
+    } else {
+      const userFolders = await prisma.user.findFirst({
+        where: { id: userId },
+        select: {
+          folders: { where: { parentId: null } },
+          folderShare: { select: { folder: true } },
+        },
+      });
+      folders = [
+        ...(userFolders?.folders ?? []),
+        ...(userFolders?.folderShare.map((share) => share.folder) ?? []),
+      ];
+      console.log("in all", folders);
+    }
+
     // const folders = await prisma.folder.findMany({
     //   where: { createdBy: userId },
     // });
