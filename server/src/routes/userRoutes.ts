@@ -18,4 +18,6 @@ router.get("/api/current-user", (req, res) => {
 
 router.get("/api/logout", usersController.logout);
 
+router.get("/api/search/user/", usersController.searchUser);
+
 export { router };

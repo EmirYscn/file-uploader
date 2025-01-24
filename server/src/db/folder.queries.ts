@@ -104,3 +104,20 @@ export const updateFolder = async (folderId: number, data: Folder) => {
     throw new Error("Failed to update folder");
   }
 };
+
+export const shareFolder = async (folderId: number, userId: number) => {
+  try {
+    await prisma.folderShare.create({
+      data: {
+        userId,
+        folderId,
+      },
+    });
+    console.log(
+      `Folder with ID ${folderId} shared to User with ID ${userId} successfully.`
+    );
+  } catch (error) {
+    console.error("Error sharing folder:", error);
+    throw new Error("Failed to share folder");
+  }
+};

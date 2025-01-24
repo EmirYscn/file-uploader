@@ -36,3 +36,15 @@ export const findUserById = async (userId: number) => {
     console.log(error);
   }
 };
+
+export const searchUser = async (email: string) => {
+  try {
+    const users = await prisma.user.findMany({
+      where: { email: { contains: email, mode: "insensitive" } },
+    });
+    return users;
+  } catch (error) {
+    console.error("Database error:", error);
+    throw new Error("Failed to fetch users");
+  }
+};

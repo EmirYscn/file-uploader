@@ -14,6 +14,9 @@ import useRenameFolder from "../hooks/useRenameFolder";
 import { Folder } from "../types/models";
 import RenameFileForm from "./RenameFileForm";
 import RenameFolderForm from "./RenameFolderForm";
+import { IoMdLink } from "react-icons/io";
+import useShareFolder from "../hooks/useShareFolder";
+import ShareFolder from "./ShareFolder";
 
 const StyledFolder = styled.div`
   display: flex;
@@ -38,6 +41,7 @@ function Folders() {
     useDeleteFolder(setFolders);
   const { handleRenameFolder, isLoading: isRenamingFolder } =
     useRenameFolder(setFolders);
+  const { handleShareFolder, isLoading: isSharingFolder } = useShareFolder();
   const location = useLocation();
   const mainRoute = location.pathname.split("/")[1];
 
@@ -64,9 +68,12 @@ function Folders() {
                     </Modal.Open>
                     <Modal.Open opens="share">
                       <Menus.Button icon={<MdPersonAddAlt1 />}>
-                        Share
+                        Share to a User
                       </Menus.Button>
                     </Modal.Open>
+
+                    <Menus.Button icon={<IoMdLink />}>Copy Link</Menus.Button>
+
                     <Modal.Open opens="delete">
                       <Menus.Button icon={<RiDeleteBin2Line />}>
                         Delete
@@ -87,6 +94,11 @@ function Folders() {
                       onConfirm={(data: Folder) =>
                         handleRenameFolder(folder.id, data)
                       }
+                    />
+                  </Modal.Window>
+                  <Modal.Window name="share">
+                    <ShareFolder
+                      onConfirm={() => handleShareFolder(folder.id)}
                     />
                   </Modal.Window>
                 </Menus.Menu>

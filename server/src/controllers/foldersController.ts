@@ -93,3 +93,17 @@ export const renameFolder = async (
     return res.status(500).json({ error: "Failed to update Folder" });
   }
 };
+
+export const shareFolder = async (
+  req: Request,
+  res: Response
+): Promise<any> => {
+  const { folderId, userId } = req.body;
+  try {
+    await db.shareFolder(+folderId, +userId);
+    return res.status(200).json({ message: "Folder shared successfully" });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Failed to share Folder" });
+  }
+};

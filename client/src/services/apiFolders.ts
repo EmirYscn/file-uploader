@@ -77,3 +77,24 @@ export const renameFolder = async (folderId: number, data: Folder) => {
     console.log(error);
   }
 };
+
+export const shareFolder = async (folderId: number, userId: number) => {
+  try {
+    const data = {
+      folderId,
+      userId,
+    };
+    const response = await fetch("/api/folder/shareFolder", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
