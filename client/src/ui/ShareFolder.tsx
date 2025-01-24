@@ -6,6 +6,8 @@ import Input from "./Input";
 import Button from "./Button";
 import { useEffect, useState } from "react";
 import { MdDelete } from "react-icons/md";
+import { add } from "date-fns";
+import { accessType } from "../types/enums";
 
 const StyledSharedFolder = styled.div`
   width: 40rem;
@@ -114,25 +116,35 @@ const Label = styled.label`
   font-weight: 500;
 `;
 
-type FormData = Folder;
-
-type ShareFolderProps = {
-  onConfirm?: (data: Folder) => Promise<void>;
-  disabled?: boolean;
-  onCloseModal?: () => void;
-};
-
-type selectedUser = {
+type SelectedUser = {
   email: string;
   id: number;
 };
 
+export type FormData = {
+  users: number[];
+  expireDate: string;
+  accessType: accessType;
+};
+
+export type Data = {
+  users: number[];
+  expireDate: Date;
+  accessType: accessType;
+};
+
+type ShareFolderProps = {
+  onConfirm?: (data: Data) => Promise<void>;
+  disabled?: boolean;
+  onCloseModal?: () => void;
+};
+
 function ShareFolder({ onConfirm, disabled, onCloseModal }: ShareFolderProps) {
-  // const { handleSubmit, register } = useForm<FormData>();
+  const { handleSubmit, register } = useForm<FormData>();
   const [value, setValue] = useState("");
   const [users, setUsers] = useState<User[]>([]);
   const [debouncedValue, setDebouncedValue] = useState("");
-  const [selectedUsers, setSelectedUsers] = useState<selectedUser[]>([]);
+  const [selectedUsers, setSelectedUsers] = useState<SelectedUser[]>([]);
 
   function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
     setValue(e.target.value);
@@ -167,7 +179,7 @@ function ShareFolder({ onConfirm, disabled, onCloseModal }: ShareFolderProps) {
     searchUser();
   }, [debouncedValue]);
 
-  function handleSelectedUsersChange(selectedUser: selectedUser) {
+  function handleSelectedUsersChange(selectedUser: SelectedUser) {
     if (!selectedUsers.some((user) => user.id === selectedUser.id)) {
       const updatedSelectedUsers = [...selectedUsers, selectedUser];
       setSelectedUsers(updatedSelectedUsers);
@@ -181,15 +193,22 @@ function ShareFolder({ onConfirm, disabled, onCloseModal }: ShareFolderProps) {
   }
 
   async function onSubmit(data: FormData) {
-    console.log(data);
-    // await onConfirm?.(data);
-    // onCloseModal?.();
+    console.log(add(new Date(), { days: 1 }));
+    const formDataWithUsers = {
+      ...data,
+      expireDate: add(new Date(), {
+        days: +data.expireDate[0],
+      }),
+      users: selectedUsers.map((user) => user.id),
+    };
+    await onConfirm?.(formDataWithUsers);
+    onCloseModal?.();
   }
 
   return (
     <StyledSharedFolder>
       <Heading as="h3">Share Folder</Heading>
-      <Form>
+      <Form onSubmit={handleSubmit(onSubmit)}>
         <Label htmlFor="user">Search User</Label>
         <Input
           id="user"
@@ -236,16 +255,15 @@ function ShareFolder({ onConfirm, disabled, onCloseModal }: ShareFolderProps) {
           </Select>
         )}
         <Label htmlFor="expireDate">Expire Date</Label>
-        <Select name="expireDate" id="expireDate">
+        <Select id="expireDate" {...register("expireDate")}>
           <option value="1d">1 Day</option>
           <option value="3d">3 Day</option>
-          <option value="1m">1 Month</option>
           <option value="indefinite">Indefinite</option>
         </Select>
-        <Label htmlFor="expireDate">Access Type</Label>
-        <Select name="access" id="access">
-          <option value="limited">Limited Access</option>
-          <option value="full">Full Access</option>
+        <Label htmlFor="accessType">Access Type</Label>
+        <Select id="accessType" {...register("accessType")}>
+          <option value="LIMITED">Limited Access</option>
+          <option value="FULL">Full Access</option>
         </Select>
         <div>
           <Button

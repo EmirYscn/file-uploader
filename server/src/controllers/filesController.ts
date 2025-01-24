@@ -39,8 +39,8 @@ export const getFilesByFolderId = async (
 export const deleteFile = async (req: Request, res: Response): Promise<any> => {
   const { fileId } = req.params;
   try {
-    const file = await db.deleteFile(+fileId);
-    await sb.deleteFile(file.url);
+    const fileUrl = await db.deleteFile(+fileId);
+    await sb.deleteFile(fileUrl);
     return res.status(200).json({ message: "File deleted successfully" });
   } catch (error) {
     console.error(error);
@@ -48,7 +48,7 @@ export const deleteFile = async (req: Request, res: Response): Promise<any> => {
   }
 };
 
-export const renameFile = async (req: Request, res: Response): Promise<any> => {
+export const updateFile = async (req: Request, res: Response): Promise<any> => {
   const { fileId } = req.params;
   try {
     await db.updateFile(+fileId, req.body);

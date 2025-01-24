@@ -1,4 +1,5 @@
 import { File, Folder } from "../types/models";
+import { Data } from "../ui/ShareFolder";
 
 export const getFoldersByUserId = async (userId: number, type: string) => {
   console.log("in userId");
@@ -78,12 +79,13 @@ export const renameFolder = async (folderId: number, data: Folder) => {
   }
 };
 
-export const shareFolder = async (folderId: number, userId: number) => {
+export const shareFolder = async (formData: Data, folderId: number) => {
   try {
     const data = {
+      ...formData,
       folderId,
-      userId,
     };
+    console.log(data);
     const response = await fetch("/api/folder/shareFolder", {
       method: "POST",
       headers: {

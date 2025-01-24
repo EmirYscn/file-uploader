@@ -16,7 +16,7 @@ import RenameFileForm from "./RenameFileForm";
 import RenameFolderForm from "./RenameFolderForm";
 import { IoMdLink } from "react-icons/io";
 import useShareFolder from "../hooks/useShareFolder";
-import ShareFolder from "./ShareFolder";
+import ShareFolder, { Data as ShareFolderData } from "./ShareFolder";
 
 const StyledFolder = styled.div`
   display: flex;
@@ -98,7 +98,10 @@ function Folders() {
                   </Modal.Window>
                   <Modal.Window name="share">
                     <ShareFolder
-                      onConfirm={() => handleShareFolder(folder.id)}
+                      onConfirm={(data: ShareFolderData) =>
+                        handleShareFolder(data, folder.id)
+                      }
+                      disabled={isSharingFolder}
                     />
                   </Modal.Window>
                 </Menus.Menu>

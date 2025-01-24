@@ -20,7 +20,7 @@ router.post(
   filesController.uploadFile
 );
 router.get("/api/files/download/:fileId", filesController.downloadFile);
-router.patch("/api/files/:fileId", filesController.renameFile);
+router.patch("/api/files/:fileId", filesController.updateFile);
 router.delete("/api/files/:fileId", filesController.deleteFile);
 
 export { router };

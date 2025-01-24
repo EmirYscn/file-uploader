@@ -19,6 +19,6 @@ router.get("/api/folder/:folderId", foldersController.getFolder);
 router.delete("/api/folder/:folderId", foldersController.deleteFolder);
 router.post("/api/folder/createFolder", foldersController.createFolder);
 router.post("/api/folder/shareFolder", foldersController.shareFolder);
-router.patch("/api/folder/:folderId", foldersController.renameFolder);
+router.patch("/api/folder/:folderId", foldersController.updateFolder);
 
 export { router };

@@ -1,4 +1,4 @@
-import { Folder } from "@prisma/client";
+import { accessType, Folder, FolderShare } from "@prisma/client";
 import { prisma } from "./queries";
 
 export const getFoldersById = async (userId: number, type?: string) => {
@@ -8,6 +8,10 @@ export const getFoldersById = async (userId: number, type?: string) => {
       folders = await prisma.folder.findMany({
         where: { sharedTo: { some: { userId: userId } } },
       });
+      // folders = await prisma.folderShare.findMany({
+      //   where: { userId },
+      //   include: { folder: true },
+      // });
       console.log("in shared", folders);
     } else if (type === "myFolders") {
       const userFolders = await prisma.user.findFirst({
@@ -69,11 +73,14 @@ export const getFolderById = async (folderId: number) => {
 export const createFolder = async (folderData: Folder) => {
   console.log(folderData);
   try {
-    const folder = await prisma.folder.create({
-      data: folderData,
+    return await prisma.$transaction(async (prisma) => {
+      const folder = await prisma.folder.create({
+        data: folderData,
+      });
+
+      console.log(`Folder created successfully.`);
+      return folder;
     });
-    console.log(`Folder created successfully.`);
-    return folder;
   } catch (error) {
     console.error("Error creating folder:", error);
     throw new Error("Failed to create folder");
@@ -105,16 +112,26 @@ export const updateFolder = async (folderId: number, data: Folder) => {
   }
 };
 
-export const shareFolder = async (folderId: number, userId: number) => {
+export const shareFolder = async (body: {
+  accessType: accessType;
+  expireDate: Date;
+  folderId: number;
+  users: number[];
+}) => {
+  const { accessType, expireDate, folderId, users } = body;
   try {
-    await prisma.folderShare.create({
-      data: {
-        userId,
-        folderId,
-      },
+    const data = users.map((userId) => ({
+      accessType,
+      expireDate,
+      userId,
+      folderId,
+    }));
+    await prisma.folderShare.createMany({
+      data,
     });
+
     console.log(
-      `Folder with ID ${folderId} shared to User with ID ${userId} successfully.`
+      `Folder with ID ${folderId} shared to Users with ID ${users} successfully.`
     );
   } catch (error) {
     console.error("Error sharing folder:", error);

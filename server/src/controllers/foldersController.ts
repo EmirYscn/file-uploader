@@ -80,7 +80,7 @@ export const deleteFolder = async (
   }
 };
 
-export const renameFolder = async (
+export const updateFolder = async (
   req: Request,
   res: Response
 ): Promise<any> => {
@@ -98,9 +98,10 @@ export const shareFolder = async (
   req: Request,
   res: Response
 ): Promise<any> => {
-  const { folderId, userId } = req.body;
+  const { accessType, expireDate, folderId, users } = req.body;
+  console.log(req.body);
   try {
-    await db.shareFolder(+folderId, +userId);
+    await db.shareFolder(req.body);
     return res.status(200).json({ message: "Folder shared successfully" });
   } catch (error) {
     console.error(error);

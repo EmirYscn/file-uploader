@@ -70,18 +70,18 @@ async function main() {
   // });
   // const allFiles = await prisma.file.findMany();
   // console.dir(allFiles, { depth: null });
-  await prisma.folderShare.createMany({
-    data: [
-      {
-        userId: 17,
-        folderId: 44,
-      },
-      {
-        userId: 17,
-        folderId: 45,
-      },
-    ],
-  });
+  // await prisma.folderShare.createMany({
+  //   data: [
+  //     {
+  //       userId: 17,
+  //       folderId: 44,
+  //     },
+  //     {
+  //       userId: 17,
+  //       folderId: 45,
+  //     },
+  //   ],
+  // });
   const allFolderShares = await prisma.folderShare.findMany();
   console.dir(allFolderShares, { depth: null });
   // await prisma.fileShare.createMany({

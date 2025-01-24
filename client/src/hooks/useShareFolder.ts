@@ -1,15 +1,15 @@
 import { useContext, useState } from "react";
 import { shareFolder } from "../services/apiFolders";
 import { UserContext } from "../contexts/userContext";
+import { Data } from "../ui/ShareFolder";
 
 function useShareFolder() {
   const [isLoading, setIsLoading] = useState(false);
-  const { user } = useContext(UserContext);
 
-  async function handleShareFolder(folderId: number) {
+  async function handleShareFolder(data: Data, folderId: number) {
     try {
       setIsLoading(true);
-      await shareFolder(user!.id, folderId);
+      await shareFolder(data, folderId);
     } catch (error) {
       console.log(error);
     } finally {
