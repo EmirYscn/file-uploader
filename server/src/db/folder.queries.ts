@@ -5,13 +5,19 @@ export const getFoldersById = async (userId: number, type?: string) => {
   try {
     let folders;
     if (type === "shared") {
-      folders = await prisma.folder.findMany({
-        where: { sharedTo: { some: { userId: userId } } },
-      });
-      // folders = await prisma.folderShare.findMany({
-      //   where: { userId },
-      //   include: { folder: true },
+      // folders = await prisma.folder.findMany({
+      //   where: { sharedTo: { some: { userId: userId } } },
       // });
+      const sharedFolders = await prisma.folderShare.findMany({
+        where: { userId },
+        include: { folder: true },
+      });
+
+      folders = sharedFolders.map((share) => ({
+        ...share.folder,
+        accessType: share.accessType,
+        expireDate: share.expireDate,
+      }));
       console.log("in shared", folders);
     } else if (type === "myFolders") {
       const userFolders = await prisma.user.findFirst({
@@ -120,15 +126,26 @@ export const shareFolder = async (body: {
 }) => {
   const { accessType, expireDate, folderId, users } = body;
   try {
-    const data = users.map((userId) => ({
-      accessType,
-      expireDate,
-      userId,
-      folderId,
-    }));
-    await prisma.folderShare.createMany({
-      data,
-    });
+    for (const userId of users) {
+      await prisma.folderShare.upsert({
+        where: {
+          folderId_userId: {
+            folderId,
+            userId,
+          },
+        },
+        update: {
+          accessType,
+          expireDate,
+        },
+        create: {
+          accessType,
+          expireDate,
+          folderId,
+          userId,
+        },
+      });
+    }
 
     console.log(
       `Folder with ID ${folderId} shared to Users with ID ${users} successfully.`

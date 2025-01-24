@@ -60,6 +60,8 @@ model FolderShare {
   userId      Int
   expireDate  DateTime?
   accessType  accessType?
+
+  @@unique([folderId, userId])
 }
 
 model FileShare {

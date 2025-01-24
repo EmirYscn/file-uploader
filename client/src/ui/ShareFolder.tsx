@@ -139,6 +139,12 @@ type ShareFolderProps = {
   onCloseModal?: () => void;
 };
 
+const expirationMap: Record<string, number | null> = {
+  "1d": 1,
+  "3d": 3,
+  indefinite: null, // null for no expiration
+};
+
 function ShareFolder({ onConfirm, disabled, onCloseModal }: ShareFolderProps) {
   const { handleSubmit, register } = useForm<FormData>();
   const [value, setValue] = useState("");
@@ -193,12 +199,13 @@ function ShareFolder({ onConfirm, disabled, onCloseModal }: ShareFolderProps) {
   }
 
   async function onSubmit(data: FormData) {
-    console.log(add(new Date(), { days: 1 }));
+    const expirationPeriod = expirationMap[data.expireDate];
+    const expireDate = expirationPeriod
+      ? add(new Date(), { days: expirationPeriod })
+      : null;
     const formDataWithUsers = {
       ...data,
-      expireDate: add(new Date(), {
-        days: +data.expireDate[0],
-      }),
+      expireDate,
       users: selectedUsers.map((user) => user.id),
     };
     await onConfirm?.(formDataWithUsers);
@@ -236,8 +243,11 @@ function ShareFolder({ onConfirm, disabled, onCloseModal }: ShareFolderProps) {
             name="users"
             id="users"
             onChange={(e) => {
-              const selectedUser = JSON.parse(e.target.value);
-              handleSelectedUsersChange(selectedUser);
+              const selectedUserId = Number(e.target.value);
+              const selectedUser = users.find(
+                (user) => user.id === selectedUserId
+              );
+              if (selectedUser) handleSelectedUsersChange(selectedUser);
             }}
             defaultValue={""}
           >
@@ -245,10 +255,7 @@ function ShareFolder({ onConfirm, disabled, onCloseModal }: ShareFolderProps) {
               Select a user
             </option>
             {users.map((user) => (
-              <option
-                key={user.id}
-                value={JSON.stringify({ email: user.email, id: user.id })}
-              >
+              <option key={user.id} value={user.id}>
                 {user.email}
               </option>
             ))}
