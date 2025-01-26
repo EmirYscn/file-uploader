@@ -1,9 +1,11 @@
 import { createContext } from "react";
-import { File } from "../types/models";
+import { FileWithShareInfo } from "../types/models";
 
 type FilesContextType = {
-  files: File[] | undefined;
-  setFiles: React.Dispatch<React.SetStateAction<File[] | undefined>>;
+  files: FileWithShareInfo[] | undefined;
+  setFiles: React.Dispatch<
+    React.SetStateAction<FileWithShareInfo[] | undefined>
+  >;
   isLoading: boolean;
 };
 

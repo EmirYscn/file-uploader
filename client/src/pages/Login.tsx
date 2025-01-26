@@ -10,6 +10,7 @@ import { UserContext } from "../contexts/userContext";
 import { useContext } from "react";
 import Wall from "../ui/Wall";
 import Button from "../ui/Button";
+import useLoginUser from "../hooks/useLoginUser";
 
 const StyledLogin = styled.div`
   display: grid;
@@ -26,32 +27,41 @@ const FormContainer = styled.div`
 `;
 
 function Login() {
-  const { register, handleSubmit, reset } = useForm<User>();
-  const navigate = useNavigate();
-  const { setUser } = useContext(UserContext);
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<User>();
+  const { onSubmit, errors: apiErrors, isLoading } = useLoginUser();
+  console.log(apiErrors);
+  // const navigate = useNavigate();
+  // const { setUser } = useContext(UserContext);
 
-  async function onSubmit(data: User) {
-    try {
-      const user = await login(data);
-      console.log(user);
-      setUser(user);
-      navigate("/all");
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  function onError() {}
+  // async function onSubmit(data: User) {
+  //   try {
+  //     const user = await login(data);
+  //     console.log(user);
+  //     setUser(user);
+  //     navigate("/all");
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
 
   return (
     <StyledLogin>
       <Wall />
       <FormContainer>
-        <Form onSubmit={handleSubmit(onSubmit, onError)}>
+        <Form onSubmit={handleSubmit(onSubmit)}>
           <FormRow>
             <h1>Log In</h1>
           </FormRow>
-          <FormRow label="Email">
+          <FormRow
+            label="Email"
+            apiError={apiErrors?.error}
+            formError={errors?.email?.message}
+          >
             <Input
               type="text"
               id="email"
@@ -60,7 +70,7 @@ function Login() {
               })}
             />
           </FormRow>
-          <FormRow label="password">
+          <FormRow label="password" formError={errors?.password?.message}>
             <Input
               type="password"
               id="password"

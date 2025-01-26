@@ -15,7 +15,7 @@ export const login = async (
         return res.status(500).json({ error: "Internal server error" });
       }
       if (!user) {
-        return res.status(401).json({ error: info.message });
+        return res.status(401).json({ error: "Invalid email or password" });
       }
       req.logIn(user, (err) => {
         if (err) {

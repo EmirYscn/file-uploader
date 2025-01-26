@@ -21,21 +21,7 @@ export const getFoldersByUserId = async (
 ): Promise<any> => {
   const { type, userId } = req.params;
   try {
-    const folders = await db.getFoldersById(+userId, type);
-    return res.status(200).json(folders);
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-export const getOwnFoldersByUserId = async (
-  req: Request,
-  res: Response
-): Promise<any> => {
-  const { userId } = req.params;
-  console.log(userId);
-  try {
-    const folders = await db.getFoldersById(+userId);
+    const folders = await db.getFoldersByUserId(+userId, type);
     return res.status(200).json(folders);
   } catch (error) {
     console.log(error);

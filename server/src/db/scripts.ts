@@ -1,9 +1,9 @@
 import { prisma } from "./queries";
 
 async function main() {
-  // await prisma.user.deleteMany();
-  // await prisma.folder.deleteMany();
-  // await prisma.folderShare.deleteMany();
+  await prisma.user.deleteMany();
+  await prisma.folder.deleteMany();
+  await prisma.folderShare.deleteMany();
   // await prisma.file.delete({
   //   where: { id: 48 },
   // });
@@ -83,8 +83,8 @@ async function main() {
   //     },
   //   ],
   // });
-  const allFolderShares = await prisma.folderShare.findMany();
-  console.dir(allFolderShares, { depth: null });
+  // const allFolderShares = await prisma.folderShare.findMany();
+  // console.dir(allFolderShares, { depth: null });
   // await prisma.fileShare.createMany({
   //   data: [
   //     {

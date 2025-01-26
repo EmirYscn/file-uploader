@@ -17,6 +17,7 @@ import RenameFolderForm from "./RenameFolderForm";
 import { IoMdLink } from "react-icons/io";
 import useShareFolder from "../hooks/useShareFolder";
 import ShareFolder, { Data as ShareFolderData } from "./ShareFolder";
+import { UserContext } from "../contexts/userContext";
 
 const StyledFolder = styled.div`
   display: flex;
@@ -36,6 +37,7 @@ const Details = styled.div`
 `;
 
 function Folders() {
+  const { user: currentUser } = useContext(UserContext);
   const { folders, setFolders, isLoading } = useContext(FoldersContext);
   const { handleDeleteFolder, isLoading: isDeletingFolder } =
     useDeleteFolder(setFolders);
@@ -62,20 +64,38 @@ function Folders() {
                   <Menus.Toggle id={folder.id} />
                   <Menus.List id={folder.id}>
                     <Modal.Open opens="rename">
-                      <Menus.Button icon={<MdDriveFileRenameOutline />}>
+                      <Menus.Button
+                        icon={<MdDriveFileRenameOutline />}
+                        isFolderOwner={folder.userId === currentUser?.id}
+                        accessType={folder.accessType}
+                      >
                         Rename
                       </Menus.Button>
                     </Modal.Open>
                     <Modal.Open opens="share">
-                      <Menus.Button icon={<MdPersonAddAlt1 />}>
+                      <Menus.Button
+                        icon={<MdPersonAddAlt1 />}
+                        isFolderOwner={folder.userId === currentUser?.id}
+                        accessType={folder.accessType}
+                      >
                         Share to a User
                       </Menus.Button>
                     </Modal.Open>
 
-                    <Menus.Button icon={<IoMdLink />}>Copy Link</Menus.Button>
+                    <Menus.Button
+                      icon={<IoMdLink />}
+                      isFolderOwner={folder.userId === currentUser?.id}
+                      accessType={folder.accessType}
+                    >
+                      Copy Link
+                    </Menus.Button>
 
                     <Modal.Open opens="delete">
-                      <Menus.Button icon={<RiDeleteBin2Line />}>
+                      <Menus.Button
+                        icon={<RiDeleteBin2Line />}
+                        isFolderOwner={folder.userId === currentUser?.id}
+                        accessType={folder.accessType}
+                      >
                         Delete
                       </Menus.Button>
                     </Modal.Open>

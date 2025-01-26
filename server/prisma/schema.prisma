@@ -50,6 +50,7 @@ model Folder {
   createdBy User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    Int
   sharedTo  FolderShare[]
+  isSharedSubfolder Boolean?
 }
 
 model FolderShare {

@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { Folder } from "../types/models";
+import { Folder, FolderWithShareInfo } from "../types/models";
 import {
   getFoldersByFolderId,
   getFoldersByUserId,
@@ -8,12 +8,14 @@ import { UserContext } from "../contexts/userContext";
 import { useLocation } from "react-router";
 
 function useFolders(): {
-  folders: Folder[] | undefined;
-  setFolders: React.Dispatch<React.SetStateAction<Folder[] | undefined>>;
+  folders: FolderWithShareInfo[] | undefined;
+  setFolders: React.Dispatch<
+    React.SetStateAction<FolderWithShareInfo[] | undefined>
+  >;
   isLoading: boolean;
 } {
   const location = useLocation();
-  const [folders, setFolders] = useState<Folder[] | undefined>([]);
+  const [folders, setFolders] = useState<FolderWithShareInfo[] | undefined>([]);
   const [isLoading, setIsLoading] = useState(false);
   const { user } = useContext(UserContext);
 

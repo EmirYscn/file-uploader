@@ -1,49 +1,58 @@
 import { accessType, Folder, FolderShare } from "@prisma/client";
 import { prisma } from "./queries";
 
-export const getFoldersById = async (userId: number, type?: string) => {
+async function getSharedFolders(userId: number) {
+  const sharedFolders = await prisma.folderShare.findMany({
+    where: { userId },
+    include: { folder: true },
+  });
+
+  return sharedFolders.map((share) => ({
+    ...share.folder,
+    accessType: share.accessType,
+    expireDate: share.expireDate,
+  }));
+}
+
+async function getOwnFolders(userId: number) {
+  const userFolders = await prisma.user.findFirst({
+    where: { id: userId },
+    include: { folders: { where: { parentId: null } } },
+  });
+  return userFolders?.folders;
+}
+
+async function getAllFolders(userId: number) {
+  const userFolders = await prisma.user.findFirst({
+    where: { id: userId },
+    select: {
+      folders: { where: { parentId: null } },
+      folderShare: {
+        select: { folder: true, accessType: true, expireDate: true },
+      },
+    },
+  });
+  const combinedFolders = [
+    ...(userFolders?.folders ?? []),
+    ...(userFolders?.folderShare.map((share) => ({
+      ...share.folder,
+      accessType: share.accessType,
+      expireDate: share.expireDate,
+    })) ?? []),
+  ];
+  return combinedFolders;
+}
+
+export const getFoldersByUserId = async (userId: number, type?: string) => {
   try {
     let folders;
     if (type === "shared") {
-      // folders = await prisma.folder.findMany({
-      //   where: { sharedTo: { some: { userId: userId } } },
-      // });
-      const sharedFolders = await prisma.folderShare.findMany({
-        where: { userId },
-        include: { folder: true },
-      });
-
-      folders = sharedFolders.map((share) => ({
-        ...share.folder,
-        accessType: share.accessType,
-        expireDate: share.expireDate,
-      }));
-      console.log("in shared", folders);
+      folders = await getSharedFolders(userId);
     } else if (type === "myFolders") {
-      const userFolders = await prisma.user.findFirst({
-        where: { id: userId },
-        include: { folders: { where: { parentId: null } } },
-      });
-      folders = userFolders?.folders;
-      console.log("in own", folders);
+      folders = await getOwnFolders(userId);
     } else {
-      const userFolders = await prisma.user.findFirst({
-        where: { id: userId },
-        select: {
-          folders: { where: { parentId: null } },
-          folderShare: { select: { folder: true } },
-        },
-      });
-      folders = [
-        ...(userFolders?.folders ?? []),
-        ...(userFolders?.folderShare.map((share) => share.folder) ?? []),
-      ];
-      console.log("in all", folders);
+      folders = await getAllFolders(userId);
     }
-
-    // const folders = await prisma.folder.findMany({
-    //   where: { createdBy: userId },
-    // });
     return folders;
   } catch (error) {
     console.log(error);

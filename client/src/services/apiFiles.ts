@@ -1,9 +1,9 @@
-import { File } from "../types/models";
+import { File, FileWithShareInfo } from "../types/models";
 
 export const getFilesByUserId = async (folderId: number, type: string) => {
   try {
     const res = await fetch(`/api/files/${type}/byUserId/${folderId}`);
-    const files: File[] = await res.json();
+    const files: FileWithShareInfo[] = await res.json();
     return files;
   } catch (error) {
     console.log(error);
@@ -13,7 +13,7 @@ export const getFilesByUserId = async (folderId: number, type: string) => {
 export const getFilesByFolderId = async (folderId: number) => {
   try {
     const res = await fetch(`/api/files/byFolderId/${folderId}`);
-    const files: File[] = await res.json();
+    const files: FileWithShareInfo[] = await res.json();
     return files;
   } catch (error) {
     console.log(error);

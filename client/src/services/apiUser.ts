@@ -36,27 +36,21 @@ export const createUser = async (data: User) => {
 };
 
 export const login = async (data: User): Promise<User> => {
-  try {
-    const response = await fetch("/api/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
+  const response = await fetch("/api/login", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(
-        errorData.error || `HTTP error! status: ${response.status}`
-      );
-    }
-
-    return await response.json();
-  } catch (error) {
-    console.error("Failed to login user:", error);
-    throw error; // Rethrow the error after logging it
+  if (!response.ok) {
+    const errorData: Errors = await response.json();
+    console.log(errorData);
+    throw errorData;
   }
+
+  return await response.json();
 };
 
 export const logout = async () => {

@@ -61,10 +61,10 @@ type FormRowProps = {
 function FormRow({ label, apiError, formError, children }: FormRowProps) {
   return (
     <StyledFormRow>
+      {apiError && <FormError>*{apiError}</FormError>}
       {label && children && <Label htmlFor={children.props.id}>{label}</Label>}
       {children}
       {formError && <ApiError>*{formError}</ApiError>}
-      {apiError && <FormError>*{apiError}</FormError>}
     </StyledFormRow>
   );
 }

@@ -3,6 +3,7 @@ import { createPortal } from "react-dom";
 import { HiEllipsisVertical } from "react-icons/hi2";
 import styled from "styled-components";
 import { useOutsideClick } from "../hooks/useOutsideClick";
+import { accessType } from "../types/enums";
 
 const Menu = styled.div`
   display: flex;
@@ -167,10 +168,22 @@ type ButtonProps = {
   children: React.ReactNode;
   icon?: React.ReactNode;
   onClick?: () => void;
+  isFolderOwner?: boolean | undefined;
+  accessType?: accessType | null;
 };
 
-function Button({ children, icon, onClick }: ButtonProps) {
+function Button({
+  children,
+  icon,
+  onClick,
+  isFolderOwner,
+  accessType,
+}: ButtonProps) {
   const context = useContext(MenusContext);
+  // const disabled = accessType ? accessType !== "FULL" : false;
+  const disabled =
+    (accessType && accessType !== "FULL") || (!accessType && !isFolderOwner);
+  console.log(isFolderOwner);
   if (!context) {
     throw new Error("Toggle must be used within a MenusProvider");
   }
@@ -183,7 +196,7 @@ function Button({ children, icon, onClick }: ButtonProps) {
 
   return (
     <li>
-      <StyledButton onClick={handleClick}>
+      <StyledButton onClick={handleClick} disabled={disabled}>
         {icon}
         <span>{children}</span>
       </StyledButton>

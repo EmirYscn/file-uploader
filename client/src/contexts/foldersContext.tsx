@@ -1,9 +1,11 @@
 import { createContext } from "react";
-import { Folder } from "../types/models";
+import { Folder, FolderShare, FolderWithShareInfo } from "../types/models";
 
 type FoldersContextType = {
-  folders: Folder[] | undefined;
-  setFolders: React.Dispatch<React.SetStateAction<Folder[] | undefined>>;
+  folders: FolderWithShareInfo[] | undefined;
+  setFolders: React.Dispatch<
+    React.SetStateAction<FolderWithShareInfo[] | undefined>
+  >;
   isLoading: boolean;
 };
 

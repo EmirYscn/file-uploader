@@ -129,7 +129,7 @@ export type FormData = {
 
 export type Data = {
   users: number[];
-  expireDate: Date;
+  expireDate: Date | null;
   accessType: accessType;
 };
 

@@ -42,7 +42,19 @@ const Button = styled.button`
 
   &:hover {
     /* opacity: 0.5; */
-    transform: scale(1.1);
+    transform: scale(1.2);
+  }
+  &:active {
+    border: none;
+    outline: none;
+  }
+
+  &:focus {
+    outline: none;
+  }
+  &:disabled {
+    cursor: not-allowed;
+    color: rgba(0, 0, 0, 0.317);
   }
 `;
 

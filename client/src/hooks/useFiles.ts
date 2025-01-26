@@ -1,17 +1,19 @@
 import { useContext, useEffect, useState } from "react";
 import { useLocation } from "react-router";
-import { File as FilesType } from "../types/models";
+import { FileWithShareInfo } from "../types/models";
 import { getFilesByFolderId, getFilesByUserId } from "../services/apiFiles";
 import { UserContext } from "../contexts/userContext";
 
 function useFiles(): {
-  files: FilesType[] | undefined;
-  setFiles: React.Dispatch<React.SetStateAction<FilesType[] | undefined>>;
+  files: FileWithShareInfo[] | undefined;
+  setFiles: React.Dispatch<
+    React.SetStateAction<FileWithShareInfo[] | undefined>
+  >;
   isLoading: boolean;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
 } {
   const location = useLocation();
-  const [files, setFiles] = useState<FilesType[] | undefined>();
+  const [files, setFiles] = useState<FileWithShareInfo[] | undefined>();
   const [isLoading, setIsLoading] = useState(false);
   const { user } = useContext(UserContext);
 

@@ -46,6 +46,11 @@ const StyledButton = styled.button<{ buttontype: ButtonTypes }>`
   &:hover {
     opacity: 0.9;
   }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
 `;
 
 type ButtonOnClickTypes =
@@ -57,11 +62,12 @@ type ButtonProps = {
   onClick?: ButtonOnClickTypes;
   styletype: ButtonTypes;
   children: string | React.ReactNode;
+  disabled: boolean;
 } & Omit<React.ComponentProps<"button">, "children">;
 
-function Button({ onClick, styletype, children }: ButtonProps) {
+function Button({ onClick, styletype, children, disabled }: ButtonProps) {
   return (
-    <StyledButton onClick={onClick} buttontype={styletype}>
+    <StyledButton onClick={onClick} buttontype={styletype} disabled={disabled}>
       {children}
     </StyledButton>
   );

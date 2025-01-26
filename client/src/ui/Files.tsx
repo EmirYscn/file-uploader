@@ -19,6 +19,7 @@ import useRenameFile from "../hooks/useRenameFile";
 import { File as FileType } from "../types/models";
 import useDownloadFile from "../hooks/useDownloadFile";
 import { formatString } from "../utils/formatString";
+import { UserContext } from "../contexts/userContext";
 
 const StyledFiles = styled.div`
   display: grid;
@@ -49,7 +50,7 @@ function Files() {
     setFiles,
     isLoading: isFilesLoading,
   } = useContext(FilesContext);
-
+  const { user: currentUser } = useContext(UserContext);
   const { handleDeleteFile, isLoading: isDeletingFile } =
     useDeleteFile(setFiles);
   const { handleRenameFile, isLoading: isRenaming } = useRenameFile(setFiles);
@@ -76,22 +77,36 @@ function Files() {
                       <Menus.List id={file.id}>
                         <Menus.Button
                           icon={<AiOutlineDownload />}
+                          isFolderOwner={file.userId === currentUser?.id}
+                          accessType={file.accessType}
                           onClick={() => handleDownloadFile(file.id, file.name)}
                         >
                           Download
                         </Menus.Button>
                         <Modal.Open opens="rename">
-                          <Menus.Button icon={<MdDriveFileRenameOutline />}>
+                          <Menus.Button
+                            icon={<MdDriveFileRenameOutline />}
+                            isFolderOwner={file.userId === currentUser?.id}
+                            accessType={file.accessType}
+                          >
                             Rename
                           </Menus.Button>
                         </Modal.Open>
                         <Modal.Open opens="share">
-                          <Menus.Button icon={<MdPersonAddAlt1 />}>
+                          <Menus.Button
+                            icon={<MdPersonAddAlt1 />}
+                            isFolderOwner={file.userId === currentUser?.id}
+                            accessType={file.accessType}
+                          >
                             Share
                           </Menus.Button>
                         </Modal.Open>
                         <Modal.Open opens="delete">
-                          <Menus.Button icon={<RiDeleteBin2Line />}>
+                          <Menus.Button
+                            icon={<RiDeleteBin2Line />}
+                            isFolderOwner={file.userId === currentUser?.id}
+                            accessType={file.accessType}
+                          >
                             Delete
                           </Menus.Button>
                         </Modal.Open>
