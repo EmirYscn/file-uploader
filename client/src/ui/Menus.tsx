@@ -176,8 +176,8 @@ function Button({
   children,
   icon,
   onClick,
-  isFolderOwner,
-  accessType,
+  isFolderOwner = true,
+  accessType = "FULL",
 }: ButtonProps) {
   const context = useContext(MenusContext);
   // const disabled = accessType ? accessType !== "FULL" : false;

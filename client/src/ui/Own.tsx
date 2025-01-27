@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import BackButton from "./BackButton";
 import Files from "./Files";
-import Folders from "./Folders";
+import OwnFolders from "./OwnFolders";
 
 const StyledOwn = styled.div`
   display: grid;
@@ -13,7 +13,7 @@ function Own() {
   return (
     <StyledOwn>
       <BackButton />
-      <Folders />
+      <OwnFolders />
       <Files />
     </StyledOwn>
   );

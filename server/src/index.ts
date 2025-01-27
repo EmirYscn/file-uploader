@@ -1,6 +1,7 @@
 import express, { NextFunction, Request, Response } from "express";
 import dotenv from "dotenv";
 import path from "node:path";
+import cors from "cors";
 import { validateForm } from "./middlewares/validateForm";
 
 import * as authController from "./controllers/authController";
@@ -22,6 +23,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "../public")));
 
+// app.use(
+//   cors({
+//     origin: "http://localhost:5173", // Replace with your frontend URL
+//     credentials: true, // Allow credentials (cookies)
+//   })
+// );
 app.use(sessionMiddleware);
 app.use(passport.initialize());
 app.use(passport.session());

@@ -35,6 +35,7 @@ function BackButton({ posContext = "other" }: BackButtonProps) {
   const pathSegments = location.pathname.split("/");
   pathSegments.shift();
   const isSubRoot = pathSegments.length > 1;
+  console.log(isSubRoot);
   return (
     isSubRoot && (
       <>

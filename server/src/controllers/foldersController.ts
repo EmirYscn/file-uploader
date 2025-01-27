@@ -1,20 +1,34 @@
 import { Request, Response } from "express";
 import * as db from "../db/folder.queries";
 
-export const getFoldersByFolderId = async (
+export const getOwnFolders = async (
   req: Request,
   res: Response
 ): Promise<any> => {
-  const { folderId } = req.params;
-  console.log(folderId);
+  const { userId } = req.params;
   try {
-    const folders = await db.getFoldersByParentId(+folderId);
-    console.log(folders);
+    const folders = await db.getOwnFoldersByUserId(+userId);
     return res.status(200).json(folders);
   } catch (error) {
     console.log(error);
+    return res.status(500).json({ error: "Failed to fetch own folders" });
   }
 };
+
+export const getSharedFolders = async (
+  req: Request,
+  res: Response
+): Promise<any> => {
+  const { userId } = req.params;
+  try {
+    const folders = await db.getSharedFoldersByUserId(+userId);
+    return res.status(200).json(folders);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: "Failed to fetch shared folders" });
+  }
+};
+
 export const getFoldersByUserId = async (
   req: Request,
   res: Response
@@ -25,6 +39,25 @@ export const getFoldersByUserId = async (
     return res.status(200).json(folders);
   } catch (error) {
     console.log(error);
+  }
+};
+
+export const getFoldersByFolderId = async (
+  req: Request,
+  res: Response
+): Promise<any> => {
+  const { folderId } = req.params;
+  try {
+    const folders = await db.getFoldersByParentId(+folderId);
+    console.log(folders);
+    return res.status(200).json(folders);
+  } catch (error) {
+    console.log(error);
+    return res
+      .status(500)
+      .json({
+        error: `Failed to fetch subfolders of folder with ID: ${folderId}`,
+      });
   }
 };
 

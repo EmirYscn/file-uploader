@@ -6,7 +6,7 @@ import styled from "styled-components";
 import Modal from "./Modal";
 import AddFolder from "./AddFolder";
 import { useContext, useRef } from "react";
-import { FoldersContext } from "../contexts/foldersContext";
+import { FoldersContext } from "../contexts/ownFoldersContext";
 import { createFolder } from "../services/apiFolders";
 import { Folder } from "../types/models";
 import useCreateFolder from "../hooks/useCreateFolder";
@@ -61,12 +61,12 @@ const Button = styled.button`
 function NewButton() {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-  const { setFolders, isLoading: isFoldersLoading } =
+  const { setOwnFolders, isLoading: isFoldersLoading } =
     useContext(FoldersContext);
   const { setFiles, isLoading: isFilesLoading } = useContext(FilesContext);
 
   const { handleCreateFolder, isLoading: isCreatingFolder } =
-    useCreateFolder(setFolders);
+    useCreateFolder(setOwnFolders);
   const { handleCreateFile, isLoading: isCreatingFile } =
     useCreateFile(setFiles);
 

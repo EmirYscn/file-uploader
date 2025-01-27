@@ -9,7 +9,7 @@ import Menus from "./Menus";
 import ConfirmDelete from "./ConfirmDelete";
 import useDeleteFolder from "../hooks/useDeleteFolder";
 import { useContext } from "react";
-import { FoldersContext } from "../contexts/foldersContext";
+import { FoldersContext } from "../contexts/ownFoldersContext";
 import useRenameFolder from "../hooks/useRenameFolder";
 import { Folder } from "../types/models";
 import RenameFileForm from "./RenameFileForm";
@@ -18,6 +18,7 @@ import { IoMdLink } from "react-icons/io";
 import useShareFolder from "../hooks/useShareFolder";
 import ShareFolder, { Data as ShareFolderData } from "./ShareFolder";
 import { UserContext } from "../contexts/userContext";
+import { SharedFoldersContext } from "../contexts/sharedFoldersContext";
 
 const StyledFolder = styled.div`
   display: flex;
@@ -36,14 +37,15 @@ const Details = styled.div`
   justify-content: space-between;
 `;
 
-function Folders() {
+function SharedFolders() {
   const { user: currentUser } = useContext(UserContext);
-  const { folders, setFolders, isLoading } = useContext(FoldersContext);
-  const { handleDeleteFolder, isLoading: isDeletingFolder } =
-    useDeleteFolder(setFolders);
-  const { handleRenameFolder, isLoading: isRenamingFolder } =
-    useRenameFolder(setFolders);
-  const { handleShareFolder, isLoading: isSharingFolder } = useShareFolder();
+  const { sharedFolders, setSharedFolders, isLoading } =
+    useContext(SharedFoldersContext);
+  // const { handleDeleteFolder, isLoading: isDeletingFolder } =
+  //   useDeleteFolder(setOwnFolders);
+  // const { handleRenameFolder, isLoading: isRenamingFolder } =
+  //   useRenameFolder(setOwnFolders);
+  // const { handleShareFolder, isLoading: isSharingFolder } = useShareFolder();
   const location = useLocation();
   const mainRoute = location.pathname.split("/")[1];
 
@@ -51,9 +53,9 @@ function Folders() {
     <Spinner />
   ) : (
     <>
-      {folders?.map((folder) => (
+      {sharedFolders?.map((folder) => (
         <StyledFolder key={folder.id}>
-          <Link to={`/${mainRoute}/folder/${folder.id}`}>
+          <Link to={`/${mainRoute}/folder/shared/${folder.id}`}>
             <Img src="/folder.svg" alt="" />
           </Link>
           <Details>
@@ -103,25 +105,25 @@ function Folders() {
                   <Modal.Window name="delete">
                     <ConfirmDelete
                       resourceName={folder.name}
-                      disabled={isDeletingFolder}
-                      onConfirm={() => handleDeleteFolder(folder.id)}
+                      // disabled={isDeletingFolder}
+                      // onConfirm={() => handleDeleteFolder(folder.id)}
                     />
                   </Modal.Window>
                   <Modal.Window name="rename">
                     <RenameFolderForm
                       resourceName={folder.name}
-                      disabled={isRenamingFolder}
-                      onConfirm={(data: Folder) =>
-                        handleRenameFolder(folder.id, data)
-                      }
+                      // disabled={isRenamingFolder}
+                      // onConfirm={(data: Folder) =>
+                      //   handleRenameFolder(folder.id, data)
+                      // }
                     />
                   </Modal.Window>
                   <Modal.Window name="share">
                     <ShareFolder
-                      onConfirm={(data: ShareFolderData) =>
-                        handleShareFolder(data, folder.id)
-                      }
-                      disabled={isSharingFolder}
+                    // onConfirm={(data: ShareFolderData) =>
+                    //   handleShareFolder(data, folder.id)
+                    // }
+                    // disabled={isSharingFolder}
                     />
                   </Modal.Window>
                 </Menus.Menu>
@@ -134,4 +136,4 @@ function Folders() {
   );
 }
 
-export default Folders;
+export default SharedFolders;

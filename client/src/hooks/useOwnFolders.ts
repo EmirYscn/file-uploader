@@ -3,19 +3,18 @@ import { Folder, FolderWithShareInfo } from "../types/models";
 import {
   getFoldersByFolderId,
   getFoldersByUserId,
+  getOwnFoldersByUserId,
 } from "../services/apiFolders";
 import { UserContext } from "../contexts/userContext";
 import { useLocation } from "react-router";
 
-function useFolders(): {
-  folders: FolderWithShareInfo[] | undefined;
-  setFolders: React.Dispatch<
-    React.SetStateAction<FolderWithShareInfo[] | undefined>
-  >;
+function useOwnFolders(): {
+  ownFolders: Folder[] | undefined;
+  setOwnFolders: React.Dispatch<React.SetStateAction<Folder[] | undefined>>;
   isLoading: boolean;
 } {
   const location = useLocation();
-  const [folders, setFolders] = useState<FolderWithShareInfo[] | undefined>([]);
+  const [ownFolders, setOwnFolders] = useState<Folder[] | undefined>([]);
   const [isLoading, setIsLoading] = useState(false);
   const { user } = useContext(UserContext);
 
@@ -26,13 +25,13 @@ function useFolders(): {
 
         const pathSegments = location.pathname.split("/");
         const folderId = Number(pathSegments[pathSegments.length - 1]);
-        const type = pathSegments[1];
+        // const type = pathSegments[1];
 
         const folders = isNaN(folderId)
-          ? await getFoldersByUserId(user!.id, type)
+          ? await getOwnFoldersByUserId(user!.id)
           : await getFoldersByFolderId(folderId);
 
-        setFolders(folders);
+        setOwnFolders(folders);
       } catch (error) {
         console.log(error);
       } finally {
@@ -42,7 +41,7 @@ function useFolders(): {
     if (user) fetchFolders();
   }, [user, location.pathname]);
 
-  return { folders, setFolders, isLoading };
+  return { ownFolders, setOwnFolders, isLoading };
 }
 
-export default useFolders;
+export default useOwnFolders;

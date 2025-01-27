@@ -1,6 +1,14 @@
 import { accessType, Folder, FolderShare } from "@prisma/client";
 import { prisma } from "./queries";
 
+async function getOwnFolders(userId: number) {
+  const userFolders = await prisma.user.findFirst({
+    where: { id: userId },
+    include: { folders: { where: { parentId: null } } },
+  });
+  return userFolders?.folders;
+}
+
 async function getSharedFolders(userId: number) {
   const sharedFolders = await prisma.folderShare.findMany({
     where: { userId },
@@ -12,14 +20,6 @@ async function getSharedFolders(userId: number) {
     accessType: share.accessType,
     expireDate: share.expireDate,
   }));
-}
-
-async function getOwnFolders(userId: number) {
-  const userFolders = await prisma.user.findFirst({
-    where: { id: userId },
-    include: { folders: { where: { parentId: null } } },
-  });
-  return userFolders?.folders;
 }
 
 async function getAllFolders(userId: number) {
@@ -42,6 +42,24 @@ async function getAllFolders(userId: number) {
   ];
   return combinedFolders;
 }
+
+export const getOwnFoldersByUserId = async (userId: number) => {
+  try {
+    const folders = getOwnFolders(userId);
+    return folders;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getSharedFoldersByUserId = async (userId: number) => {
+  try {
+    const folders = getSharedFolders(userId);
+    return folders;
+  } catch (error) {
+    throw error;
+  }
+};
 
 export const getFoldersByUserId = async (userId: number, type?: string) => {
   try {
@@ -67,6 +85,7 @@ export const getFoldersByParentId = async (folderId: number) => {
     return folders;
   } catch (error) {
     console.log(error);
+    throw error;
   }
 };
 

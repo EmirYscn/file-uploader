@@ -1,7 +1,8 @@
 import styled from "styled-components";
 import BackButton from "./BackButton";
 import Files from "./Files";
-import Folders from "./Folders";
+import OwnFolders from "./OwnFolders";
+import SharedFolders from "./SharedFolders";
 
 const StyledAll = styled.div`
   display: grid;
@@ -13,7 +14,8 @@ function All() {
   return (
     <StyledAll>
       <BackButton />
-      <Folders />
+      <OwnFolders />
+      <SharedFolders />
       <Files />
     </StyledAll>
   );

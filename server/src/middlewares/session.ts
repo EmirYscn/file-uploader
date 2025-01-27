@@ -4,6 +4,8 @@ import { PrismaClient } from "@prisma/client";
 
 export const sessionMiddleware = expressSession({
   cookie: {
+    secure: false,
+    httpOnly: true,
     maxAge: 7 * 24 * 60 * 60 * 1000, // ms
   },
   secret: process.env.SESSION_SECRET || "default_secret_key",

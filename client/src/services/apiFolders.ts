@@ -1,5 +1,35 @@
-import { File, Folder, FolderWithShareInfo } from "../types/models";
+import { Folder, FolderWithShareInfo } from "../types/models";
 import { Data } from "../ui/ShareFolder";
+
+export const getSharedFoldersByUserId = async (userId: number) => {
+  try {
+    const res = await fetch(`/api/folders/shared/${userId}`);
+    const folders: FolderWithShareInfo[] = await res.json();
+    return folders;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getOwnFoldersByUserId = async (userId: number) => {
+  try {
+    const res = await fetch(`/api/folders/own/${userId}`);
+    const folders: Folder[] = await res.json();
+    return folders;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getSharedFoldersByFolderId = async (folderId: number) => {
+  try {
+    const res = await fetch(`/api/folders/${folderId}`);
+    const folders: FolderWithShareInfo[] = await res.json();
+    return folders;
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 export const getFoldersByUserId = async (userId: number, type: string) => {
   console.log("in userId");
