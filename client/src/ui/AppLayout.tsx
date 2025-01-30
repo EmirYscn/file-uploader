@@ -1,9 +1,10 @@
 import { Outlet } from "react-router";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import Header from "./Header";
 import Sidebar from "./Sidebar";
 import { UserContext } from "../contexts/userContext";
 import { useContext } from "react";
+import { ThemeContext } from "../contexts/themeContext";
 
 const StyledAppLayout = styled.div`
   display: grid;
@@ -12,11 +13,20 @@ const StyledAppLayout = styled.div`
   height: 100vh;
 `;
 
-const Main = styled.main`
+const Main = styled.main.withConfig({
+  shouldForwardProp: (prop) => prop !== "isdark",
+})<{ isdark: boolean }>`
   background-color: var(--color-grey-50);
   padding: 4rem 4.8rem 6.4rem;
   overflow: scroll;
   /* position: relative; */
+
+  ${(props) =>
+    props.isdark &&
+    css`
+      background-color: var(--color-black-200);
+      color: var(--color-grey-200);
+    `}
 `;
 
 const Container = styled.div`
@@ -30,12 +40,12 @@ const Container = styled.div`
 
 function AppLayout() {
   const { user } = useContext(UserContext);
-
+  const { isDark } = useContext(ThemeContext);
   return (
     <StyledAppLayout>
-      <Header />
-      <Sidebar />
-      <Main>
+      <Header isDark={isDark} />
+      <Sidebar isDark={isDark} />
+      <Main isdark={isDark}>
         <Container>{user && <Outlet />}</Container>
       </Main>
     </StyledAppLayout>

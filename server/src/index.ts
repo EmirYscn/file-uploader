@@ -1,14 +1,12 @@
 import express, { NextFunction, Request, Response } from "express";
 import dotenv from "dotenv";
 import path from "node:path";
-import { validateForm } from "./middlewares/validateForm";
+import cors from "cors";
 
-import * as authController from "./controllers/authController";
-import * as usersController from "./controllers/usersController";
-import * as filesController from "./controllers/filesController";
-import * as foldersController from "./controllers/foldersController";
 import { sessionMiddleware } from "./middlewares/session";
 import passport from "./strategies/passport";
+import * as authController from "./controllers/authController";
+
 import { router as folderRouter } from "./routes/folderRoutes";
 import { router as fileRouter } from "./routes/fileRoutes";
 import { router as userRouter } from "./routes/userRoutes";
@@ -16,6 +14,7 @@ import { router as userRouter } from "./routes/userRoutes";
 dotenv.config({ path: "./.env" });
 
 const app = express();
+// app.use(cors({ origin: "http://localhost:5173", credentials: true }));
 
 // app middleware to use form body in post router
 app.use(express.json());

@@ -1,11 +1,10 @@
+import { useContext } from "react";
 import styled, { css } from "styled-components";
+import { ThemeContext } from "../contexts/themeContext";
 
-// const test = css`
-//   text-align: center;
-//   ${10 > 5 && "background-color: blue"}
-// `;
-
-const Heading = styled.h1<{ type?: string }>`
+const StyledHeading = styled.h1.withConfig({
+  shouldForwardProp: (prop) => prop !== "isdark",
+})<{ type?: string; isdark?: boolean }>`
   ${(props) =>
     props.as === "h1" &&
     css`
@@ -39,7 +38,28 @@ const Heading = styled.h1<{ type?: string }>`
       pointer-events: none;
     `}
 
-  line-height: 1.4
+    ${(props) =>
+    props.isdark &&
+    css`
+      color: var(--color-grey-200);
+    `}
+
+  line-height: 1.4;
 `;
+
+type HeadingProps = {
+  children: string | string[];
+  as?: "h1" | "h2" | "h3"; // Restrict `as` to specific heading levels
+  type?: string;
+};
+
+function Heading({ children, as, type }: HeadingProps) {
+  const { isDark } = useContext(ThemeContext);
+  return (
+    <StyledHeading as={as} isdark={isDark} type={type}>
+      {children}
+    </StyledHeading>
+  );
+}
 
 export default Heading;

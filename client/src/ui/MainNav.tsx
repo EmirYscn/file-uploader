@@ -1,12 +1,9 @@
 import { FaHome } from "react-icons/fa";
 import { RiFolderCloudLine } from "react-icons/ri";
 import { NavLink } from "react-router";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import NewButton from "./NewButton";
-import {
-  PiFolderSimpleUserBold,
-  PiFolderSimpleUserDuotone,
-} from "react-icons/pi";
+import { PiFolderSimpleUserBold } from "react-icons/pi";
 
 const NavList = styled.ul`
   display: flex;
@@ -14,7 +11,9 @@ const NavList = styled.ul`
   gap: 0.8rem;
 `;
 
-const StyledNavLink = styled(NavLink)`
+const StyledNavLink = styled(NavLink).withConfig({
+  shouldForwardProp: (prop) => prop !== "isdark",
+})<{ isdark?: boolean }>`
   &:link,
   &:visited {
     display: flex;
@@ -47,28 +46,45 @@ const StyledNavLink = styled(NavLink)`
   &.active:visited svg {
     color: var(--color-brand-600);
   }
+
+  ${(props) =>
+    props.isdark &&
+    css`
+      &:hover,
+      &:active,
+      &.active:link,
+      &.active:visited {
+        background-color: var(--color-black-400);
+        border-bottom: 1px solid var(--color-black-500);
+        color: white;
+      }
+      /* &:link,
+      &:visited {
+        color: white;
+      } */
+    `}
 `;
 
-function MainNav() {
+function MainNav({ isDark }: { isDark?: boolean }) {
   return (
     <>
       <NewButton />
       <nav>
         <NavList>
           <li>
-            <StyledNavLink to="all">
+            <StyledNavLink to="all" isdark={isDark}>
               <FaHome />
               <span>All</span>
             </StyledNavLink>
           </li>
           <li>
-            <StyledNavLink to="myFolders">
+            <StyledNavLink to="myFolders" isdark={isDark}>
               <PiFolderSimpleUserBold />
               <span>My Folders / Files</span>
             </StyledNavLink>
           </li>
           <li>
-            <StyledNavLink to="shared">
+            <StyledNavLink to="shared" isdark={isDark}>
               <RiFolderCloudLine />
               <span>Shared to Me</span>
             </StyledNavLink>

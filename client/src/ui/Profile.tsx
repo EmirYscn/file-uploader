@@ -1,22 +1,30 @@
 import { useContext } from "react";
 import { UserContext } from "../contexts/userContext";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import Modal from "./Modal";
 import Menus from "./Menus";
 import { IoPerson, IoSettingsOutline } from "react-icons/io5";
 import { useNavigate } from "react-router";
 
-const StyledProfile = styled.div`
+const StyledProfile = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== "isdark",
+})<{ isdark?: boolean }>`
   padding: 0.5em 1em;
   border: none;
   border-radius: 3px;
   font-size: small;
-  background-color: rgba(255, 255, 255, 0.1);
+  background: none;
   color: var(--color-brand-600);
   box-shadow: var(--shadow-md);
+
+  ${(props) =>
+    props.isdark &&
+    css`
+      color: var(--color-grey-200);
+    `}
 `;
 
-function Profile() {
+function Profile({ isDark }: { isDark?: boolean }) {
   const { user } = useContext(UserContext);
   const navigate = useNavigate();
 
@@ -24,7 +32,7 @@ function Profile() {
     <Menus>
       <Menus.Menu>
         <Menus.Toggle id={user!.id}>
-          <StyledProfile>{user?.username}</StyledProfile>
+          <StyledProfile isdark={isDark}>{user?.username}</StyledProfile>
         </Menus.Toggle>
         <Menus.List id={user!.id}>
           <Menus.Button

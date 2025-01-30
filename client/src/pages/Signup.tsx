@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import Form from "../ui/Form";
 import FormRow from "../ui/FormRow";
 import Input from "../ui/Input";
@@ -8,9 +8,10 @@ import Button from "../ui/Button";
 import Wall from "../ui/Wall";
 import { createUser } from "../services/apiUser";
 import { useNavigate } from "react-router";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import useCreateUser from "../hooks/useCreateUser";
 import BackButton from "../ui/BackButton";
+import { ThemeContext } from "../contexts/themeContext";
 
 const StyledSignup = styled.div`
   display: grid;
@@ -18,18 +19,25 @@ const StyledSignup = styled.div`
   height: 100vh;
 `;
 
-const FormContainer = styled.div`
+const FormContainer = styled.div<{ isdark?: boolean }>`
   position: relative;
   padding: 2em;
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: var(--color-grey-100);
+
+  ${(props) =>
+    props.isdark &&
+    css`
+      background-color: var(--color-black-200);
+    `}
 `;
 
 type SignupData = User & { confirmPassword: string };
 
 function Signup() {
+  const { isDark } = useContext(ThemeContext);
   const {
     register,
     handleSubmit,
@@ -44,10 +52,10 @@ function Signup() {
   return (
     <>
       <StyledSignup>
-        <Wall />
-        <FormContainer>
+        <Wall isDark={isDark} />
+        <FormContainer isdark={isDark}>
           <BackButton posContext="signup" />
-          <Form onSubmit={handleSubmit(onSubmit)}>
+          <Form onSubmit={handleSubmit(onSubmit)} isdark={isDark}>
             <FormRow>
               <h1>Sign Up</h1>
             </FormRow>

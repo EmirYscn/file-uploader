@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import Form from "../ui/Form";
 import FormRow from "../ui/FormRow";
 import Input from "../ui/Input";
@@ -11,6 +11,7 @@ import { useContext } from "react";
 import Wall from "../ui/Wall";
 import Button from "../ui/Button";
 import useLoginUser from "../hooks/useLoginUser";
+import { ThemeContext } from "../contexts/themeContext";
 
 const StyledLogin = styled.div`
   display: grid;
@@ -18,15 +19,22 @@ const StyledLogin = styled.div`
   height: 100vh;
 `;
 
-const FormContainer = styled.div`
+const FormContainer = styled.div<{ isdark?: boolean }>`
   padding: 2em;
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: var(--color-grey-100);
+
+  ${(props) =>
+    props.isdark &&
+    css`
+      background-color: var(--color-black-200);
+    `}
 `;
 
 function Login() {
+  const { isDark } = useContext(ThemeContext);
   const {
     register,
     handleSubmit,
@@ -35,25 +43,12 @@ function Login() {
   } = useForm<User>();
   const { onSubmit, errors: apiErrors, isLoading } = useLoginUser();
   console.log(apiErrors);
-  // const navigate = useNavigate();
-  // const { setUser } = useContext(UserContext);
-
-  // async function onSubmit(data: User) {
-  //   try {
-  //     const user = await login(data);
-  //     console.log(user);
-  //     setUser(user);
-  //     navigate("/all");
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }
 
   return (
     <StyledLogin>
-      <Wall />
-      <FormContainer>
-        <Form onSubmit={handleSubmit(onSubmit)}>
+      <Wall isDark={isDark} />
+      <FormContainer isdark={isDark}>
+        <Form onSubmit={handleSubmit(onSubmit)} isdark={isDark}>
           <FormRow>
             <h1>Log In</h1>
           </FormRow>

@@ -3,18 +3,28 @@ import * as foldersController from "../controllers/foldersController";
 
 const router = express.Router();
 
-router.get(
-  "/api/folders/byFolderId/:folderId",
-  foldersController.getFoldersByFolderId
-);
+// router.get(
+//   "/api/folders/byFolderId/:folderId",
+//   foldersController.getFoldersByFolderId
+// );
+
 router.get(
   "/api/folders/:type/byUserId/:userId",
-  foldersController.getFoldersByUserId
+  foldersController.getMainFolders
 );
-router.get("/api/folder/:folderId", foldersController.getFolder);
-router.delete("/api/folder/:folderId", foldersController.deleteFolder);
-router.post("/api/folder/createFolder", foldersController.createFolder);
-router.post("/api/folder/shareFolder", foldersController.shareFolder);
-router.patch("/api/folder/:folderId", foldersController.updateFolder);
+
+router.get("/api/folders/main/:userId", foldersController.getMainFolders);
+router.post("/api/folders", foldersController.createFolder);
+router
+  .route("/api/folders/:id")
+  .get(foldersController.getFolder)
+  .patch(foldersController.updateFolder)
+  .delete(foldersController.deleteFolder);
+
+router.post("/api/folders/share", foldersController.shareFolder);
+// router.post("/api/folder/createFolder", foldersController.createFolder);
+// router.get("/api/folder/:folderId", foldersController.getFolder);
+// router.patch("/api/folder/:folderId", foldersController.updateFolder);
+// router.delete("/api/folder/:folderId", foldersController.deleteFolder);
 
 export { router };

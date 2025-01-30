@@ -1,10 +1,11 @@
 import { cloneElement, createContext, useContext, useState } from "react";
 import { createPortal } from "react-dom";
 import { HiXMark } from "react-icons/hi2";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { useOutsideClick } from "../hooks/useOutsideClick";
+import { ThemeContext } from "../contexts/themeContext";
 
-const StyledModal = styled.div`
+const StyledModal = styled.div<{ isdark?: boolean }>`
   position: fixed;
   top: 50%;
   left: 50%;
@@ -14,6 +15,12 @@ const StyledModal = styled.div`
   box-shadow: var(--shadow-lg);
   padding: 3.2rem 4rem;
   transition: all 0.5s;
+
+  ${(props) =>
+    props.isdark &&
+    css`
+      background-color: var(--color-black-300);
+    `}
 `;
 
 const Overlay = styled.div`
@@ -57,6 +64,7 @@ type ModalContextType = {
   openName: string;
   close: () => void;
   open: React.Dispatch<React.SetStateAction<string>>;
+  isDark?: boolean;
 };
 
 const ModalContext = createContext({} as ModalContextType);
@@ -66,13 +74,14 @@ type ModalProps = {
 };
 
 function Modal({ children }: ModalProps) {
+  const { isDark } = useContext(ThemeContext);
   const [openName, setOpenName] = useState("");
 
   const close = () => setOpenName("");
   const open = setOpenName;
 
   return (
-    <ModalContext.Provider value={{ openName, close, open }}>
+    <ModalContext.Provider value={{ openName, close, open, isDark }}>
       {children}
     </ModalContext.Provider>
   );
@@ -94,7 +103,7 @@ type WindowProps = {
 };
 
 function Window({ children, name }: WindowProps) {
-  const { openName, close } = useContext(ModalContext);
+  const { openName, close, isDark } = useContext(ModalContext);
 
   const ref = useOutsideClick<HTMLDivElement>(close);
 
@@ -102,7 +111,7 @@ function Window({ children, name }: WindowProps) {
 
   return createPortal(
     <Overlay>
-      <StyledModal ref={ref}>
+      <StyledModal ref={ref} isdark={isDark}>
         <Button onClick={close}>
           <HiXMark />
         </Button>

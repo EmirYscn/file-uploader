@@ -1,11 +1,17 @@
 import { useContext, useState } from "react";
-import { Folder, Folder as FolderType } from "../types/models";
+import {
+  Folder,
+  Folder as FolderType,
+  FolderWithShareInfo,
+} from "../types/models";
 import { createFolder } from "../services/apiFolders";
 import { UserContext } from "../contexts/userContext";
 import { useLocation } from "react-router";
 
 function useCreateFolder(
-  setFolders: React.Dispatch<React.SetStateAction<FolderType[] | undefined>>
+  setFolders: React.Dispatch<
+    React.SetStateAction<FolderWithShareInfo[] | undefined>
+  >
 ) {
   const [isLoading, setIsLoading] = useState(false);
   const { user } = useContext(UserContext);
@@ -21,11 +27,11 @@ function useCreateFolder(
     };
     try {
       setIsLoading(true);
-      const newFolder = await createFolder(folderData);
+      const newFolder = (await createFolder(folderData)) as FolderWithShareInfo;
       setFolders((prevFolder) => {
-        if (!prevFolder) return prevFolder;
+        if (!prevFolder) return [newFolder];
 
-        const updatedFolders = [...prevFolder, newFolder!];
+        const updatedFolders = [...prevFolder, newFolder];
         return updatedFolders;
       });
     } catch (error) {

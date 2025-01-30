@@ -1,20 +1,6 @@
 import { Request, Response } from "express";
 import * as db from "../db/folder.queries";
 
-export const getFoldersByFolderId = async (
-  req: Request,
-  res: Response
-): Promise<any> => {
-  const { folderId } = req.params;
-  console.log(folderId);
-  try {
-    const folders = await db.getFoldersByParentId(+folderId);
-    console.log(folders);
-    return res.status(200).json(folders);
-  } catch (error) {
-    console.log(error);
-  }
-};
 export const getFoldersByUserId = async (
   req: Request,
   res: Response
@@ -28,10 +14,23 @@ export const getFoldersByUserId = async (
   }
 };
 
-export const getFolder = async (req: Request, res: Response): Promise<any> => {
-  const { folderId } = req.params;
+export const getMainFolders = async (
+  req: Request,
+  res: Response
+): Promise<any> => {
+  const { userId } = req.params;
   try {
-    const folder = await db.getFolderById(+folderId);
+    const folders = await db.getMainFolders(+userId);
+    return res.status(200).json(folders);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getFolder = async (req: Request, res: Response): Promise<any> => {
+  const { id } = req.params;
+  try {
+    const folder = await db.getFolder(+id);
     return res.status(200).json(folder);
   } catch (error) {
     console.log(error);
@@ -56,9 +55,9 @@ export const deleteFolder = async (
   req: Request,
   res: Response
 ): Promise<any> => {
-  const { folderId } = req.params;
+  const { id } = req.params;
   try {
-    await db.deleteFolder(+folderId);
+    await db.deleteFolder(+id);
     return res.status(200).json({ message: "File deleted successfully" });
   } catch (error) {
     console.error(error);
@@ -70,9 +69,9 @@ export const updateFolder = async (
   req: Request,
   res: Response
 ): Promise<any> => {
-  const { folderId } = req.params;
+  const { id } = req.params;
   try {
-    await db.updateFolder(+folderId, req.body);
+    await db.updateFolder(+id, req.body);
     return res.status(200).json({ message: "Folder updated successfully" });
   } catch (error) {
     console.error(error);
@@ -84,8 +83,6 @@ export const shareFolder = async (
   req: Request,
   res: Response
 ): Promise<any> => {
-  const { accessType, expireDate, folderId, users } = req.body;
-  console.log(req.body);
   try {
     await db.shareFolder(req.body);
     return res.status(200).json({ message: "Folder shared successfully" });

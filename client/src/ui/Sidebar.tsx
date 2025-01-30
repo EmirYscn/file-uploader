@@ -1,22 +1,33 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import Logo from "./Logo";
 import MainNav from "./MainNav";
 
-const StyledSidebar = styled.header`
+// const BaseSidebar = (styled.header.withConfig({
+//   shouldForwardProp: (prop) => prop !== "isdark",
+// }) as typeof styled.header);
+
+const StyledSidebar = styled.header.withConfig({
+  shouldForwardProp: (prop) => prop !== "isdark",
+})<{ isdark?: boolean }>`
   background-color: var(--color-grey-0);
   padding: 3.2rem 2.4rem;
-  border-bottom: 1px solid var(--color-grey-100);
   grid-row: 1 / -1;
   display: flex;
   flex-direction: column;
   gap: 3.2rem;
+
+  ${(props) =>
+    props.isdark &&
+    css`
+      background-color: var(--color-black-100);
+    `}
 `;
 
-function Sidebar() {
+function Sidebar({ isDark }: { isDark?: boolean }) {
   return (
-    <StyledSidebar>
+    <StyledSidebar isdark={isDark}>
       <Logo />
-      <MainNav />
+      <MainNav isDark={isDark} />
     </StyledSidebar>
   );
 }

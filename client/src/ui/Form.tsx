@@ -1,6 +1,6 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
-const Form = styled.form`
+const Form = styled.form<{ isdark?: boolean }>`
   padding: 2.4rem 4rem;
 
   /* Box */
@@ -12,9 +12,13 @@ const Form = styled.form`
   box-shadow: var(--shadow-lg);
   width: 60%;
 
-  /* &.title {
-    color: var(--color-brand-700);
-  } */
+  /* Dark mode */
+  ${(props) =>
+    props.isdark &&
+    css`
+      background-color: var(--color-black-500);
+      color: var(--color-grey-200);
+    `}
 `;
 
 export default Form;

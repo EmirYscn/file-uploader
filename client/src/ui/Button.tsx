@@ -62,7 +62,7 @@ type ButtonProps = {
   onClick?: ButtonOnClickTypes;
   styletype: ButtonTypes;
   children: string | React.ReactNode;
-  disabled: boolean;
+  disabled?: boolean | undefined;
 } & Omit<React.ComponentProps<"button">, "children">;
 
 function Button({ onClick, styletype, children, disabled }: ButtonProps) {

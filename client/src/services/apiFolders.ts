@@ -1,10 +1,21 @@
-import { File, Folder, FolderWithShareInfo } from "../types/models";
+import { Folder, FolderWithShareInfo } from "../types/models";
 import { Data } from "../ui/ShareFolder";
 
-export const getFoldersByUserId = async (userId: number, type: string) => {
-  console.log("in userId");
+// export const getFoldersByUserId = async (userId: number, type: string) => {
+//   console.log("in userId");
+//   try {
+//     const res = await fetch(`/api/folders/${type}/byUserId/${userId}`);
+//     const folders: FolderWithShareInfo[] = await res.json();
+
+//     return folders;
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
+
+export const getMainFolders = async (userId: number) => {
   try {
-    const res = await fetch(`/api/folders/${type}/byUserId/${userId}`);
+    const res = await fetch(`/api/folders/main/${userId}`);
     const folders: FolderWithShareInfo[] = await res.json();
     return folders;
   } catch (error) {
@@ -12,10 +23,19 @@ export const getFoldersByUserId = async (userId: number, type: string) => {
   }
 };
 
-export const getFoldersByFolderId = async (folderId: number) => {
-  console.log("in folderId");
+// export const getFoldersByFolderId = async (folderId: number) => {
+//   try {
+//     const res = await fetch(`/api/folders/${folderId}`);
+//     const folders: FolderWithShareInfo[] = await res.json();
+//     return folders;
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
+
+export const getFolder = async (folderId: number) => {
   try {
-    const res = await fetch(`/api/folders/byFolderId/${folderId}`);
+    const res = await fetch(`/api/folders/${folderId}`);
     const folders: FolderWithShareInfo[] = await res.json();
     return folders;
   } catch (error) {
@@ -27,7 +47,7 @@ export const createFolder = async (
   data: Folder
 ): Promise<Folder | undefined> => {
   try {
-    const response = await fetch(`/api/folder/createFolder`, {
+    const response = await fetch("/api/folders", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -47,7 +67,7 @@ export const createFolder = async (
 
 export const deleteFolder = async (folderId: number) => {
   try {
-    const response = await fetch(`/api/folder/${folderId}`, {
+    const response = await fetch(`/api/folders/${folderId}`, {
       method: "DELETE",
     });
 
@@ -63,7 +83,7 @@ export const deleteFolder = async (folderId: number) => {
 export const renameFolder = async (folderId: number, data: Folder) => {
   console.log(data);
   try {
-    const response = await fetch(`/api/folder/${folderId}`, {
+    const response = await fetch(`/api/folders/${folderId}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -86,7 +106,7 @@ export const shareFolder = async (formData: Data, folderId: number) => {
       folderId,
     };
     console.log(data);
-    const response = await fetch("/api/folder/shareFolder", {
+    const response = await fetch("/api/folders/share", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

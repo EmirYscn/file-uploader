@@ -1,9 +1,10 @@
 import React, { createContext, useContext, useState } from "react";
 import { createPortal } from "react-dom";
 import { HiEllipsisVertical } from "react-icons/hi2";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { useOutsideClick } from "../hooks/useOutsideClick";
 import { accessType } from "../types/enums";
+import { ThemeContext } from "../contexts/themeContext";
 
 const Menu = styled.div`
   display: flex;
@@ -11,7 +12,9 @@ const Menu = styled.div`
   justify-content: flex-end;
 `;
 
-const StyledToggle = styled.button`
+const StyledToggle = styled.button.withConfig({
+  shouldForwardProp: (prop) => prop !== "isdark",
+})<{ isdark?: boolean }>`
   background: none;
   border: none;
   padding: 0.4rem;
@@ -21,16 +24,30 @@ const StyledToggle = styled.button`
 
   &:hover {
     background-color: var(--color-grey-100);
+
+    ${(props) =>
+      props.isdark &&
+      css`
+        background-color: var(--color-black-500);
+      `}
   }
 
   & svg {
     width: 2.4rem;
     height: 2.4rem;
     color: var(--color-grey-700);
+
+    ${(props) =>
+      props.isdark &&
+      css`
+        color: var(--color-grey-200);
+      `}
   }
 `;
 
-const StyledList = styled.ul<{ position: Position }>`
+const StyledList = styled.ul.withConfig({
+  shouldForwardProp: (prop) => prop !== "isdark",
+})<{ position: Position; isdark?: boolean }>`
   position: fixed;
 
   background-color: var(--color-grey-0);
@@ -39,6 +56,13 @@ const StyledList = styled.ul<{ position: Position }>`
 
   right: ${(props) => props?.position!.x}px;
   top: ${(props) => props?.position!.y}px;
+
+  ${(props) =>
+    props.isdark &&
+    css`
+      background-color: var(--color-black-300);
+      color: var(--color-grey-200);
+    `}
 `;
 
 // Forward the ref within the same file
@@ -47,7 +71,9 @@ const StyledList = styled.ul<{ position: Position }>`
 //   { position: Position }
 // >((props, ref) => <StyledList {...props} ref={ref} />);
 
-const StyledButton = styled.button`
+const StyledButton = styled.button.withConfig({
+  shouldForwardProp: (prop) => prop !== "isdark",
+})<{ isdark?: boolean }>`
   width: 100%;
   text-align: left;
   background: none;
@@ -62,6 +88,12 @@ const StyledButton = styled.button`
 
   &:hover {
     background-color: var(--color-grey-50);
+
+    ${(props) =>
+      props.isdark &&
+      css`
+        background-color: var(--color-black-400);
+      `}
   }
 
   & svg {
@@ -80,6 +112,7 @@ type MenusContextType = {
   open: React.Dispatch<React.SetStateAction<number | string>>;
   position: Position;
   setPosition: React.Dispatch<React.SetStateAction<Position>>;
+  isDark?: boolean;
 };
 
 type MenusProps = {
@@ -89,6 +122,7 @@ type MenusProps = {
 const MenusContext = createContext<MenusContextType | undefined>(undefined);
 
 function Menus({ children }: MenusProps) {
+  const { isDark } = useContext(ThemeContext);
   const [openId, setOpenId] = useState<number | string>("");
   const [position, setPosition] = useState<Position>(null);
 
@@ -97,7 +131,7 @@ function Menus({ children }: MenusProps) {
 
   return (
     <MenusContext.Provider
-      value={{ openId, close, open, position, setPosition }}
+      value={{ openId, close, open, position, setPosition, isDark }}
     >
       {children}
     </MenusContext.Provider>
@@ -114,7 +148,7 @@ function Toggle({ id, children }: ToggleProps) {
   if (!context) {
     throw new Error("Toggle must be used within a MenusProvider");
   }
-  const { openId, close, open, setPosition } = context;
+  const { openId, close, open, setPosition, isDark } = context;
 
   function handleClick(e: React.MouseEvent<HTMLButtonElement>) {
     const button = (e.target as HTMLElement).closest("button");
@@ -130,11 +164,15 @@ function Toggle({ id, children }: ToggleProps) {
   }
 
   if (children) {
-    return <StyledToggle onClick={handleClick}>{children}</StyledToggle>;
+    return (
+      <StyledToggle onClick={handleClick} isdark={isDark}>
+        {children}
+      </StyledToggle>
+    );
   }
 
   return (
-    <StyledToggle onClick={handleClick}>
+    <StyledToggle onClick={handleClick} isdark={isDark}>
       <HiEllipsisVertical />
     </StyledToggle>
   );
@@ -150,14 +188,14 @@ function List({ id, children }: ListProps) {
   if (!context) {
     throw new Error("Toggle must be used within a MenusProvider");
   }
-  const { openId, position, close } = context;
+  const { openId, position, close, isDark } = context;
 
   const ref = useOutsideClick<HTMLUListElement>(close);
 
   if (openId !== id) return null;
 
   return createPortal(
-    <StyledList position={position} ref={ref}>
+    <StyledList position={position} ref={ref} isdark={isDark}>
       {children}
     </StyledList>,
     document.body
@@ -169,7 +207,8 @@ type ButtonProps = {
   icon?: React.ReactNode;
   onClick?: () => void;
   isFolderOwner?: boolean | undefined;
-  accessType?: accessType | null;
+  // accessType?: accessType | null;
+  disabled?: boolean | null;
 };
 
 function Button({
@@ -177,17 +216,18 @@ function Button({
   icon,
   onClick,
   isFolderOwner,
-  accessType,
+  // accessType,
+  disabled = false,
 }: ButtonProps) {
   const context = useContext(MenusContext);
   // const disabled = accessType ? accessType !== "FULL" : false;
-  const disabled =
-    (accessType && accessType !== "FULL") || (!accessType && !isFolderOwner);
-  console.log(isFolderOwner);
+  const isDisabled = disabled === null || isFolderOwner ? false : disabled;
+  // const disabled =
+  //   (accessType && accessType !== "FULL") || (!accessType && !isFolderOwner);
   if (!context) {
     throw new Error("Toggle must be used within a MenusProvider");
   }
-  const { close } = context;
+  const { close, isDark } = context;
 
   function handleClick() {
     onClick?.();
@@ -196,7 +236,7 @@ function Button({
 
   return (
     <li>
-      <StyledButton onClick={handleClick} disabled={disabled}>
+      <StyledButton onClick={handleClick} disabled={isDisabled} isdark={isDark}>
         {icon}
         <span>{children}</span>
       </StyledButton>

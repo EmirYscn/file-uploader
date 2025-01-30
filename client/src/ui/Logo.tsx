@@ -4,7 +4,7 @@ import styled, { css } from "styled-components";
 const StyledLogo = styled.div`
   text-align: center;
 `;
-const Img = styled.img<{ imgtype: string }>`
+const Img = styled.img<{ imgtype?: string }>`
   height: 10rem;
   ${(props) =>
     props.imgtype === "wall" &&
@@ -15,7 +15,7 @@ const Img = styled.img<{ imgtype: string }>`
   width: auto;
 `;
 
-function Logo({ type }: { type: string }) {
+function Logo({ type }: { type?: string }) {
   return (
     <StyledLogo>
       <Link to="/all">

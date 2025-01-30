@@ -1,8 +1,10 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import Button from "./Button";
 import Heading from "./Heading";
+import { useContext } from "react";
+import { ThemeContext } from "../contexts/themeContext";
 
-const StyledConfirmDelete = styled.div`
+const StyledConfirmDelete = styled.div<{ isdark?: boolean }>`
   width: 40rem;
   display: flex;
   flex-direction: column;
@@ -11,6 +13,12 @@ const StyledConfirmDelete = styled.div`
   & p {
     color: var(--color-grey-500);
     margin-bottom: 1.2rem;
+
+    ${(props) =>
+      props.isdark &&
+      css`
+        color: var(--color-grey-200);
+      `}
   }
 
   & div {
@@ -33,8 +41,9 @@ function ConfirmDelete({
   disabled,
   onCloseModal,
 }: ConfirmDeleteProps) {
+  const { isDark } = useContext(ThemeContext);
   return (
-    <StyledConfirmDelete>
+    <StyledConfirmDelete isdark={isDark}>
       <Heading as="h3">Delete {resourceName}</Heading>
       <p>
         Are you sure you want to delete this {resourceName} permanently? This

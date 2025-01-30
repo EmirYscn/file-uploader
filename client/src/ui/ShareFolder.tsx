@@ -1,13 +1,14 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import Heading from "./Heading";
 import { useForm } from "react-hook-form";
 import { Folder, User } from "../types/models";
 import Input from "./Input";
 import Button from "./Button";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { MdDelete } from "react-icons/md";
 import { add } from "date-fns";
 import { accessType } from "../types/enums";
+import { ThemeContext } from "../contexts/themeContext";
 
 const StyledSharedFolder = styled.div`
   width: 40rem;
@@ -27,10 +28,16 @@ const StyledSharedFolder = styled.div`
   }
 `;
 
-const Form = styled.form`
+const Form = styled.form<{ isdark?: boolean }>`
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
+
+  ${(props) =>
+    props.isdark &&
+    css`
+      color: var(--color-grey-200);
+    `}
 `;
 
 const SelectedUsers = styled.div`
@@ -67,7 +74,7 @@ const SelectedUsers = styled.div`
   }
 `;
 
-const Select = styled.select`
+const Select = styled.select<{ isdark?: boolean }>`
   /* General Select Styling */
   appearance: none; /* Removes default arrow for cross-browser compatibility */
   background-color: #f9f9f9;
@@ -110,6 +117,25 @@ const Select = styled.select`
   & option:hover {
     background-color: #f0f8ff;
   }
+
+  ${(props) =>
+    props.isdark &&
+    css`
+      background-color: #333;
+      color: #f9f9f9;
+      border: 1px solid #ccc;
+      &:focus {
+        border-color: #007bff; /* Highlighted border color */
+        box-shadow: 0 0 4px rgba(0, 123, 255, 0.4); /* Subtle focus effect */
+      }
+      & option {
+        background-color: #333;
+        color: #f9f9f9;
+      }
+      & option:hover {
+        background-color: #f9f9f9;
+      }
+    `}
 `;
 
 const Label = styled.label`
@@ -146,6 +172,7 @@ const expirationMap: Record<string, number | null> = {
 };
 
 function ShareFolder({ onConfirm, disabled, onCloseModal }: ShareFolderProps) {
+  const { isDark } = useContext(ThemeContext);
   const { handleSubmit, register } = useForm<FormData>();
   const [value, setValue] = useState("");
   const [users, setUsers] = useState<User[]>([]);
@@ -215,7 +242,7 @@ function ShareFolder({ onConfirm, disabled, onCloseModal }: ShareFolderProps) {
   return (
     <StyledSharedFolder>
       <Heading as="h3">Share Folder</Heading>
-      <Form onSubmit={handleSubmit(onSubmit)}>
+      <Form onSubmit={handleSubmit(onSubmit)} isdark={isDark}>
         <Label htmlFor="user">Search User</Label>
         <Input
           id="user"
@@ -240,6 +267,7 @@ function ShareFolder({ onConfirm, disabled, onCloseModal }: ShareFolderProps) {
         )}
         {users.length > 0 && (
           <Select
+            isdark={isDark}
             name="users"
             id="users"
             onChange={(e) => {
@@ -262,13 +290,13 @@ function ShareFolder({ onConfirm, disabled, onCloseModal }: ShareFolderProps) {
           </Select>
         )}
         <Label htmlFor="expireDate">Expire Date</Label>
-        <Select id="expireDate" {...register("expireDate")}>
+        <Select isdark={isDark} id="expireDate" {...register("expireDate")}>
           <option value="1d">1 Day</option>
           <option value="3d">3 Day</option>
           <option value="indefinite">Indefinite</option>
         </Select>
         <Label htmlFor="accessType">Access Type</Label>
-        <Select id="accessType" {...register("accessType")}>
+        <Select isdark={isDark} id="accessType" {...register("accessType")}>
           <option value="LIMITED">Limited Access</option>
           <option value="FULL">Full Access</option>
         </Select>

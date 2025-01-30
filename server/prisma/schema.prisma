@@ -51,6 +51,7 @@ model Folder {
   userId    Int
   sharedTo  FolderShare[]
   isSharedSubfolder Boolean?
+  isAccessLimited Boolean?
 }
 
 model FolderShare {

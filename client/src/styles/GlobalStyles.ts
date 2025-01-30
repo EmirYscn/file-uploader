@@ -54,6 +54,12 @@ const GlobalStyles = createGlobalStyle`
   /* For dark mode */
   --image-grayscale: 0;
   --image-opacity: 100%;
+
+  --color-black-100: #0d0d0d;
+  --color-black-200: #1a1a1a;
+  --color-black-300: #262626;
+  --color-black-400: #333333;
+  --color-black-500: #404040;
 }
 
 *,

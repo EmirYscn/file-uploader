@@ -26,6 +26,7 @@ function useLoginUser() {
   const navigate = useNavigate();
 
   async function onSubmit(data: User) {
+    console.log(data);
     try {
       setIsLoading(true);
       const user = await login(data);

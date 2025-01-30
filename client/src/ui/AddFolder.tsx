@@ -1,11 +1,13 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import Heading from "./Heading";
 import { useForm } from "react-hook-form";
 import { Folder } from "../types/models";
 import Input from "./Input";
 import Button from "./Button";
+import { useContext } from "react";
+import { ThemeContext } from "../contexts/themeContext";
 
-const StyledAddFolder = styled.div`
+const StyledAddFolder = styled.div<{ isdark?: boolean }>`
   width: 40rem;
   display: flex;
   flex-direction: column;
@@ -14,6 +16,12 @@ const StyledAddFolder = styled.div`
   & p {
     color: var(--color-grey-500);
     margin-bottom: 1.2rem;
+
+    ${(props) =>
+      props.isdark &&
+      css`
+        color: var(--color-grey-200);
+      `}
   }
 
   & div {
@@ -21,6 +29,12 @@ const StyledAddFolder = styled.div`
     justify-content: flex-end;
     gap: 1.2rem;
   }
+
+  ${(props) =>
+    props.isdark &&
+    css`
+      background-color: var(--color-black-300);
+    `}
 `;
 
 const Form = styled.form`
@@ -38,6 +52,7 @@ type AddFolderProps = {
 };
 
 function AddFolder({ onConfirm, disabled, onCloseModal }: AddFolderProps) {
+  const { isDark } = useContext(ThemeContext);
   const { handleSubmit, register } = useForm<FormData>();
   async function onSubmit(data: FormData) {
     console.log(data);
@@ -46,7 +61,7 @@ function AddFolder({ onConfirm, disabled, onCloseModal }: AddFolderProps) {
   }
 
   return (
-    <StyledAddFolder>
+    <StyledAddFolder isdark={isDark}>
       <Heading as="h3">Add Folder</Heading>
       <Form onSubmit={handleSubmit(onSubmit)}>
         <Input id="name" type="text" {...register("name")} width={"100%"} />

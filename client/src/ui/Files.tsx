@@ -42,6 +42,7 @@ const Img = styled.img`
 const Details = styled.div`
   display: grid;
   grid-template-columns: auto 1fr;
+  align-items: center;
 `;
 
 function Files() {
@@ -77,8 +78,6 @@ function Files() {
                       <Menus.List id={file.id}>
                         <Menus.Button
                           icon={<AiOutlineDownload />}
-                          isFolderOwner={file.userId === currentUser?.id}
-                          accessType={file.accessType}
                           onClick={() => handleDownloadFile(file.id, file.name)}
                         >
                           Download
@@ -87,7 +86,7 @@ function Files() {
                           <Menus.Button
                             icon={<MdDriveFileRenameOutline />}
                             isFolderOwner={file.userId === currentUser?.id}
-                            accessType={file.accessType}
+                            disabled={true}
                           >
                             Rename
                           </Menus.Button>
@@ -96,7 +95,7 @@ function Files() {
                           <Menus.Button
                             icon={<MdPersonAddAlt1 />}
                             isFolderOwner={file.userId === currentUser?.id}
-                            accessType={file.accessType}
+                            disabled={true}
                           >
                             Share
                           </Menus.Button>
@@ -105,7 +104,7 @@ function Files() {
                           <Menus.Button
                             icon={<RiDeleteBin2Line />}
                             isFolderOwner={file.userId === currentUser?.id}
-                            accessType={file.accessType}
+                            disabled={true}
                           >
                             Delete
                           </Menus.Button>

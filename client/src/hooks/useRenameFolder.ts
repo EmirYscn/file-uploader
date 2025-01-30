@@ -1,9 +1,11 @@
 import { useState } from "react";
-import { Folder as FolderType } from "../types/models";
+import { Folder as FolderType, FolderWithShareInfo } from "../types/models";
 import { renameFolder } from "../services/apiFolders";
 
 function useRenameFolder(
-  setFolders: React.Dispatch<React.SetStateAction<FolderType[] | undefined>>
+  setFolders: React.Dispatch<
+    React.SetStateAction<FolderWithShareInfo[] | undefined>
+  >
 ) {
   const [isLoading, setIsLoading] = useState(false);
 

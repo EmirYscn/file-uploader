@@ -1,18 +1,18 @@
 import { BsFileEarmarkPlusFill } from "react-icons/bs";
-import { FaPlus } from "react-icons/fa";
+
 import { FiFolderPlus } from "react-icons/fi";
-import { GoPlus } from "react-icons/go";
+
 import styled from "styled-components";
 import Modal from "./Modal";
 import AddFolder from "./AddFolder";
 import { useContext, useRef } from "react";
 import { FoldersContext } from "../contexts/foldersContext";
-import { createFolder } from "../services/apiFolders";
-import { Folder } from "../types/models";
+
 import useCreateFolder from "../hooks/useCreateFolder";
-import Input from "./Input";
+
 import { FilesContext } from "../contexts/filesContext";
 import useCreateFile from "../hooks/useCreateFile";
+import { useLocation } from "react-router";
 
 const StyledNewButton = styled.div`
   display: flex;
@@ -26,7 +26,7 @@ const Button = styled.button`
   border: none;
   border-radius: 6px;
   font-size: medium;
-  background-color: rgba(255, 255, 255, 0.1);
+  background: none;
   /* background-color: var(--color-brand-800); */
   color: var(--color-brand-800);
   /* box-shadow: var(--shadow-lg); */
@@ -59,6 +59,8 @@ const Button = styled.button`
 `;
 
 function NewButton() {
+  const location = useLocation();
+  const isInShared = location.pathname.includes("shared");
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const { setFolders, isLoading: isFoldersLoading } =
@@ -84,7 +86,7 @@ function NewButton() {
     <StyledNewButton>
       <Modal>
         <Modal.Open opens="addFolder">
-          <Button>
+          <Button disabled={isInShared || isFoldersLoading}>
             <FiFolderPlus />
           </Button>
         </Modal.Open>
@@ -96,7 +98,7 @@ function NewButton() {
         </Modal.Window>
       </Modal>
 
-      <Button onClick={handleAddFile} disabled={isCreatingFile}>
+      <Button onClick={handleAddFile} disabled={isInShared || isCreatingFile}>
         <BsFileEarmarkPlusFill />
         <input
           type="file"

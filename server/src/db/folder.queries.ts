@@ -1,6 +1,25 @@
 import { accessType, Folder, FolderShare } from "@prisma/client";
 import { prisma } from "./queries";
 
+async function updateSharedStatusRecursively(
+  folderId: number,
+  isShared: boolean,
+  isLimited: boolean
+) {
+  await prisma.folder.update({
+    where: { id: folderId },
+    data: { isSharedSubfolder: isShared, isAccessLimited: isLimited },
+  });
+
+  const subfolders = await prisma.folder.findMany({
+    where: { parentId: folderId },
+  });
+
+  for (const subfolder of subfolders) {
+    await updateSharedStatusRecursively(subfolder.id, isShared, isLimited);
+  }
+}
+
 async function getSharedFolders(userId: number) {
   const sharedFolders = await prisma.folderShare.findMany({
     where: { userId },
@@ -43,6 +62,15 @@ async function getAllFolders(userId: number) {
   return combinedFolders;
 }
 
+export const getMainFolders = async (userId: number) => {
+  try {
+    const folders = await getAllFolders(userId);
+    return folders;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const getFoldersByUserId = async (userId: number, type?: string) => {
   try {
     let folders;
@@ -59,7 +87,7 @@ export const getFoldersByUserId = async (userId: number, type?: string) => {
   }
 };
 
-export const getFoldersByParentId = async (folderId: number) => {
+export const getFolder = async (folderId: number) => {
   try {
     const folders = await prisma.folder.findMany({
       where: { parentId: folderId },
@@ -70,20 +98,21 @@ export const getFoldersByParentId = async (folderId: number) => {
   }
 };
 
-export const getFolderById = async (folderId: number) => {
-  try {
-    const folder = await prisma.folder.findFirst({
-      where: { id: folderId },
-      select: {
-        children: true,
-        files: true,
-      },
-    });
-    return folder;
-  } catch (error) {
-    console.log(error);
-  }
-};
+// export const getFolderById = async (folderId: number) => {
+//   try {
+//     const folder = await prisma.folder.findFirst({
+//       where: { id: folderId },
+//       select: {
+//         children: true,
+//         files: true,
+//         isSharedSubfolder: true,
+//       },
+//     });
+//     return folder;
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
 
 export const createFolder = async (folderData: Folder) => {
   console.log(folderData);
@@ -154,6 +183,12 @@ export const shareFolder = async (body: {
           userId,
         },
       });
+
+      await updateSharedStatusRecursively(
+        folderId,
+        true,
+        accessType === "LIMITED"
+      );
     }
 
     console.log(

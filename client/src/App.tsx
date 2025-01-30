@@ -13,41 +13,45 @@ import Own from "./ui/Own";
 import Shared from "./ui/Shared";
 import FoldersContextProvider from "./contexts/foldersContextProvider";
 import FilesContextProvider from "./contexts/filesContextProvider";
+import ThemeContextProvider from "./contexts/themeContextProvider";
 
 function App() {
   return (
     <>
       <UserContextProvider>
-        <GlobalStyles />
-        <BrowserRouter>
-          <FoldersContextProvider>
-            <FilesContextProvider>
-              <Routes>
-                <Route element={<AppLayout />}>
-                  <Route index element={<Navigate replace to="all" />} />
-                  <Route path="all/*" element={<Home />}>
-                    <Route index element={<All />} />
-                    <Route path="folder/:folderId" element={<All />} />
+        <ThemeContextProvider>
+          <GlobalStyles />
+          <BrowserRouter>
+            <FoldersContextProvider>
+              <FilesContextProvider>
+                <Routes>
+                  <Route element={<AppLayout />}>
+                    <Route index element={<Navigate replace to="all" />} />
+
+                    <Route path="all/*" element={<Home />}>
+                      <Route index element={<All />} />
+                      <Route path="folder/:folderId" element={<All />} />
+                    </Route>
+
+                    <Route path="myFolders/*" element={<MyFolders />}>
+                      <Route index element={<Own />} />
+                      <Route path="folder/:folderId" element={<Own />} />
+                    </Route>
+
+                    <Route path="shared/*" element={<SharedPage />}>
+                      <Route index element={<Shared />} />
+                      <Route path="folder/:folderId" element={<Shared />} />
+                    </Route>
                   </Route>
 
-                  <Route path="myFolders/*" element={<MyFolders />}>
-                    <Route index element={<Own />} />
-                    <Route path="folder/:folderId" element={<Own />} />
-                  </Route>
-
-                  <Route path="shared/*" element={<SharedPage />}>
-                    <Route index element={<Shared />} />
-                    <Route path="folder/:folderId" element={<Shared />} />
-                  </Route>
-                  {/* <Route path='file/:fileId' element={<File/>}/> */}
-                </Route>
-                <Route path="login" element={<Login />} />
-                <Route path="signup" element={<Signup />} />
-                <Route path="*" element={<PageNotFound />} />
-              </Routes>
-            </FilesContextProvider>
-          </FoldersContextProvider>
-        </BrowserRouter>
+                  <Route path="login" element={<Login />} />
+                  <Route path="signup" element={<Signup />} />
+                  <Route path="*" element={<PageNotFound />} />
+                </Routes>
+              </FilesContextProvider>
+            </FoldersContextProvider>
+          </BrowserRouter>
+        </ThemeContextProvider>
       </UserContextProvider>
     </>
   );

@@ -1,9 +1,11 @@
 import { useState } from "react";
-import { Folder as FolderType } from "../types/models";
+import { FolderWithShareInfo } from "../types/models";
 import { deleteFolder } from "../services/apiFolders";
 
 function useDeleteFolder(
-  setFolders: React.Dispatch<React.SetStateAction<FolderType[] | undefined>>
+  setFolders: React.Dispatch<
+    React.SetStateAction<FolderWithShareInfo[] | undefined>
+  >
 ) {
   const [isLoading, setIsLoading] = useState(false);
 
