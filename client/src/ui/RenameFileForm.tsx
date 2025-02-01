@@ -51,7 +51,13 @@ function RenameFileForm({
     <StyledConfirmDelete>
       <Heading as="h3">Rename {resourceName}</Heading>
       <Form onSubmit={handleSubmit(onSubmit)}>
-        <Input id="name" type="text" {...register("name")} width={"100%"} />
+        <Input
+          id="name"
+          type="text"
+          {...register("name")}
+          width={"100%"}
+          defaultValue={resourceName}
+        />
         <div>
           <Button
             styletype="modal-button-cancel"

@@ -74,19 +74,19 @@ function MainNav({ isDark }: { isDark?: boolean }) {
           <li>
             <StyledNavLink to="all" isdark={isDark}>
               <FaHome />
-              <span>All</span>
+              <span>Home</span>
             </StyledNavLink>
           </li>
           <li>
             <StyledNavLink to="myFolders" isdark={isDark}>
               <PiFolderSimpleUserBold />
-              <span>My Folders / Files</span>
+              <span>My Drive</span>
             </StyledNavLink>
           </li>
           <li>
             <StyledNavLink to="shared" isdark={isDark}>
               <RiFolderCloudLine />
-              <span>Shared to Me</span>
+              <span>Shared with me</span>
             </StyledNavLink>
           </li>
         </NavList>

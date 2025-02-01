@@ -1,5 +1,6 @@
 import { createClient } from "@supabase/supabase-js";
 import { v4 as uuidv4 } from "uuid";
+import { sanitizeFilename } from "../utils/sanitizeFilename";
 
 export const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_KEY;
@@ -8,7 +9,7 @@ export const supabase = createClient(supabaseUrl!, supabaseKey!);
 
 export const uploadFile = async (file: Express.Multer.File, userId: number) => {
   const { originalname, buffer, mimetype } = file;
-  const uniqueFileName = `${uuidv4()}-${originalname}`;
+  const uniqueFileName = `${uuidv4()}-${sanitizeFilename(originalname)}`;
   const { data, error } = await supabase.storage
     .from("files")
     .upload(`uploads/user-${userId}/${uniqueFileName}`, buffer, {

@@ -207,8 +207,8 @@ type ButtonProps = {
   icon?: React.ReactNode;
   onClick?: () => void;
   isFolderOwner?: boolean | undefined;
-  // accessType?: accessType | null;
-  disabled?: boolean | null;
+  accessType?: accessType | null;
+  disabled?: boolean | undefined;
 };
 
 function Button({
@@ -216,14 +216,14 @@ function Button({
   icon,
   onClick,
   isFolderOwner,
-  // accessType,
-  disabled = false,
+  accessType,
 }: ButtonProps) {
   const context = useContext(MenusContext);
   // const disabled = accessType ? accessType !== "FULL" : false;
-  const isDisabled = disabled === null || isFolderOwner ? false : disabled;
-  // const disabled =
-  //   (accessType && accessType !== "FULL") || (!accessType && !isFolderOwner);
+  // const isDisabled = disabled === null || isFolderOwner ? false : disabled;
+  const isDisabled =
+    (accessType && accessType !== "FULL") || (!accessType && !isFolderOwner);
+
   if (!context) {
     throw new Error("Toggle must be used within a MenusProvider");
   }

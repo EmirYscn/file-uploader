@@ -1,19 +1,17 @@
 import { useContext, useEffect, useState } from "react";
 import { useLocation } from "react-router";
-import { FileWithShareInfo } from "../types/models";
-import { getFilesByFolderId, getFilesByUserId } from "../services/apiFiles";
+import { File } from "../types/models";
+import { getFilesByFolder, getMainFiles } from "../services/apiFiles";
 import { UserContext } from "../contexts/userContext";
 
 function useFiles(): {
-  files: FileWithShareInfo[] | undefined;
-  setFiles: React.Dispatch<
-    React.SetStateAction<FileWithShareInfo[] | undefined>
-  >;
+  files: File[] | undefined;
+  setFiles: React.Dispatch<React.SetStateAction<File[] | undefined>>;
   isLoading: boolean;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
 } {
   const location = useLocation();
-  const [files, setFiles] = useState<FileWithShareInfo[] | undefined>();
+  const [files, setFiles] = useState<File[] | undefined>();
   const [isLoading, setIsLoading] = useState(false);
   const { user } = useContext(UserContext);
 
@@ -24,11 +22,11 @@ function useFiles(): {
 
         const pathSegments = location.pathname.split("/");
         const folderId = Number(pathSegments[pathSegments.length - 1]);
-        const type = pathSegments[1];
+        // const type = pathSegments[1];
 
         const files = isNaN(folderId)
-          ? await getFilesByUserId(user!.id, type)
-          : await getFilesByFolderId(folderId);
+          ? await getMainFiles(user!.id)
+          : await getFilesByFolder(folderId);
 
         setFiles(files);
       } catch (error) {

@@ -12,7 +12,7 @@ import ConfirmDelete from "./ConfirmDelete";
 import RenameFileForm from "./RenameFileForm";
 
 import useDeleteFile from "../hooks/useDeleteFile";
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 import { useContext } from "react";
 import { FilesContext } from "../contexts/filesContext";
 import useRenameFile from "../hooks/useRenameFile";
@@ -20,6 +20,8 @@ import { File as FileType } from "../types/models";
 import useDownloadFile from "../hooks/useDownloadFile";
 import { formatString } from "../utils/formatString";
 import { UserContext } from "../contexts/userContext";
+import { IoMdLink } from "react-icons/io";
+import useCopyFileLink from "../hooks/useCopyFileLink";
 
 const StyledFiles = styled.div`
   display: grid;
@@ -55,19 +57,51 @@ function Files() {
   const { handleDeleteFile, isLoading: isDeletingFile } =
     useDeleteFile(setFiles);
   const { handleRenameFile, isLoading: isRenaming } = useRenameFile(setFiles);
-  const { handleDownloadFile, isLoading: isDownloading } = useDownloadFile();
+  const { handleDownloadFile } = useDownloadFile();
+  const { handleCopyFileLink } = useCopyFileLink();
+
+  function handleDragStart(
+    e: React.DragEvent<HTMLImageElement>,
+    parentId: number | null
+  ) {
+    const target = e.currentTarget;
+
+    if (!target.id) return;
+
+    e.dataTransfer.setData("type", "file");
+    e.dataTransfer.setData("fileId", target.id);
+    if (parentId) {
+      e.dataTransfer.setData("parentId", parentId.toString());
+    }
+
+    e.dataTransfer.effectAllowed = "move";
+  }
+
+  const location = useLocation();
+  const mainRoute = location.pathname.split("/")[1];
+
+  const filteredFiles =
+    mainRoute === "myFolders"
+      ? files?.filter((file) => file.userId === currentUser?.id)
+      : mainRoute === "shared"
+      ? files?.filter((file) => file.userId !== currentUser?.id)
+      : files;
 
   return (
     <>
-      <BackButton />
       {isFilesLoading ? (
         <Spinner />
       ) : (
         <>
-          {files?.map((file) => (
+          {filteredFiles?.map((file) => (
             <File key={file.id} draggable={true}>
               <Link to={`file/${file.id}`}>
-                <Img src="/file.svg" />
+                <Img
+                  src="/file.svg"
+                  id={file.id.toString()}
+                  draggable
+                  onDragStart={(e) => handleDragStart(e, file.folderId)}
+                />
               </Link>
               <Details>
                 <span>{formatString(file.name)}</span>
@@ -79,6 +113,8 @@ function Files() {
                         <Menus.Button
                           icon={<AiOutlineDownload />}
                           onClick={() => handleDownloadFile(file.id, file.name)}
+                          isFolderOwner={file.userId === currentUser?.id}
+                          accessType={"FULL"}
                         >
                           Download
                         </Menus.Button>
@@ -86,25 +122,21 @@ function Files() {
                           <Menus.Button
                             icon={<MdDriveFileRenameOutline />}
                             isFolderOwner={file.userId === currentUser?.id}
-                            disabled={true}
                           >
                             Rename
                           </Menus.Button>
                         </Modal.Open>
-                        <Modal.Open opens="share">
-                          <Menus.Button
-                            icon={<MdPersonAddAlt1 />}
-                            isFolderOwner={file.userId === currentUser?.id}
-                            disabled={true}
-                          >
-                            Share
-                          </Menus.Button>
-                        </Modal.Open>
+                        <Menus.Button
+                          icon={<IoMdLink />}
+                          isFolderOwner={file.userId === currentUser?.id}
+                          onClick={() => handleCopyFileLink(file.id)}
+                        >
+                          Copy Link
+                        </Menus.Button>
                         <Modal.Open opens="delete">
                           <Menus.Button
                             icon={<RiDeleteBin2Line />}
                             isFolderOwner={file.userId === currentUser?.id}
-                            disabled={true}
                           >
                             Delete
                           </Menus.Button>

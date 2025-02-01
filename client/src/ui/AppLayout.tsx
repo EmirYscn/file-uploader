@@ -46,7 +46,9 @@ function AppLayout() {
       <Header isDark={isDark} />
       <Sidebar isDark={isDark} />
       <Main isdark={isDark}>
-        <Container>{user && <Outlet />}</Container>
+        <Container>
+          <Outlet />
+        </Container>
       </Main>
     </StyledAppLayout>
   );

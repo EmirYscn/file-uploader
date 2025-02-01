@@ -1,24 +1,44 @@
 import { File, FileWithShareInfo } from "../types/models";
 
-export const getFilesByUserId = async (folderId: number, type: string) => {
+export const getMainFiles = async (userId: number) => {
   try {
-    const res = await fetch(`/api/files/${type}/byUserId/${folderId}`);
-    const files: FileWithShareInfo[] = await res.json();
+    const res = await fetch(`/api/files/main/${userId}`);
+    const files: File[] = await res.json();
     return files;
   } catch (error) {
     console.log(error);
   }
 };
 
-export const getFilesByFolderId = async (folderId: number) => {
+export const getFilesByFolder = async (folderId: number) => {
   try {
-    const res = await fetch(`/api/files/byFolderId/${folderId}`);
-    const files: FileWithShareInfo[] = await res.json();
+    const res = await fetch(`/api/files/${folderId}`);
+    const files: File[] = await res.json();
     return files;
   } catch (error) {
     console.log(error);
   }
 };
+
+// export const getFilesByUserId = async (folderId: number, type: string) => {
+//   try {
+//     const res = await fetch(`/api/files/${type}/byUserId/${folderId}`);
+//     const files: FileWithShareInfo[] = await res.json();
+//     return files;
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
+
+// export const getFilesByFolderId = async (folderId: number) => {
+//   try {
+//     const res = await fetch(`/api/files/byFolderId/${folderId}`);
+//     const files: FileWithShareInfo[] = await res.json();
+//     return files;
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
 
 export const deleteFile = async (fileId: number) => {
   try {
@@ -53,6 +73,24 @@ export const renameFile = async (fileId: number, data: File) => {
   }
 };
 
+export const updateFile = async (fileId: number, data: Partial<File>) => {
+  try {
+    const response = await fetch(`/api/files/${fileId}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const createFile = async (data: FormData) => {
   try {
     const res = await fetch("/api/files/upload", {
@@ -70,7 +108,7 @@ export const createFile = async (data: FormData) => {
 
 export const downloadFile = async (fileId: number, fileName: string) => {
   try {
-    const res = await fetch(`/api/files/download/${fileId}`);
+    const res = await fetch(`/api/files/${fileId}/download`);
     if (!res.ok) {
       throw new Error("Error downloading file");
     }
@@ -91,3 +129,23 @@ export const downloadFile = async (fileId: number, fileName: string) => {
     throw error;
   }
 };
+
+export const getFileByShareUrl = async (shareUrl: string) => {
+  try {
+    const res = await fetch(`/api/files/${shareUrl}/shared`);
+    const files: File[] = await res.json();
+    return files;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export async function getFilesByShareUrlAndFolderId(
+  shareUrl: string,
+  folderId: number
+) {
+  const res = await fetch(`/api/shared/${shareUrl}/files/${folderId}`);
+  if (!res.ok) throw new Error("Failed to fetch shared files");
+  const files: File[] = await res.json();
+  return files;
+}

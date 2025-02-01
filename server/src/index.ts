@@ -26,9 +26,9 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(userRouter);
-app.use(authController.isAuth);
-app.use(folderRouter);
+// app.use(authController.isAuth);
 app.use(fileRouter);
+app.use(folderRouter);
 
 app.all("*", (req: Request, res: Response, next: NextFunction) => {
   res.status(404).json({

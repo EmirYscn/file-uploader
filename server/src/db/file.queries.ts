@@ -1,5 +1,45 @@
 import { File } from "@prisma/client";
 import { prisma } from "./queries";
+import { v4 as uuidv4 } from "uuid";
+
+export const getMainFiles = async (userId: number) => {
+  try {
+    const userFiles = await prisma.user.findMany({
+      where: { id: userId },
+      select: {
+        files: { where: { folderId: null } },
+      },
+    });
+    return userFiles?.flatMap((user) => user.files) ?? [];
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+export const getFilesByFolder = async (folderId: number) => {
+  try {
+    const files = await prisma.file.findMany({
+      where: { folderId },
+    });
+    return files;
+  } catch (error) {
+    console.error("Error deleting file:", error);
+    throw new Error("Failed to delete file");
+  }
+};
+
+export const getFilesByFolderId = async (folderId: number) => {
+  try {
+    const files = await prisma.file.findMany({
+      where: { folderId },
+    });
+    return files;
+  } catch (error) {
+    console.error("Error deleting file:", error);
+    throw new Error("Failed to delete file");
+  }
+};
 
 export const getFilesByUserId = async (userId: number, type: string) => {
   try {
@@ -30,17 +70,6 @@ export const getFilesByUserId = async (userId: number, type: string) => {
       ];
       console.log("in all files", files);
     }
-    return files;
-  } catch (error) {
-    console.error("Error deleting file:", error);
-    throw new Error("Failed to delete file");
-  }
-};
-export const getFilesByFolderId = async (folderId: number) => {
-  try {
-    const files = await prisma.file.findMany({
-      where: { folderId },
-    });
     return files;
   } catch (error) {
     console.error("Error deleting file:", error);
@@ -183,5 +212,45 @@ export const createFile = async (
   } catch (error) {
     console.error("Error creating file:", error);
     throw new Error("Failed to create file");
+  }
+};
+
+export const createFileShareUrl = async (fileId: number) => {
+  try {
+    const shareUrl = uuidv4(); // Generate unique identifier
+
+    const updatedFile = await prisma.file.update({
+      where: { id: fileId },
+      data: { shareUrl },
+    });
+
+    return updatedFile;
+  } catch (error) {
+    console.error("Error generating file share URL:", error);
+    throw new Error("Failed to create file share URL");
+  }
+};
+
+export const getSharedFile = async (shareUrl: string) => {
+  try {
+    const files = await prisma.file.findMany({
+      where: { shareUrl },
+    });
+    return files;
+  } catch (error) {
+    console.error("Error getting shared file:", error);
+    throw new Error("Failed to get shared file");
+  }
+};
+
+export const getSubFiles = async (folderId: number) => {
+  try {
+    const files = await prisma.file.findMany({
+      where: { folderId },
+    });
+    return files;
+  } catch (error) {
+    console.error("Error getting shared file:", error);
+    throw new Error("Failed to get shared file");
   }
 };

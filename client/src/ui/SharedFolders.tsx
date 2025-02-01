@@ -1,28 +1,16 @@
-import { useContext } from "react";
-import { Link, useLocation } from "react-router";
+import { useEffect, useState } from "react";
+import { Link, useLocation, useParams } from "react-router";
 import { Folder } from "../types/models";
 
 import styled from "styled-components";
-import { MdDriveFileRenameOutline, MdPersonAddAlt1 } from "react-icons/md";
-import { RiDeleteBin2Line } from "react-icons/ri";
-import { IoMdLink } from "react-icons/io";
 
 import Spinner from "./Spinner";
-import Modal from "./Modal";
-import Menus from "./Menus";
 
-import { UserContext } from "../contexts/userContext";
-import { FoldersContext } from "../contexts/foldersContext";
-
-import useRenameFolder from "../hooks/useRenameFolder";
-import useDeleteFolder from "../hooks/useDeleteFolder";
-import ConfirmDelete from "./ConfirmDelete";
-import RenameFolderForm from "./RenameFolderForm";
-import useShareFolder from "../hooks/useShareFolder";
-import ShareFolder, { Data as ShareFolderData } from "./ShareFolder";
 import { formatString } from "../utils/formatString";
-import useCopyFolderLink from "../hooks/useCopyFolderLink";
-import useHandleDrop from "../hooks/useHandleDrop";
+import {
+  getFolderByShareUrl,
+  getFoldersByShareUrlAndFolderId,
+} from "../services/apiFolders";
 
 const StyledFolder = styled.div`
   display: flex;
@@ -41,47 +29,44 @@ const Details = styled.div`
   align-items: center;
 `;
 
-function Folders() {
-  const { user: currentUser } = useContext(UserContext);
-  const { folders, setFolders, isLoading } = useContext(FoldersContext);
+function SharedFolders() {
+  const [isLoading, setIsLoading] = useState(false);
+  const [folders, setFolders] = useState<Folder[]>();
+  const { shareUrl, folderId } = useParams();
 
-  const { handleDeleteFolder, isLoading: isDeletingFolder } =
-    useDeleteFolder(setFolders);
-  const { handleRenameFolder, isLoading: isRenamingFolder } =
-    useRenameFolder(setFolders);
-  const { handleShareFolder, isLoading: isSharingFolder } = useShareFolder();
-  const { handleCopyFolderLink } = useCopyFolderLink();
-  const { handleDragStart, handleDragOver, handleDrop } = useHandleDrop();
+  useEffect(() => {
+    async function fetchSharedFolder() {
+      try {
+        setIsLoading(true);
+        const folders =
+          folderId !== undefined
+            ? await getFoldersByShareUrlAndFolderId(shareUrl!, +folderId)
+            : await getFolderByShareUrl(shareUrl!);
+        setFolders(folders);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    if (shareUrl) fetchSharedFolder();
+  }, [shareUrl, folderId]);
 
   const location = useLocation();
   const mainRoute = location.pathname.split("/")[1];
-
-  const filteredFolders =
-    mainRoute === "myFolders"
-      ? folders?.filter((folder) => folder.userId === currentUser?.id)
-      : mainRoute === "shared"
-      ? folders?.filter((folder) => folder.userId !== currentUser?.id)
-      : folders;
 
   return isLoading ? (
     <Spinner />
   ) : (
     <>
-      {filteredFolders?.map((folder) => (
+      {folders?.map((folder) => (
         <StyledFolder key={folder.id}>
-          <Link to={`/${mainRoute}/folder/${folder.id}`}>
-            <Img
-              src="/folder.svg"
-              id={folder.id.toString()}
-              draggable
-              onDragStart={handleDragStart}
-              onDragOver={handleDragOver}
-              onDrop={(e) => handleDrop(e, folder.id)}
-            />
+          <Link to={`/${mainRoute}/${shareUrl}/folder/${folder.id}`}>
+            <Img src="/folder.svg" alt="" />
           </Link>
           <Details>
             <span>{formatString(folder.name)}</span>
-            <Modal>
+            {/* <Modal>
               <Menus>
                 <Menus.Menu>
                   <Menus.Toggle id={folder.id} />
@@ -150,7 +135,7 @@ function Folders() {
                   </Modal.Window>
                 </Menus.Menu>
               </Menus>
-            </Modal>
+            </Modal> */}
           </Details>
         </StyledFolder>
       ))}
@@ -158,4 +143,4 @@ function Folders() {
   );
 }
 
-export default Folders;
+export default SharedFolders;

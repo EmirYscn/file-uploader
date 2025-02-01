@@ -81,7 +81,6 @@ export const deleteFolder = async (folderId: number) => {
 };
 
 export const renameFolder = async (folderId: number, data: Folder) => {
-  console.log(data);
   try {
     const response = await fetch(`/api/folders/${folderId}`, {
       method: "PATCH",
@@ -91,6 +90,23 @@ export const renameFolder = async (folderId: number, data: Folder) => {
       body: JSON.stringify(data),
     });
 
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const updateFolder = async (folderId: number, data: Partial<Folder>) => {
+  try {
+    const response = await fetch(`/api/folders/${folderId}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
@@ -120,3 +136,23 @@ export const shareFolder = async (formData: Data, folderId: number) => {
     console.log(error);
   }
 };
+
+export const getFolderByShareUrl = async (shareUrl: string) => {
+  try {
+    const res = await fetch(`/api/folders/${shareUrl}/shared`);
+    const folder: Folder[] = await res.json();
+    return folder;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export async function getFoldersByShareUrlAndFolderId(
+  shareUrl: string,
+  folderId: number
+) {
+  const res = await fetch(`/api/shared/${shareUrl}/folders/${folderId}`);
+  if (!res.ok) throw new Error("Failed to fetch shared folders");
+  const folders: Folder[] = await res.json();
+  return folders;
+}

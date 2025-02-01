@@ -14,6 +14,10 @@ import Shared from "./ui/Shared";
 import FoldersContextProvider from "./contexts/foldersContextProvider";
 import FilesContextProvider from "./contexts/filesContextProvider";
 import ThemeContextProvider from "./contexts/themeContextProvider";
+import SharedLink from "./ui/SharedLink";
+import { ShareContextProvider } from "./contexts/shareContextProvider";
+import Folders from "./ui/Folders";
+import SharedSubFolder from "./ui/SharedSubFolder";
 
 function App() {
   return (
@@ -22,34 +26,58 @@ function App() {
         <ThemeContextProvider>
           <GlobalStyles />
           <BrowserRouter>
-            <FoldersContextProvider>
-              <FilesContextProvider>
-                <Routes>
-                  <Route element={<AppLayout />}>
-                    <Route index element={<Navigate replace to="all" />} />
+            <ShareContextProvider>
+              <FoldersContextProvider>
+                <FilesContextProvider>
+                  <Routes>
+                    <Route element={<AppLayout />}>
+                      <Route index element={<Navigate replace to="all" />} />
 
-                    <Route path="all/*" element={<Home />}>
-                      <Route index element={<All />} />
-                      <Route path="folder/:folderId" element={<All />} />
+                      <Route path="all/*" element={<Home />}>
+                        <Route index element={<All />} />
+                        <Route path="folder/:folderId" element={<All />} />
+                      </Route>
+
+                      <Route path="myFolders/*" element={<MyFolders />}>
+                        <Route index element={<Own />} />
+                        <Route path="folder/:folderId" element={<Own />} />
+                      </Route>
+
+                      <Route path="shared/*" element={<SharedPage />}>
+                        <Route index element={<Shared />} />
+                        {/* <Route
+                          path="sharedurl/:shareUrl"
+                          element={<SharedLink />}
+                        /> */}
+                        <Route path="folder/:folderId" element={<Shared />} />
+                      </Route>
+                      <Route
+                        path="sharedurl/:shareUrl/*"
+                        element={<SharedLink />}
+                      >
+                        <Route index element={<SharedLink />} />
+                        <Route
+                          path="folder/:folderId"
+                          element={<SharedLink />}
+                        />
+                      </Route>
+                      {/* <Route
+                        path="sharedurl/:shareUrl"
+                        element={<SharedLink />}
+                      />
+                      <Route
+                        path="sharedurl/folder/:folderId"
+                        element={<Folders />}
+                      /> */}
                     </Route>
 
-                    <Route path="myFolders/*" element={<MyFolders />}>
-                      <Route index element={<Own />} />
-                      <Route path="folder/:folderId" element={<Own />} />
-                    </Route>
-
-                    <Route path="shared/*" element={<SharedPage />}>
-                      <Route index element={<Shared />} />
-                      <Route path="folder/:folderId" element={<Shared />} />
-                    </Route>
-                  </Route>
-
-                  <Route path="login" element={<Login />} />
-                  <Route path="signup" element={<Signup />} />
-                  <Route path="*" element={<PageNotFound />} />
-                </Routes>
-              </FilesContextProvider>
-            </FoldersContextProvider>
+                    <Route path="login" element={<Login />} />
+                    <Route path="signup" element={<Signup />} />
+                    <Route path="*" element={<PageNotFound />} />
+                  </Routes>
+                </FilesContextProvider>
+              </FoldersContextProvider>
+            </ShareContextProvider>
           </BrowserRouter>
         </ThemeContextProvider>
       </UserContextProvider>
