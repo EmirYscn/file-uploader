@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { Link, useLocation } from "react-router";
 import { Folder } from "../types/models";
 
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { MdDriveFileRenameOutline, MdPersonAddAlt1 } from "react-icons/md";
 import { RiDeleteBin2Line } from "react-icons/ri";
 import { IoMdLink } from "react-icons/io";
@@ -30,10 +30,19 @@ const StyledFolder = styled.div`
   align-items: center;
 `;
 
-const Img = styled.img`
+const Img = styled.img<{ $isDragOver?: boolean | null }>`
   height: 8rem;
   width: auto;
   cursor: pointer;
+
+  ${(props) =>
+    props.$isDragOver &&
+    css`
+      border: 2px solid var(--color-green-700);
+      border-radius: 8px;
+      background-color: rgba(0, 128, 0, 0.1);
+      transform: scale(1.1);
+    `}
 `;
 const Details = styled.div`
   display: grid;
@@ -51,7 +60,13 @@ function Folders() {
     useRenameFolder(setFolders);
   const { handleShareFolder, isLoading: isSharingFolder } = useShareFolder();
   const { handleCopyFolderLink } = useCopyFolderLink();
-  const { handleDragStart, handleDragOver, handleDrop } = useHandleDrop();
+  const {
+    handleDragStart,
+    handleDragOver,
+    handleDrop,
+    handleDragLeave,
+    dragOverFolderId,
+  } = useHandleDrop();
 
   const location = useLocation();
   const mainRoute = location.pathname.split("/")[1];
@@ -75,8 +90,11 @@ function Folders() {
               id={folder.id.toString()}
               draggable
               onDragStart={handleDragStart}
-              onDragOver={handleDragOver}
+              onDragOver={(e) => handleDragOver(e, folder.id)}
+              onDragLeave={handleDragLeave}
               onDrop={(e) => handleDrop(e, folder.id)}
+              // isbeingdropped={folder.id == dragOverFolderId}
+              $isDragOver={folder.id == dragOverFolderId}
             />
           </Link>
           <Details>

@@ -60,6 +60,7 @@ const GlobalStyles = createGlobalStyle`
   --color-black-300: #262626;
   --color-black-400: #333333;
   --color-black-500: #404040;
+
 }
 
 *,

@@ -7,7 +7,10 @@ export const getMainFiles = async (userId: number) => {
     const userFiles = await prisma.user.findMany({
       where: { id: userId },
       select: {
-        files: { where: { folderId: null } },
+        files: {
+          where: { folderId: null },
+          include: { uploadedBy: { select: { username: true } } },
+        },
       },
     });
     return userFiles?.flatMap((user) => user.files) ?? [];
@@ -21,6 +24,7 @@ export const getFilesByFolder = async (folderId: number) => {
   try {
     const files = await prisma.file.findMany({
       where: { folderId },
+      include: { uploadedBy: { select: { username: true } } },
     });
     return files;
   } catch (error) {
@@ -195,6 +199,9 @@ export const createFile = async (
           url: fileUrl,
           userId,
           folderId,
+        },
+        include: {
+          uploadedBy: { select: { username: true } },
         },
       });
 

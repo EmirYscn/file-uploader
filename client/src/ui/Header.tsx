@@ -41,6 +41,7 @@ function Header({ isDark }: { isDark?: boolean }) {
   async function handleLogout() {
     await logout();
     setUser(null);
+    navigate("/login");
   }
   return (
     <StyledHeader isdark={isDark}>

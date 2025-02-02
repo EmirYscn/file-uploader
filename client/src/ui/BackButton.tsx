@@ -10,7 +10,7 @@ const StyledBackButton = styled.button<{ poscontext: string }>`
   position: absolute;
   background: none;
 
-  left: -9rem;
+  left: -7rem;
   top: -3rem;
   z-index: 1000;
 

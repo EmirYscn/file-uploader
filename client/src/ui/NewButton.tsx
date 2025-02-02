@@ -78,7 +78,6 @@ function NewButton() {
   async function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
     if (file) {
-      console.log("File", file);
       handleCreateFile(file);
     }
   }

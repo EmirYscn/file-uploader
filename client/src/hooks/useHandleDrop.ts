@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { FoldersContext } from "../contexts/foldersContext";
 import { updateFile } from "../services/apiFiles";
 import { updateFolder } from "../services/apiFolders";
@@ -8,6 +8,7 @@ import { FilesContext } from "../contexts/filesContext";
 function useHandleDrop() {
   const { setFolders } = useContext(FoldersContext);
   const { setFiles } = useContext(FilesContext);
+  const [dragOverFolderId, setDragOverFolderId] = useState<number | null>(null);
 
   function handleDragStart(e: React.DragEvent<HTMLImageElement>) {
     const target = e.currentTarget;
@@ -17,9 +18,17 @@ function useHandleDrop() {
     e.dataTransfer.effectAllowed = "move";
   }
 
-  function handleDragOver(e: React.DragEvent<HTMLImageElement>) {
+  function handleDragOver(
+    e: React.DragEvent<HTMLImageElement>,
+    folderId: number
+  ) {
     e.preventDefault();
     e.dataTransfer.dropEffect = "move";
+    setDragOverFolderId(folderId);
+  }
+
+  function handleDragLeave() {
+    setDragOverFolderId(null); // Reset when drag leaves
   }
 
   async function handleDrop(
@@ -27,6 +36,7 @@ function useHandleDrop() {
     currentFolderId: number
   ) {
     e.preventDefault();
+    setDragOverFolderId(null);
     // Get the type of the target
     const dataType = e.dataTransfer.getData("type");
     if (dataType === "folder") {
@@ -73,7 +83,13 @@ function useHandleDrop() {
       console.log(dataType, fileId);
     }
   }
-  return { handleDragStart, handleDragOver, handleDrop };
+  return {
+    handleDragStart,
+    handleDragOver,
+    handleDrop,
+    handleDragLeave,
+    dragOverFolderId,
+  };
 }
 
 export default useHandleDrop;

@@ -22,6 +22,8 @@ import { formatString } from "../utils/formatString";
 import { UserContext } from "../contexts/userContext";
 import { IoMdLink } from "react-icons/io";
 import useCopyFileLink from "../hooks/useCopyFileLink";
+import { FiInfo } from "react-icons/fi";
+import Info from "./Info";
 
 const StyledFiles = styled.div`
   display: grid;
@@ -33,6 +35,7 @@ const File = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative;
 `;
 
 const Img = styled.img`
@@ -102,6 +105,7 @@ function Files() {
                   draggable
                   onDragStart={(e) => handleDragStart(e, file.folderId)}
                 />
+                <Info file={file} />
               </Link>
               <Details>
                 <span>{formatString(file.name)}</span>

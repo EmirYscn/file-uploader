@@ -384,6 +384,7 @@ export const updateFolder = async (folderId: number, data: Folder) => {
                   accessType: share.accessType,
                   expireDate: share.expireDate,
                 })),
+                skipDuplicates: true,
               })
             )
           );
@@ -394,6 +395,7 @@ export const updateFolder = async (folderId: number, data: Folder) => {
               accessType: "FULL",
               expireDate: null,
             })),
+            skipDuplicates: true,
           });
         }
       }
