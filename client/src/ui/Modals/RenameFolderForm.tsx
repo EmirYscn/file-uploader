@@ -1,10 +1,10 @@
 import styled from "styled-components";
-import Button from "./Button";
-import Heading from "./Heading";
-import { useForm, SubmitHandler } from "react-hook-form";
-import FormRow from "./FormRow";
-import Input from "./Input";
-import { File } from "../types/models";
+import Button from "../Button";
+import Heading from "../Heading";
+import { useForm } from "react-hook-form";
+
+import Input from "../Input";
+import { Folder } from "../../types/models";
 
 const StyledConfirmDelete = styled.div`
   width: 40rem;
@@ -25,21 +25,21 @@ const Form = styled.form`
   gap: 1.2rem;
 `;
 
-type FormData = File;
+type FormData = Folder;
 
-type RenameFileProps = {
+type RenameFolderProps = {
   resourceName: string;
-  onConfirm?: (data: File) => Promise<void>;
+  onConfirm?: (data: Folder) => Promise<void>;
   disabled?: boolean;
   onCloseModal?: () => void;
 };
 
-function RenameFileForm({
+function RenameFolderForm({
   resourceName,
   onConfirm,
   disabled,
   onCloseModal,
-}: RenameFileProps) {
+}: RenameFolderProps) {
   const { handleSubmit, register } = useForm<FormData>();
 
   async function onSubmit(data: FormData) {
@@ -79,4 +79,4 @@ function RenameFileForm({
   );
 }
 
-export default RenameFileForm;
+export default RenameFolderForm;

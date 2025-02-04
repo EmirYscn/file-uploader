@@ -133,3 +133,58 @@ export const getSharedFolder = async (
     console.log(error);
   }
 };
+
+export const getFolderNameAndParentId = async (
+  req: Request,
+  res: Response
+): Promise<any> => {
+  const { id } = req.params;
+  try {
+    const folderName = await db.getFolderNameAndParentId(+id);
+    return res.status(200).json(folderName);
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const getSharedUsers = async (
+  req: Request,
+  res: Response
+): Promise<any> => {
+  const { id } = req.params;
+  try {
+    const users = await db.getSharedUsers(+id);
+    return res.status(200).json(users);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const updateFolderShare = async (
+  req: Request,
+  res: Response
+): Promise<any> => {
+  try {
+    await db.updateFolderShare(req.body);
+    return res
+      .status(200)
+      .json({ message: "FolderShare updated successfully" });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: "Failed to update FolderShare" });
+  }
+};
+
+export const deleteFolderShare = async (
+  req: Request,
+  res: Response
+): Promise<any> => {
+  try {
+    await db.deleteFolderShare(req.body);
+    return res
+      .status(200)
+      .json({ message: "FolderShare deleted successfully" });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: "Failed to delete FolderShare" });
+  }
+};

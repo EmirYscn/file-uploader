@@ -8,8 +8,8 @@ import Menus from "./Menus";
 import Spinner from "./Spinner";
 import BackButton from "./BackButton";
 
-import ConfirmDelete from "./ConfirmDelete";
-import RenameFileForm from "./RenameFileForm";
+import ConfirmDelete from "./Modals/ConfirmDelete";
+import RenameFileForm from "./Modals/RenameFileForm";
 
 import useDeleteFile from "../hooks/useDeleteFile";
 import { Link, useLocation } from "react-router";
@@ -23,7 +23,7 @@ import { UserContext } from "../contexts/userContext";
 import { IoMdLink } from "react-icons/io";
 import useCopyFileLink from "../hooks/useCopyFileLink";
 import { FiInfo } from "react-icons/fi";
-import Info from "./Info";
+import FileInfo from "./FileInfo";
 
 const StyledFiles = styled.div`
   display: grid;
@@ -105,7 +105,7 @@ function Files() {
                   draggable
                   onDragStart={(e) => handleDragStart(e, file.folderId)}
                 />
-                <Info file={file} />
+                <FileInfo file={file} />
               </Link>
               <Details>
                 <span>{formatString(file.name)}</span>

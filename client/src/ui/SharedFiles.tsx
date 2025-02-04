@@ -16,11 +16,13 @@ import {
   getFileByShareUrl,
   getFilesByShareUrlAndFolderId,
 } from "../services/apiFiles";
+import FileInfo from "./FileInfo";
 
 const File = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative;
 `;
 
 const Img = styled.img`
@@ -69,6 +71,7 @@ function SharedFiles() {
             <File key={file.id} draggable={true}>
               <Link to={`file/${file.id}`}>
                 <Img src="/file.svg" />
+                {/* <FileInfo file={file} /> */}
               </Link>
               <Details>
                 <span>{formatString(file.name)}</span>

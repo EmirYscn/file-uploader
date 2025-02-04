@@ -1,5 +1,9 @@
-import { Folder, FolderWithShareInfo } from "../types/models";
-import { Data } from "../ui/ShareFolder";
+import {
+  Folder,
+  FolderWithShareInfo,
+  UserWithShareInfo,
+} from "../types/models";
+import { Data } from "../ui/Modals/ShareFolder";
 
 // export const getFoldersByUserId = async (userId: number, type: string) => {
 //   console.log("in userId");
@@ -137,6 +141,25 @@ export const shareFolder = async (formData: Data, folderId: number) => {
   }
 };
 
+export const updateShareFolder = async (
+  formData: Partial<UserWithShareInfo>
+) => {
+  try {
+    const response = await fetch("/api/folders/folderShare", {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const getFolderByShareUrl = async (shareUrl: string) => {
   try {
     const res = await fetch(`/api/folders/${shareUrl}/shared`);
@@ -155,4 +178,11 @@ export async function getFoldersByShareUrlAndFolderId(
   if (!res.ok) throw new Error("Failed to fetch shared folders");
   const folders: Folder[] = await res.json();
   return folders;
+}
+
+export async function getFolderNameAndParentIdById(folderId: number) {
+  const res = await fetch(`/api/folder/${folderId}`);
+  if (!res.ok) throw new Error("Failed to fetch shared folders");
+  const folderName: Folder = await res.json();
+  return folderName;
 }

@@ -13,6 +13,9 @@ router.use(authController.isAuth);
 
 router.get("/api/folders/main/:userId", foldersController.getMainFolders);
 router.post("/api/folders", foldersController.createFolder);
+router.patch("/api/folders/folderShare", foldersController.updateFolderShare);
+router.delete("/api/folders/folderShare", foldersController.deleteFolderShare);
+router.post("/api/folders/share", foldersController.shareFolder);
 router
   .route("/api/folders/:id")
   .get(foldersController.getFolder)
@@ -20,7 +23,8 @@ router
   .delete(foldersController.deleteFolder);
 
 router.get("/api/folders/:id/shareUrl", foldersController.createShareUrl);
-router.post("/api/folders/share", foldersController.shareFolder);
+router.get("/api/folder/:id", foldersController.getFolderNameAndParentId);
+router.get("/api/folder/:id/sharedUsers", foldersController.getSharedUsers);
 
 // router.get(
 //   "/api/folders/byFolderId/:folderId",

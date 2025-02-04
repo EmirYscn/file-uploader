@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { Link, useLocation } from "react-router";
-import { Folder } from "../types/models";
+import { Folder, UserWithShareInfo } from "../types/models";
 
 import styled, { css } from "styled-components";
 import { MdDriveFileRenameOutline, MdPersonAddAlt1 } from "react-icons/md";
@@ -16,13 +16,17 @@ import { FoldersContext } from "../contexts/foldersContext";
 
 import useRenameFolder from "../hooks/useRenameFolder";
 import useDeleteFolder from "../hooks/useDeleteFolder";
-import ConfirmDelete from "./ConfirmDelete";
-import RenameFolderForm from "./RenameFolderForm";
+import ConfirmDelete from "./Modals/ConfirmDelete";
+import RenameFolderForm from "./Modals/RenameFolderForm";
 import useShareFolder from "../hooks/useShareFolder";
-import ShareFolder, { Data as ShareFolderData } from "./ShareFolder";
+import ShareFolder, { Data as ShareFolderData } from "./Modals/ShareFolder";
 import { formatString } from "../utils/formatString";
 import useCopyFolderLink from "../hooks/useCopyFolderLink";
 import useHandleDrop from "../hooks/useHandleDrop";
+import { CurrentRouteContext } from "../contexts/currentRouteContext";
+import { isExpired } from "../utils/dateCompare";
+import ManageShare from "./Modals/ManageShare";
+import useUpdateShareFolder from "../hooks/useUpdateShareFolder";
 
 const StyledFolder = styled.div`
   display: flex;
@@ -34,6 +38,7 @@ const Img = styled.img<{ $isDragOver?: boolean | null }>`
   height: 8rem;
   width: auto;
   cursor: pointer;
+  transition: all 0.3s;
 
   ${(props) =>
     props.$isDragOver &&
@@ -51,6 +56,7 @@ const Details = styled.div`
 `;
 
 function Folders() {
+  const { setCurrentRoute } = useContext(CurrentRouteContext);
   const { user: currentUser } = useContext(UserContext);
   const { folders, setFolders, isLoading } = useContext(FoldersContext);
 
@@ -59,6 +65,8 @@ function Folders() {
   const { handleRenameFolder, isLoading: isRenamingFolder } =
     useRenameFolder(setFolders);
   const { handleShareFolder, isLoading: isSharingFolder } = useShareFolder();
+  const { handleUpdateShareFolder, isLoading: isUpdatingShareFolder } =
+    useUpdateShareFolder();
   const { handleCopyFolderLink } = useCopyFolderLink();
   const {
     handleDragStart,
@@ -71,12 +79,16 @@ function Folders() {
   const location = useLocation();
   const mainRoute = location.pathname.split("/")[1];
 
-  const filteredFolders =
+  let filteredFolders =
     mainRoute === "myFolders"
       ? folders?.filter((folder) => folder.userId === currentUser?.id)
       : mainRoute === "shared"
       ? folders?.filter((folder) => folder.userId !== currentUser?.id)
       : folders;
+
+  filteredFolders = filteredFolders?.filter(
+    (folder) => !isExpired(folder.expireDate?.toString())
+  );
 
   return isLoading ? (
     <Spinner />
@@ -113,6 +125,17 @@ function Folders() {
                         Rename
                       </Menus.Button>
                     </Modal.Open>
+                    {folder.userId === currentUser?.id && (
+                      <Modal.Open opens="manage">
+                        <Menus.Button
+                          icon={<MdDriveFileRenameOutline />}
+                          isFolderOwner={folder.userId === currentUser?.id}
+                          accessType={folder.accessType}
+                        >
+                          Manage shared users
+                        </Menus.Button>
+                      </Modal.Open>
+                    )}
                     <Modal.Open opens="share">
                       <Menus.Button
                         icon={<MdPersonAddAlt1 />}
@@ -164,6 +187,15 @@ function Folders() {
                         handleShareFolder(data, folder.id)
                       }
                       disabled={isSharingFolder}
+                    />
+                  </Modal.Window>
+                  <Modal.Window name="manage">
+                    <ManageShare
+                      onConfirm={(data: Partial<UserWithShareInfo>) =>
+                        handleUpdateShareFolder(data)
+                      }
+                      disabled={isUpdatingShareFolder}
+                      folderId={folder.id}
                     />
                   </Modal.Window>
                 </Menus.Menu>

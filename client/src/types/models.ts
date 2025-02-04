@@ -7,3 +7,4 @@ export type FolderShare = Models["FolderShare"];
 export type FileShare = Models["FileShare"];
 export type FolderWithShareInfo = Folder & FolderShare;
 export type FileWithUserInfo = File & { uploadedBy: { username: string } };
+export type UserWithShareInfo = User & FolderShare;

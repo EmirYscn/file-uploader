@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import { shareFolder } from "../services/apiFolders";
 import { UserContext } from "../contexts/userContext";
-import { Data } from "../ui/ShareFolder";
+import { Data } from "../ui/Modals/ShareFolder";
 
 function useShareFolder() {
   const [isLoading, setIsLoading] = useState(false);

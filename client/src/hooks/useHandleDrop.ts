@@ -10,7 +10,7 @@ function useHandleDrop() {
   const { setFiles } = useContext(FilesContext);
   const [dragOverFolderId, setDragOverFolderId] = useState<number | null>(null);
 
-  function handleDragStart(e: React.DragEvent<HTMLImageElement>) {
+  function handleDragStart(e: React.DragEvent<HTMLElement>) {
     const target = e.currentTarget;
     if (!target.id) return;
     e.dataTransfer.setData("folderId", target.id);
@@ -18,10 +18,7 @@ function useHandleDrop() {
     e.dataTransfer.effectAllowed = "move";
   }
 
-  function handleDragOver(
-    e: React.DragEvent<HTMLImageElement>,
-    folderId: number
-  ) {
+  function handleDragOver(e: React.DragEvent<HTMLElement>, folderId: number) {
     e.preventDefault();
     e.dataTransfer.dropEffect = "move";
     setDragOverFolderId(folderId);
@@ -32,7 +29,7 @@ function useHandleDrop() {
   }
 
   async function handleDrop(
-    e: React.DragEvent<HTMLImageElement>,
+    e: React.DragEvent<HTMLElement>,
     currentFolderId: number
   ) {
     e.preventDefault();

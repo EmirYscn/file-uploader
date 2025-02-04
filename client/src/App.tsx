@@ -18,6 +18,7 @@ import SharedLink from "./ui/SharedLink";
 import { ShareContextProvider } from "./contexts/shareContextProvider";
 import Folders from "./ui/Folders";
 import SharedSubFolder from "./ui/SharedSubFolder";
+import { CurrentRouteContextProvider } from "./contexts/currentRouteContextProvider";
 
 function App() {
   return (
@@ -29,39 +30,40 @@ function App() {
             <ShareContextProvider>
               <FoldersContextProvider>
                 <FilesContextProvider>
-                  <Routes>
-                    <Route element={<AppLayout />}>
-                      <Route index element={<Navigate replace to="all" />} />
+                  <CurrentRouteContextProvider>
+                    <Routes>
+                      <Route element={<AppLayout />}>
+                        <Route index element={<Navigate replace to="all" />} />
 
-                      <Route path="all/*" element={<Home />}>
-                        <Route index element={<All />} />
-                        <Route path="folder/:folderId" element={<All />} />
-                      </Route>
+                        <Route path="all/*" element={<Home />}>
+                          <Route index element={<All />} />
+                          <Route path="folder/:folderId" element={<All />} />
+                        </Route>
 
-                      <Route path="myFolders/*" element={<MyFolders />}>
-                        <Route index element={<Own />} />
-                        <Route path="folder/:folderId" element={<Own />} />
-                      </Route>
+                        <Route path="myFolders/*" element={<MyFolders />}>
+                          <Route index element={<Own />} />
+                          <Route path="folder/:folderId" element={<Own />} />
+                        </Route>
 
-                      <Route path="shared/*" element={<SharedPage />}>
-                        <Route index element={<Shared />} />
-                        {/* <Route
+                        <Route path="shared/*" element={<SharedPage />}>
+                          <Route index element={<Shared />} />
+                          {/* <Route
                           path="sharedurl/:shareUrl"
                           element={<SharedLink />}
                         /> */}
-                        <Route path="folder/:folderId" element={<Shared />} />
-                      </Route>
-                      <Route
-                        path="sharedurl/:shareUrl/*"
-                        element={<SharedLink />}
-                      >
-                        <Route index element={<SharedLink />} />
+                          <Route path="folder/:folderId" element={<Shared />} />
+                        </Route>
                         <Route
-                          path="folder/:folderId"
+                          path="sharedurl/:shareUrl/*"
                           element={<SharedLink />}
-                        />
-                      </Route>
-                      {/* <Route
+                        >
+                          <Route index element={<SharedLink />} />
+                          <Route
+                            path="folder/:folderId"
+                            element={<SharedLink />}
+                          />
+                        </Route>
+                        {/* <Route
                         path="sharedurl/:shareUrl"
                         element={<SharedLink />}
                       />
@@ -69,12 +71,13 @@ function App() {
                         path="sharedurl/folder/:folderId"
                         element={<Folders />}
                       /> */}
-                    </Route>
+                      </Route>
 
-                    <Route path="login" element={<Login />} />
-                    <Route path="signup" element={<Signup />} />
-                    <Route path="*" element={<PageNotFound />} />
-                  </Routes>
+                      <Route path="login" element={<Login />} />
+                      <Route path="signup" element={<Signup />} />
+                      <Route path="*" element={<PageNotFound />} />
+                    </Routes>
+                  </CurrentRouteContextProvider>
                 </FilesContextProvider>
               </FoldersContextProvider>
             </ShareContextProvider>

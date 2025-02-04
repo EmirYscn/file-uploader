@@ -7,6 +7,7 @@ const StyledInfo = styled.div`
   position: absolute;
   right: 5px;
   top: 1px;
+  z-index: 99999;
 `;
 
 const InfoBox = styled.div`
@@ -17,7 +18,7 @@ const InfoBox = styled.div`
   font-size: 1.5rem;
 `;
 
-function Info({ file }: { file: FileWithUserInfo }) {
+function FileInfo({ file }: { file: FileWithUserInfo }) {
   const uploadDate = new Date(file.uploadDate);
   const fileSize =
     file.size > 1024 * 1024
@@ -32,7 +33,7 @@ function Info({ file }: { file: FileWithUserInfo }) {
       >
         <FiInfo />
       </span>
-      <Tooltip id={`tooltip-${file.id}`} place="bottom">
+      <Tooltip id={`tooltip-${file.id}`} place="right-end">
         <InfoBox>
           <span>
             <strong>Size:</strong> {fileSize} {fileType}
@@ -49,4 +50,4 @@ function Info({ file }: { file: FileWithUserInfo }) {
   );
 }
 
-export default Info;
+export default FileInfo;

@@ -1,14 +1,14 @@
 import styled, { css } from "styled-components";
-import Heading from "./Heading";
+import Heading from "../Heading";
 import { useForm } from "react-hook-form";
-import { Folder, User } from "../types/models";
-import Input from "./Input";
-import Button from "./Button";
+import { Folder, User } from "../../types/models";
+import Input from "../Input";
+import Button from "../Button";
 import { useContext, useEffect, useState } from "react";
 import { MdDelete } from "react-icons/md";
 import { add } from "date-fns";
-import { accessType } from "../types/enums";
-import { ThemeContext } from "../contexts/themeContext";
+import { accessType } from "../../types/enums";
+import { ThemeContext } from "../../contexts/themeContext";
 
 const StyledSharedFolder = styled.div`
   width: 40rem;

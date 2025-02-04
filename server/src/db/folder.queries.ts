@@ -167,8 +167,11 @@ async function getAllFolders(userId: number) {
       expireDate: share.expireDate,
     })) ?? []), // Shared root-level folders
   ];
+  const uniqueFolders = Array.from(
+    new Map(combinedFolders.map((folder) => [folder.id, folder])).values()
+  );
 
-  return combinedFolders;
+  return uniqueFolders;
 }
 
 export const getMainFolders = async (userId: number) => {
@@ -301,7 +304,10 @@ export const createFolder = async (folderData: Folder) => {
 
         // Bulk create new `folderShare` entries
         if (newShares.length > 0) {
-          await prisma.folderShare.createMany({ data: newShares });
+          await prisma.folderShare.createMany({
+            data: newShares,
+            skipDuplicates: true,
+          });
         }
       }
 
@@ -388,6 +394,7 @@ export const updateFolder = async (folderId: number, data: Folder) => {
               })
             )
           );
+
           await prisma.folderShare.createMany({
             data: subfolderIds.map((subfolderId) => ({
               folderId: subfolderId,
@@ -468,5 +475,59 @@ export const getSubFolders = async (folderId: number) => {
   } catch (error) {
     console.error("Error getting shared subfolders:", error);
     throw new Error("Failed to get shared subfolders");
+  }
+};
+
+export const getFolderNameAndParentId = async (folderId: number) => {
+  try {
+    const folder = await prisma.folder.findUnique({
+      where: { id: folderId },
+      select: { name: true, parentId: true },
+    });
+    return folder;
+  } catch (error) {
+    console.error("Error getting folder name:", error);
+    throw new Error("Failed to get folder name");
+  }
+};
+export const getSharedUsers = async (folderId: number) => {
+  try {
+    const users = await prisma.folderShare.findMany({
+      where: { folderId },
+      include: { user: { select: { id: true, email: true, username: true } } },
+    });
+    return users;
+  } catch (error) {
+    console.error("Error getting shared users:", error);
+    throw new Error("Failed to get shared users");
+  }
+};
+
+export const updateFolderShare = async (body: FolderShare) => {
+  try {
+    const { folderId, userId, accessType } = body;
+    console.log(body);
+    await prisma.folderShare.update({
+      where: { folderId_userId: { folderId, userId } },
+      data: {
+        accessType,
+      },
+    });
+  } catch (error) {
+    console.error("Error updating shared folder:", error);
+    throw new Error("Failed to update shared folder");
+  }
+};
+
+export const deleteFolderShare = async (body: FolderShare) => {
+  try {
+    const { folderId, userId } = body;
+    console.log(body);
+    await prisma.folderShare.delete({
+      where: { folderId_userId: { folderId, userId } },
+    });
+  } catch (error) {
+    console.error("Error deleting shared folder:", error);
+    throw new Error("Failed to delete shared folder");
   }
 };

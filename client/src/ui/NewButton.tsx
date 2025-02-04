@@ -4,7 +4,7 @@ import { FiFolderPlus } from "react-icons/fi";
 
 import styled from "styled-components";
 import Modal from "./Modal";
-import AddFolder from "./AddFolder";
+import AddFolder from "./Modals/AddFolder";
 import { useContext, useRef } from "react";
 import { FoldersContext } from "../contexts/foldersContext";
 
