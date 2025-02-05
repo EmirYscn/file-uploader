@@ -6,7 +6,6 @@ const StyledFormRow = styled.div`
   grid-template-columns: auto 35rem;
   gap: 1rem;
   padding: 1.2rem 0;
-  /* color: var(--color-brand-700); */
   color: black
 
   &:not(:last-child) {

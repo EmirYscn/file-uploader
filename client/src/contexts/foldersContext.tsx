@@ -1,5 +1,6 @@
 import { createContext } from "react";
-import { Folder, FolderShare, FolderWithShareInfo } from "../types/models";
+
+import { FolderWithShareInfo } from "../types/models";
 
 type FoldersContextType = {
   folders: FolderWithShareInfo[] | undefined;

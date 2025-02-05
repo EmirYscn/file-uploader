@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import passport from "../strategies/passport";
 import { User } from "@prisma/client";
+
 import * as db from "../db/user.queries";
 
 export const login = async (
@@ -41,11 +42,12 @@ export const searchUser = async (req: Request, res: Response): Promise<any> => {
   }
 
   try {
-    console.log(`Searching for users with email containing: ${email}`);
     const users = await db.searchUser(email);
+
     return res.status(200).json(users);
   } catch (error) {
     console.error("Error searching users:", error);
+
     return res.status(500).json({ message: "Error searching for users" });
   }
 };

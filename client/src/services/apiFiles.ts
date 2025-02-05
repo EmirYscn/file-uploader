@@ -1,9 +1,11 @@
-import { File, FileWithShareInfo } from "../types/models";
+import { File } from "../types/models";
 
 export const getMainFiles = async (userId: number) => {
   try {
     const res = await fetch(`/api/files/main/${userId}`);
+
     const files: File[] = await res.json();
+
     return files;
   } catch (error) {
     console.log(error);
@@ -13,32 +15,14 @@ export const getMainFiles = async (userId: number) => {
 export const getFilesByFolder = async (folderId: number) => {
   try {
     const res = await fetch(`/api/files/${folderId}`);
+
     const files: File[] = await res.json();
+
     return files;
   } catch (error) {
     console.log(error);
   }
 };
-
-// export const getFilesByUserId = async (folderId: number, type: string) => {
-//   try {
-//     const res = await fetch(`/api/files/${type}/byUserId/${folderId}`);
-//     const files: FileWithShareInfo[] = await res.json();
-//     return files;
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
-
-// export const getFilesByFolderId = async (folderId: number) => {
-//   try {
-//     const res = await fetch(`/api/files/byFolderId/${folderId}`);
-//     const files: FileWithShareInfo[] = await res.json();
-//     return files;
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
 
 export const deleteFile = async (fileId: number) => {
   try {
@@ -49,7 +33,6 @@ export const deleteFile = async (fileId: number) => {
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
-    console.log("file deleted");
   } catch (error) {
     console.log(error);
   }
@@ -97,9 +80,11 @@ export const createFile = async (data: FormData) => {
       method: "POST",
       body: data,
     });
+
     if (!res.ok) {
       throw new Error("Error uploading data");
     }
+
     return await res.json();
   } catch (error) {
     console.log(error);
@@ -109,9 +94,11 @@ export const createFile = async (data: FormData) => {
 export const downloadFile = async (fileId: number, fileName: string) => {
   try {
     const res = await fetch(`/api/files/${fileId}/download`);
+
     if (!res.ok) {
       throw new Error("Error downloading file");
     }
+
     const blob = await res.blob();
     const blobUrl = URL.createObjectURL(blob);
 
@@ -121,8 +108,8 @@ export const downloadFile = async (fileId: number, fileName: string) => {
     document.body.appendChild(link);
 
     link.click();
-
     link.remove();
+
     URL.revokeObjectURL(blobUrl);
   } catch (error) {
     console.log(error);
@@ -133,7 +120,9 @@ export const downloadFile = async (fileId: number, fileName: string) => {
 export const getFileByShareUrl = async (shareUrl: string) => {
   try {
     const res = await fetch(`/api/files/${shareUrl}/shared`);
+
     const files: File[] = await res.json();
+
     return files;
   } catch (error) {
     console.log(error);
@@ -145,7 +134,10 @@ export async function getFilesByShareUrlAndFolderId(
   folderId: number
 ) {
   const res = await fetch(`/api/shared/${shareUrl}/files/${folderId}`);
+
   if (!res.ok) throw new Error("Failed to fetch shared files");
+
   const files: File[] = await res.json();
+
   return files;
 }

@@ -1,9 +1,10 @@
+import { useForm } from "react-hook-form";
 import styled from "styled-components";
+
 import Button from "../Button";
 import Heading from "../Heading";
-import { useForm, SubmitHandler } from "react-hook-form";
-import FormRow from "../FormRow";
 import Input from "../Input";
+
 import { File } from "../../types/models";
 
 const StyledConfirmDelete = styled.div`

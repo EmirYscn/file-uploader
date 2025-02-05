@@ -1,18 +1,18 @@
+import { useLocation } from "react-router";
+import { useContext, useRef, useState } from "react";
+import styled from "styled-components";
 import { BsFileEarmarkPlusFill } from "react-icons/bs";
-
 import { FiFolderPlus } from "react-icons/fi";
 
-import styled from "styled-components";
 import Modal from "./Modal";
 import AddFolder from "./Modals/AddFolder";
-import { useContext, useRef } from "react";
-import { FoldersContext } from "../contexts/foldersContext";
 
 import useCreateFolder from "../hooks/useCreateFolder";
-
-import { FilesContext } from "../contexts/filesContext";
 import useCreateFile from "../hooks/useCreateFile";
-import { useLocation } from "react-router";
+
+import { FoldersContext } from "../contexts/foldersContext";
+import { FilesContext } from "../contexts/filesContext";
+import DragDropBox from "./DragDropBox";
 
 const StyledNewButton = styled.div`
   display: flex;
@@ -27,9 +27,7 @@ const Button = styled.button`
   border-radius: 6px;
   font-size: medium;
   background: none;
-  /* background-color: var(--color-brand-800); */
   color: var(--color-brand-800);
-  /* box-shadow: var(--shadow-lg); */
   display: flex;
   justify-content: center;
   width: max-content;
@@ -41,7 +39,6 @@ const Button = styled.button`
   }
 
   &:hover {
-    /* opacity: 0.5; */
     transform: scale(1.2);
   }
   &:active {
@@ -59,55 +56,56 @@ const Button = styled.button`
 `;
 
 function NewButton() {
+  const [dragDropModalOpen, setDragDropModalOpen] = useState(false);
   const location = useLocation();
   const isInShared = location.pathname.includes("shared");
-  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  // const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const { setFolders, isLoading: isFoldersLoading } =
     useContext(FoldersContext);
-  const { setFiles, isLoading: isFilesLoading } = useContext(FilesContext);
-
   const { handleCreateFolder, isLoading: isCreatingFolder } =
     useCreateFolder(setFolders);
-  const { handleCreateFile, isLoading: isCreatingFile } =
-    useCreateFile(setFiles);
 
-  function handleAddFile() {
-    fileInputRef.current?.click();
-  }
-  async function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
-    const file = event.target.files?.[0];
-    if (file) {
-      handleCreateFile(file);
-    }
-  }
+  // const { setFiles, isLoading: isFilesLoading } = useContext(FilesContext);
+
+  // const { handleCreateFile, isLoading: isCreatingFile } =
+  //   useCreateFile(setFiles);
+
+  // function handleAddFile() {
+  //   fileInputRef.current?.click();
+  // }
+  // async function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
+  //   const file = event.target.files?.[0];
+  //   if (file) {
+  //     handleCreateFile(file);
+  //   }
+  // }
   return (
-    <StyledNewButton>
-      <Modal>
-        <Modal.Open opens="addFolder">
-          <Button disabled={isInShared || isFoldersLoading}>
-            <FiFolderPlus />
-          </Button>
-        </Modal.Open>
-        <Modal.Window name="addFolder">
-          <AddFolder
-            onConfirm={handleCreateFolder}
-            disabled={isCreatingFolder}
-          />
-        </Modal.Window>
-      </Modal>
+    <>
+      {!dragDropModalOpen ? (
+        <StyledNewButton>
+          <Modal>
+            <Modal.Open opens="addFolder">
+              <Button disabled={isInShared || isFoldersLoading}>
+                <FiFolderPlus />
+              </Button>
+            </Modal.Open>
+            <Modal.Window name="addFolder">
+              <AddFolder
+                onConfirm={handleCreateFolder}
+                disabled={isCreatingFolder}
+              />
+            </Modal.Window>
+          </Modal>
 
-      <Button onClick={handleAddFile} disabled={isInShared || isCreatingFile}>
-        <BsFileEarmarkPlusFill />
-        <input
-          type="file"
-          name="file"
-          ref={fileInputRef}
-          style={{ display: "none" }}
-          onChange={handleFileChange}
-        />
-      </Button>
-    </StyledNewButton>
+          <Button onClick={() => setDragDropModalOpen(true)}>
+            <BsFileEarmarkPlusFill />
+          </Button>
+        </StyledNewButton>
+      ) : (
+        <DragDropBox onCancel={() => setDragDropModalOpen(false)} />
+      )}
+    </>
   );
 }
 

@@ -1,5 +1,6 @@
 import { createContext } from "react";
-import { File, FileWithShareInfo } from "../types/models";
+
+import { File } from "../types/models";
 
 type FilesContextType = {
   files: File[] | undefined;

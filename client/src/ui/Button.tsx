@@ -1,5 +1,4 @@
 import styled, { css } from "styled-components";
-import { Folder } from "../types/models";
 
 const types = {
   "header-button": css`

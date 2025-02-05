@@ -2,8 +2,9 @@ import styled, { css } from "styled-components";
 
 import Logo from "./Logo";
 import MainNav from "./MainNav";
+import ProfileNav from "./ProfileNav";
 
-const StyledSidebar = styled.aside.withConfig({
+const StyledSidebar = styled.header.withConfig({
   shouldForwardProp: (prop) => prop !== "isdark",
 })<{ isdark?: boolean }>`
   background-color: var(--color-grey-0);
@@ -12,6 +13,8 @@ const StyledSidebar = styled.aside.withConfig({
   display: flex;
   flex-direction: column;
   gap: 3.2rem;
+  align-items: center;
+  justify-content: center;
 
   ${(props) =>
     props.isdark &&
@@ -20,13 +23,12 @@ const StyledSidebar = styled.aside.withConfig({
     `}
 `;
 
-function Sidebar({ isDark }: { isDark?: boolean }) {
+function ProfileSidebar({ isDark }: { isDark?: boolean }) {
   return (
     <StyledSidebar isdark={isDark}>
-      <Logo />
-      <MainNav isDark={isDark} />
+      <ProfileNav isDark={isDark} />
     </StyledSidebar>
   );
 }
 
-export default Sidebar;
+export default ProfileSidebar;

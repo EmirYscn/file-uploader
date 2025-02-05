@@ -1,12 +1,15 @@
-import styled, { css } from "styled-components";
-import Button from "./Button";
-import { useNavigate } from "react-router";
 import { useContext } from "react";
-import { UserContext } from "../contexts/userContext";
-import { logout } from "../services/apiUser";
+import { useNavigate } from "react-router";
+import styled, { css } from "styled-components";
+
 import CurrentRouteDisplay from "./CurrentRouteDisplay";
+import Button from "./Button";
 import Profile from "./Profile";
 import DarkModeToggle from "./DarkModeToggle";
+
+import { UserContext } from "../contexts/userContext";
+
+import { logout } from "../services/apiUser";
 
 const StyledHeader = styled.header.withConfig({
   shouldForwardProp: (prop) => prop !== "isdark",

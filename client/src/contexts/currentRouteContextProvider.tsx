@@ -1,6 +1,7 @@
-import { useState, ReactNode, useContext } from "react";
-import { CurrentRouteContext } from "./currentRouteContext";
+import { useState, ReactNode } from "react";
 import { useParams } from "react-router";
+
+import { CurrentRouteContext } from "./currentRouteContext";
 
 export function CurrentRouteContextProvider({
   children,
@@ -21,7 +22,3 @@ export function CurrentRouteContextProvider({
     </CurrentRouteContext.Provider>
   );
 }
-
-// export function useCurrentRoute() {
-//   return useContext(CurrentRouteContext);
-// }

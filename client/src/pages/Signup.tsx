@@ -1,16 +1,18 @@
+import { useContext } from "react";
+import { useForm } from "react-hook-form";
 import styled, { css } from "styled-components";
+
 import Form from "../ui/Form";
 import FormRow from "../ui/FormRow";
 import Input from "../ui/Input";
-import { useForm } from "react-hook-form";
-import { User } from "../types/models";
 import Button from "../ui/Button";
 import Wall from "../ui/Wall";
-import { createUser } from "../services/apiUser";
-import { useNavigate } from "react-router";
-import { useContext, useState } from "react";
-import useCreateUser from "../hooks/useCreateUser";
 import BackButton from "../ui/BackButton";
+
+import { User } from "../types/models";
+
+import useCreateUser from "../hooks/useCreateUser";
+
 import { ThemeContext } from "../contexts/themeContext";
 
 const StyledSignup = styled.div`
@@ -42,13 +44,11 @@ function Signup() {
     register,
     handleSubmit,
     getValues,
-    reset,
     formState: { errors },
   } = useForm<SignupData>();
 
   const { onSubmit, errors: apiErrors, isLoading } = useCreateUser();
-  console.log(apiErrors);
-  console.log(apiErrors?.error?.find((err) => err.path === "email"));
+
   return (
     <>
       <StyledSignup>

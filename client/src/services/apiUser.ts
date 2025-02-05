@@ -16,8 +16,6 @@ type Errors = {
 };
 
 export const createUser = async (data: User) => {
-  console.log(data);
-
   const response = await fetch("/api/signup", {
     method: "POST",
     headers: {
@@ -28,7 +26,6 @@ export const createUser = async (data: User) => {
 
   if (!response.ok) {
     const errorData: Errors = await response.json();
-    console.log(errorData);
     throw errorData;
   }
 
@@ -46,7 +43,6 @@ export const login = async (data: User): Promise<User> => {
 
   if (!response.ok) {
     const errorData: Errors = await response.json();
-    console.log(errorData);
     throw errorData;
   }
 
@@ -66,10 +62,8 @@ export const logout = async () => {
         errorData.error || `HTTP error! status: ${response.status}`
       );
     }
-
-    // return await response.json();
   } catch (error) {
     console.error("Failed to log out user:", error);
-    throw error; // Rethrow the error after logging it
+    throw error;
   }
 };

@@ -7,20 +7,26 @@ import Sidebar from "./Sidebar";
 
 import { UserContext } from "../contexts/userContext";
 import { ThemeContext } from "../contexts/themeContext";
+import ProfileSidebar from "./ProfileSidebar";
 
-const StyledAppLayout = styled.div`
+const StyledProfileLayout = styled.div`
   display: grid;
-  grid-template-columns: 40rem 1fr;
+  grid-template-columns: 26rem 1fr;
   grid-template-rows: auto 1fr;
   height: 100vh;
+  justify-content: center;
 `;
 
 const Main = styled.main.withConfig({
   shouldForwardProp: (prop) => prop !== "isdark",
 })<{ isdark: boolean }>`
-  background-color: var(--color-grey-50);
+  background-color: var(--color-grey-100);
   padding: 4rem 4.8rem 6.4rem;
   overflow: scroll;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* height: 100vh; */
 
   ${(props) =>
     props.isdark &&
@@ -31,7 +37,7 @@ const Main = styled.main.withConfig({
 `;
 
 const Container = styled.div`
-  max-width: 120rem;
+  width: 100%;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -39,20 +45,20 @@ const Container = styled.div`
   position: relative;
 `;
 
-function AppLayout() {
+function ProfileLayout() {
   const { isDark } = useContext(ThemeContext);
 
   return (
-    <StyledAppLayout>
+    <StyledProfileLayout>
       <Header isDark={isDark} />
-      <Sidebar isDark={isDark} />
+      <ProfileSidebar isDark={isDark} />
       <Main isdark={isDark}>
         <Container>
           <Outlet />
         </Container>
       </Main>
-    </StyledAppLayout>
+    </StyledProfileLayout>
   );
 }
 
-export default AppLayout;
+export default ProfileLayout;

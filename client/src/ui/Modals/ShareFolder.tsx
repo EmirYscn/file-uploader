@@ -1,14 +1,18 @@
-import styled, { css } from "styled-components";
-import Heading from "../Heading";
+import { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Folder, User } from "../../types/models";
+import { add } from "date-fns";
+import styled, { css } from "styled-components";
+import { MdDelete } from "react-icons/md";
+
+import Heading from "../Heading";
 import Input from "../Input";
 import Button from "../Button";
-import { useContext, useEffect, useState } from "react";
-import { MdDelete } from "react-icons/md";
-import { add } from "date-fns";
+
+import { User } from "../../types/models";
 import { accessType } from "../../types/enums";
+
 import { ThemeContext } from "../../contexts/themeContext";
+import { UserContext } from "../../contexts/userContext";
 
 const StyledSharedFolder = styled.div`
   width: 40rem;
@@ -75,8 +79,7 @@ const SelectedUsers = styled.div`
 `;
 
 const Select = styled.select<{ isdark?: boolean }>`
-  /* General Select Styling */
-  appearance: none; /* Removes default arrow for cross-browser compatibility */
+  appearance: none;
   background-color: #f9f9f9;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -84,23 +87,21 @@ const Select = styled.select<{ isdark?: boolean }>`
   font-size: 16px;
   font-family: inherit;
   color: #333;
-  width: 100%; /* Adjust based on your layout */
+  width: 100%;
   outline: none;
   cursor: pointer;
   transition: all 0.3s ease;
 
   &:focus {
-    border-color: #007bff; /* Highlighted border color */
-    box-shadow: 0 0 4px rgba(0, 123, 255, 0.4); /* Subtle focus effect */
+    border-color: #007bff;
+    box-shadow: 0 0 4px rgba(0, 123, 255, 0.4);
   }
 
-  /* Optional: Add a custom dropdown arrow */
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24'%3E%3Cpath fill='%23666' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 12px center;
   background-size: 12px 12px;
 
-  /* Option Styling */
   & option {
     background-color: #fff;
     color: #333;
@@ -108,12 +109,10 @@ const Select = styled.select<{ isdark?: boolean }>`
     padding: 8px;
   }
 
-  /* Styling for Disabled Options */
   & option:disabled {
     color: #999;
   }
 
-  /* Hover effect for options (if supported by browser) */
   & option:hover {
     background-color: #f0f8ff;
   }
@@ -125,8 +124,8 @@ const Select = styled.select<{ isdark?: boolean }>`
       color: #f9f9f9;
       border: 1px solid #ccc;
       &:focus {
-        border-color: #007bff; /* Highlighted border color */
-        box-shadow: 0 0 4px rgba(0, 123, 255, 0.4); /* Subtle focus effect */
+        border-color: #007bff;
+        box-shadow: 0 0 4px rgba(0, 123, 255, 0.4);
       }
       & option {
         background-color: #333;
@@ -168,11 +167,12 @@ type ShareFolderProps = {
 const expirationMap: Record<string, number | null> = {
   "1d": 1,
   "3d": 3,
-  indefinite: null, // null for no expiration
+  indefinite: null,
 };
 
 function ShareFolder({ onConfirm, disabled, onCloseModal }: ShareFolderProps) {
   const { isDark } = useContext(ThemeContext);
+  const { user: currentUser } = useContext(UserContext);
   const { handleSubmit, register } = useForm<FormData>();
   const [value, setValue] = useState("");
   const [users, setUsers] = useState<User[]>([]);
@@ -203,7 +203,10 @@ function ShareFolder({ onConfirm, disabled, onCloseModal }: ShareFolderProps) {
         const res = await fetch(`/api/search/user?email=${debouncedValue}`);
         if (!res.ok) throw new Error("Failed to fetch users");
         const users = await res.json();
-        setUsers(users);
+        const filteredUsers = users.filter(
+          (user: User) => user.id !== currentUser?.id
+        );
+        setUsers(filteredUsers);
       } catch (error) {
         console.log("Error fetching users", error);
       }

@@ -1,8 +1,11 @@
 import { useContext, useEffect, useState } from "react";
 import { useLocation } from "react-router";
-import { File } from "../types/models";
+
 import { getFilesByFolder, getMainFiles } from "../services/apiFiles";
+
 import { UserContext } from "../contexts/userContext";
+
+import { File } from "../types/models";
 
 function useFiles(): {
   files: File[] | undefined;
@@ -22,7 +25,6 @@ function useFiles(): {
 
         const pathSegments = location.pathname.split("/");
         const folderId = Number(pathSegments[pathSegments.length - 1]);
-        // const type = pathSegments[1];
 
         const files = isNaN(folderId)
           ? await getMainFiles(user!.id)

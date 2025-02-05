@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+import { Link, useParams } from "react-router";
 import styled from "styled-components";
 import { AiOutlineDownload } from "react-icons/ai";
 
@@ -5,10 +7,6 @@ import Modal from "./Modal";
 import Menus from "./Menus";
 import Spinner from "./Spinner";
 
-import { Link, useParams } from "react-router";
-import { useEffect, useState } from "react";
-
-import { File as FileType } from "../types/models";
 import useDownloadFile from "../hooks/useDownloadFile";
 import { formatString } from "../utils/formatString";
 
@@ -16,7 +14,8 @@ import {
   getFileByShareUrl,
   getFilesByShareUrlAndFolderId,
 } from "../services/apiFiles";
-import FileInfo from "./FileInfo";
+
+import { File as FileType } from "../types/models";
 
 const File = styled.div`
   display: flex;
@@ -71,7 +70,6 @@ function SharedFiles() {
             <File key={file.id} draggable={true}>
               <Link to={`file/${file.id}`}>
                 <Img src="/file.svg" />
-                {/* <FileInfo file={file} /> */}
               </Link>
               <Details>
                 <span>{formatString(file.name)}</span>

@@ -1,16 +1,16 @@
+import { useContext } from "react";
+import { useForm } from "react-hook-form";
 import styled, { css } from "styled-components";
+
 import Form from "../ui/Form";
 import FormRow from "../ui/FormRow";
 import Input from "../ui/Input";
-import { useForm } from "react-hook-form";
 import { User } from "../types/models";
-import { login } from "../services/apiUser";
-import { useNavigate } from "react-router";
-import { UserContext } from "../contexts/userContext";
-import { useContext } from "react";
 import Wall from "../ui/Wall";
 import Button from "../ui/Button";
+
 import useLoginUser from "../hooks/useLoginUser";
+
 import { ThemeContext } from "../contexts/themeContext";
 
 const StyledLogin = styled.div`
@@ -38,7 +38,6 @@ function Login() {
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors },
   } = useForm<User>();
   const { onSubmit, errors: apiErrors, isLoading } = useLoginUser();

@@ -26,19 +26,4 @@ router.get("/api/folders/:id/shareUrl", foldersController.createShareUrl);
 router.get("/api/folder/:id", foldersController.getFolderNameAndParentId);
 router.get("/api/folder/:id/sharedUsers", foldersController.getSharedUsers);
 
-// router.get(
-//   "/api/folders/byFolderId/:folderId",
-//   foldersController.getFoldersByFolderId
-// );
-
-// router.get(
-//   "/api/folders/:type/byUserId/:userId",
-//   foldersController.getMainFolders
-// );
-
-// router.post("/api/folder/createFolder", foldersController.createFolder);
-// router.get("/api/folder/:folderId", foldersController.getFolder);
-// router.patch("/api/folder/:folderId", foldersController.updateFolder);
-// router.delete("/api/folder/:folderId", foldersController.deleteFolder);
-
 export { router };

@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import styled, { css } from "styled-components";
+
 import { ThemeContext } from "../contexts/themeContext";
 
 const StyledHeading = styled.h1.withConfig({
@@ -49,7 +50,7 @@ const StyledHeading = styled.h1.withConfig({
 
 type HeadingProps = {
   children: string | string[];
-  as?: "h1" | "h2" | "h3"; // Restrict `as` to specific heading levels
+  as?: "h1" | "h2" | "h3";
   type?: string;
 };
 

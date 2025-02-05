@@ -1,6 +1,5 @@
 import { useContext } from "react";
 import { Link, useLocation } from "react-router";
-import { Folder, UserWithShareInfo } from "../types/models";
 
 import styled, { css } from "styled-components";
 import { MdDriveFileRenameOutline, MdPersonAddAlt1 } from "react-icons/md";
@@ -13,20 +12,24 @@ import Menus from "./Menus";
 
 import { UserContext } from "../contexts/userContext";
 import { FoldersContext } from "../contexts/foldersContext";
+import { CurrentRouteContext } from "../contexts/currentRouteContext";
+
+import { Folder, UserWithShareInfo } from "../types/models";
 
 import useRenameFolder from "../hooks/useRenameFolder";
 import useDeleteFolder from "../hooks/useDeleteFolder";
+import useShareFolder from "../hooks/useShareFolder";
+import useHandleDrop from "../hooks/useHandleDrop";
+import useCopyFolderLink from "../hooks/useCopyFolderLink";
+import useUpdateShareFolder from "../hooks/useUpdateShareFolder";
+
 import ConfirmDelete from "./Modals/ConfirmDelete";
 import RenameFolderForm from "./Modals/RenameFolderForm";
-import useShareFolder from "../hooks/useShareFolder";
-import ShareFolder, { Data as ShareFolderData } from "./Modals/ShareFolder";
-import { formatString } from "../utils/formatString";
-import useCopyFolderLink from "../hooks/useCopyFolderLink";
-import useHandleDrop from "../hooks/useHandleDrop";
-import { CurrentRouteContext } from "../contexts/currentRouteContext";
-import { isExpired } from "../utils/dateCompare";
 import ManageShare from "./Modals/ManageShare";
-import useUpdateShareFolder from "../hooks/useUpdateShareFolder";
+import ShareFolder, { Data as ShareFolderData } from "./Modals/ShareFolder";
+
+import { formatString } from "../utils/formatString";
+import { isExpired } from "../utils/dateCompare";
 
 const StyledFolder = styled.div`
   display: flex;
@@ -56,7 +59,6 @@ const Details = styled.div`
 `;
 
 function Folders() {
-  const { setCurrentRoute } = useContext(CurrentRouteContext);
   const { user: currentUser } = useContext(UserContext);
   const { folders, setFolders, isLoading } = useContext(FoldersContext);
 
@@ -105,7 +107,6 @@ function Folders() {
               onDragOver={(e) => handleDragOver(e, folder.id)}
               onDragLeave={handleDragLeave}
               onDrop={(e) => handleDrop(e, folder.id)}
-              // isbeingdropped={folder.id == dragOverFolderId}
               $isDragOver={folder.id == dragOverFolderId}
             />
           </Link>

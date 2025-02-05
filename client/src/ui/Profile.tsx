@@ -1,10 +1,11 @@
 import { useContext } from "react";
-import { UserContext } from "../contexts/userContext";
-import styled, { css } from "styled-components";
-import Modal from "./Modal";
-import Menus from "./Menus";
-import { IoPerson, IoSettingsOutline } from "react-icons/io5";
 import { useNavigate } from "react-router";
+import { IoPerson, IoSettingsOutline } from "react-icons/io5";
+import styled, { css } from "styled-components";
+
+import Menus from "./Menus";
+
+import { UserContext } from "../contexts/userContext";
 
 const StyledProfile = styled.div.withConfig({
   shouldForwardProp: (prop) => prop !== "isdark",
@@ -38,12 +39,14 @@ function Profile({ isDark }: { isDark?: boolean }) {
           <Menus.Button
             icon={<IoPerson />}
             onClick={() => navigate("/profile")}
+            isFolderOwner={true}
           >
             Profile
           </Menus.Button>
           <Menus.Button
             icon={<IoSettingsOutline />}
             onClick={() => navigate("/settings")}
+            isFolderOwner={true}
           >
             Settings
           </Menus.Button>

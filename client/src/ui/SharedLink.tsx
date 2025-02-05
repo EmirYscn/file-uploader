@@ -1,8 +1,9 @@
+import { useLocation } from "react-router";
 import styled from "styled-components";
+
 import BackButton from "./BackButton";
 import SharedFolders from "./SharedFolders";
 import SharedFiles from "./SharedFiles";
-import { useLocation } from "react-router";
 
 const StyledShared = styled.div`
   display: grid;

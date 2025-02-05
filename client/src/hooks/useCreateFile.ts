@@ -1,17 +1,19 @@
 import { useContext, useState } from "react";
-import { File as FileType, FolderWithShareInfo } from "../types/models";
-import { UserContext } from "../contexts/userContext";
 import { useLocation } from "react-router";
+
+import { UserContext } from "../contexts/userContext";
+
 import { createFile } from "../services/apiFiles";
 
+import { File as FileType } from "../types/models";
+
 function useCreateFile(
-  setFiles: React.Dispatch<
-    React.SetStateAction<FolderWithShareInfo[] | undefined>
-  >
+  setFiles: React.Dispatch<React.SetStateAction<FileType[] | undefined>>
 ) {
-  const [isLoading, setIsLoading] = useState(false);
   const { user } = useContext(UserContext);
+  const [isLoading, setIsLoading] = useState(false);
   const location = useLocation();
+
   const pathSegments = location.pathname.split("/");
   const folderId = Number(pathSegments[pathSegments.length - 1]);
 

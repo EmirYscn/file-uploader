@@ -505,13 +505,11 @@ export const getSharedUsers = async (folderId: number) => {
 
 export const updateFolderShare = async (body: FolderShare) => {
   try {
-    const { folderId, userId, accessType } = body;
+    const { folderId, userId, accessType, expireDate } = body;
     console.log(body);
     await prisma.folderShare.update({
       where: { folderId_userId: { folderId, userId } },
-      data: {
-        accessType,
-      },
+      data: body,
     });
   } catch (error) {
     console.error("Error updating shared folder:", error);

@@ -1,15 +1,13 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router";
 import styled, { css } from "styled-components";
-import {
-  getFolderNameAndParentIdById,
-  getFolderNameById,
-} from "../services/apiFolders";
+
+import { getFolderNameAndParentIdById } from "../services/apiFolders";
 import useHandleDrop from "../hooks/useHandleDrop";
+
 import { Folder } from "../types/models";
 
 const StyledCurrentRouteDisplay = styled.div`
-  /* border: 1px solid black; */
   display: flex;
   align-items: center;
   color: #ceb40e;

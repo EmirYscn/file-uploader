@@ -1,4 +1,5 @@
 import { Outlet } from "react-router";
+
 import Heading from "../ui/Heading";
 
 function Shared() {

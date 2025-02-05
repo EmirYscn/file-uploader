@@ -1,18 +1,13 @@
-import { useNavigate } from "react-router";
-import { login } from "../services/apiUser";
-import { User } from "../types/models";
 import { useContext, useState } from "react";
+import { useNavigate } from "react-router";
+
+import { User } from "../types/models";
+
+import { login } from "../services/apiUser";
+
 import { UserContext } from "../contexts/userContext";
 
 type loginData = User;
-
-// type Error = {
-//   location?: string;
-//   msg?: string;
-//   path?: string;
-//   type?: string;
-//   value?: string;
-// };
 
 type Errors = {
   body?: loginData;
@@ -31,7 +26,6 @@ function useLoginUser() {
       setIsLoading(true);
       const user = await login(data);
 
-      console.log(user);
       setUser(user);
       navigate("/all");
     } catch (error: any) {

@@ -1,13 +1,11 @@
 import { useContext, useEffect, useState } from "react";
-import { Folder, FolderWithShareInfo } from "../types/models";
-import {
-  getFolder,
-  getFoldersByFolderId,
-  getFoldersByUserId,
-  getMainFolders,
-} from "../services/apiFolders";
-import { UserContext } from "../contexts/userContext";
 import { useLocation } from "react-router";
+
+import { getFolder, getMainFolders } from "../services/apiFolders";
+
+import { UserContext } from "../contexts/userContext";
+
+import { FolderWithShareInfo } from "../types/models";
 
 function useFolders(): {
   folders: FolderWithShareInfo[] | undefined;
@@ -28,7 +26,6 @@ function useFolders(): {
 
         const pathSegments = location.pathname.split("/");
         const folderId = Number(pathSegments[pathSegments.length - 1]);
-        // const type = pathSegments[1];
 
         const folders = isNaN(folderId)
           ? await getMainFolders(user!.id)

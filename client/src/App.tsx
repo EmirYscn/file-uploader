@@ -1,24 +1,28 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router";
-import AppLayout from "./ui/AppLayout";
-import Home from "./pages/Home";
 import GlobalStyles from "./styles/GlobalStyles";
+
+import Home from "./pages/Home";
 import SharedPage from "./pages/SharedPage";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import PageNotFound from "./pages/PageNotFound";
-import UserContextProvider from "./contexts/userContext";
 import MyFolders from "./pages/MyFolders";
+
+import AppLayout from "./ui/AppLayout";
 import All from "./ui/All";
 import Own from "./ui/Own";
 import Shared from "./ui/Shared";
+import SharedLink from "./ui/SharedLink";
+
+import UserContextProvider from "./contexts/userContext";
 import FoldersContextProvider from "./contexts/foldersContextProvider";
 import FilesContextProvider from "./contexts/filesContextProvider";
 import ThemeContextProvider from "./contexts/themeContextProvider";
-import SharedLink from "./ui/SharedLink";
 import { ShareContextProvider } from "./contexts/shareContextProvider";
-import Folders from "./ui/Folders";
-import SharedSubFolder from "./ui/SharedSubFolder";
 import { CurrentRouteContextProvider } from "./contexts/currentRouteContextProvider";
+import ProfileLayout from "./ui/ProfileLayout";
+import Profile from "./pages/Profile";
+import Password from "./pages/Password";
 
 function App() {
   return (
@@ -47,10 +51,6 @@ function App() {
 
                         <Route path="shared/*" element={<SharedPage />}>
                           <Route index element={<Shared />} />
-                          {/* <Route
-                          path="sharedurl/:shareUrl"
-                          element={<SharedLink />}
-                        /> */}
                           <Route path="folder/:folderId" element={<Shared />} />
                         </Route>
                         <Route
@@ -63,14 +63,12 @@ function App() {
                             element={<SharedLink />}
                           />
                         </Route>
-                        {/* <Route
-                        path="sharedurl/:shareUrl"
-                        element={<SharedLink />}
-                      />
-                      <Route
-                        path="sharedurl/folder/:folderId"
-                        element={<Folders />}
-                      /> */}
+                      </Route>
+
+                      <Route path="profile" element={<ProfileLayout />}>
+                        <Route index element={<Profile />} />
+                        <Route path="password" element={<Password />} />
+                        {/* <Route path="settings" element={<Settings />} /> */}
                       </Route>
 
                       <Route path="login" element={<Login />} />

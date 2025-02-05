@@ -1,9 +1,10 @@
 import { useContext, useState } from "react";
+
 import { FoldersContext } from "../contexts/foldersContext";
+import { FilesContext } from "../contexts/filesContext";
+
 import { updateFile } from "../services/apiFiles";
 import { updateFolder } from "../services/apiFolders";
-import { File, FolderWithShareInfo } from "../types/models";
-import { FilesContext } from "../contexts/filesContext";
 
 function useHandleDrop() {
   const { setFolders } = useContext(FoldersContext);

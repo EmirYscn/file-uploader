@@ -1,12 +1,11 @@
 import { useContext, useState } from "react";
-import {
-  Folder,
-  Folder as FolderType,
-  FolderWithShareInfo,
-} from "../types/models";
-import { createFolder } from "../services/apiFolders";
-import { UserContext } from "../contexts/userContext";
 import { useLocation } from "react-router";
+
+import { Folder as FolderType, FolderWithShareInfo } from "../types/models";
+
+import { createFolder } from "../services/apiFolders";
+
+import { UserContext } from "../contexts/userContext";
 
 function useCreateFolder(
   setFolders: React.Dispatch<

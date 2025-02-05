@@ -2,7 +2,9 @@ import { cloneElement, createContext, useContext, useState } from "react";
 import { createPortal } from "react-dom";
 import { HiXMark } from "react-icons/hi2";
 import styled, { css } from "styled-components";
+
 import { useOutsideClick } from "../hooks/useOutsideClick";
+
 import { ThemeContext } from "../contexts/themeContext";
 
 const StyledModal = styled.div<{ isdark?: boolean }>`
@@ -53,9 +55,6 @@ const Button = styled.button`
   & svg {
     width: 2.4rem;
     height: 2.4rem;
-    /* Sometimes we need both */
-    /* fill: var(--color-grey-500);
-    stroke: var(--color-grey-500); */
     color: var(--color-grey-500);
   }
 `;

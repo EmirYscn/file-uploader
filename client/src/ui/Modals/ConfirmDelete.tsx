@@ -1,8 +1,10 @@
-import styled, { css } from "styled-components";
 import { useContext } from "react";
-import { ThemeContext } from "../../contexts/themeContext";
+import styled, { css } from "styled-components";
+
 import Heading from "../Heading";
 import Button from "../Button";
+
+import { ThemeContext } from "../../contexts/themeContext";
 
 const StyledConfirmDelete = styled.div<{ isdark?: boolean }>`
   width: 40rem;

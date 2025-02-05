@@ -1,4 +1,5 @@
 import { createContext, useEffect, useState } from "react";
+
 import { User } from "../types/models";
 
 type UserContextType = {

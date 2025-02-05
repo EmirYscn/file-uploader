@@ -1,7 +1,8 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 
 function useCopyFolderLink() {
   const [isLoading, setIsLoading] = useState(false);
+
   async function handleCopyFolderLink(folderId: number) {
     try {
       setIsLoading(true);
@@ -18,6 +19,7 @@ function useCopyFolderLink() {
       setIsLoading(false);
     }
   }
+
   return { handleCopyFolderLink, isLoading };
 }
 

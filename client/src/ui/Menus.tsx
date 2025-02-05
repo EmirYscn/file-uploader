@@ -1,9 +1,12 @@
 import React, { createContext, useContext, useState } from "react";
+import styled, { css } from "styled-components";
 import { createPortal } from "react-dom";
 import { HiEllipsisVertical } from "react-icons/hi2";
-import styled, { css } from "styled-components";
+
 import { useOutsideClick } from "../hooks/useOutsideClick";
+
 import { accessType } from "../types/enums";
+
 import { ThemeContext } from "../contexts/themeContext";
 
 const Menu = styled.div`
@@ -219,15 +222,14 @@ function Button({
   accessType,
 }: ButtonProps) {
   const context = useContext(MenusContext);
-  // const disabled = accessType ? accessType !== "FULL" : false;
-  // const isDisabled = disabled === null || isFolderOwner ? false : disabled;
+  const { close, isDark } = context;
+
   const isDisabled =
     (accessType && accessType !== "FULL") || (!accessType && !isFolderOwner);
 
   if (!context) {
     throw new Error("Toggle must be used within a MenusProvider");
   }
-  const { close, isDark } = context;
 
   function handleClick() {
     onClick?.();

@@ -1,35 +1,30 @@
+import { useContext } from "react";
+import { Link, useLocation } from "react-router";
 import styled from "styled-components";
 import { RiDeleteBin2Line } from "react-icons/ri";
 import { AiOutlineDownload } from "react-icons/ai";
-import { MdDriveFileRenameOutline, MdPersonAddAlt1 } from "react-icons/md";
+import { MdDriveFileRenameOutline } from "react-icons/md";
+import { IoMdLink } from "react-icons/io";
 
 import Modal from "./Modal";
 import Menus from "./Menus";
 import Spinner from "./Spinner";
-import BackButton from "./BackButton";
+import FileInfo from "./FileInfo";
 
 import ConfirmDelete from "./Modals/ConfirmDelete";
 import RenameFileForm from "./Modals/RenameFileForm";
 
 import useDeleteFile from "../hooks/useDeleteFile";
-import { Link, useLocation } from "react-router";
-import { useContext } from "react";
-import { FilesContext } from "../contexts/filesContext";
 import useRenameFile from "../hooks/useRenameFile";
-import { File as FileType } from "../types/models";
 import useDownloadFile from "../hooks/useDownloadFile";
-import { formatString } from "../utils/formatString";
-import { UserContext } from "../contexts/userContext";
-import { IoMdLink } from "react-icons/io";
 import useCopyFileLink from "../hooks/useCopyFileLink";
-import { FiInfo } from "react-icons/fi";
-import FileInfo from "./FileInfo";
 
-const StyledFiles = styled.div`
-  display: grid;
-  grid-template-columns: repeat(8, minmax(auto, 100px));
-  gap: 3rem;
-`;
+import { FilesContext } from "../contexts/filesContext";
+import { UserContext } from "../contexts/userContext";
+
+import { File as FileType } from "../types/models";
+
+import { formatString } from "../utils/formatString";
 
 const File = styled.div`
   display: flex;

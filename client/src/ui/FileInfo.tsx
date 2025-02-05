@@ -1,7 +1,8 @@
 import { Tooltip } from "react-tooltip";
 import styled from "styled-components";
-import { File, FileWithUserInfo } from "../types/models";
 import { FiInfo } from "react-icons/fi";
+
+import { FileWithUserInfo } from "../types/models";
 
 const StyledInfo = styled.div`
   position: absolute;
@@ -20,11 +21,14 @@ const InfoBox = styled.div`
 
 function FileInfo({ file }: { file: FileWithUserInfo }) {
   const uploadDate = new Date(file.uploadDate);
+
   const fileSize =
     file.size > 1024 * 1024
       ? (file.size / (1024 * 1024)).toFixed(2)
       : (file.size / 1024).toFixed(2);
+
   const fileType = file.size > 999999 ? "MB" : "KB";
+
   return (
     <StyledInfo>
       <span

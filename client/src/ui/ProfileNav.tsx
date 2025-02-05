@@ -1,10 +1,11 @@
 import { NavLink } from "react-router";
-import { FaHome } from "react-icons/fa";
+import { FaHome, FaLock, FaRegUser } from "react-icons/fa";
 import { PiFolderSimpleUserBold } from "react-icons/pi";
 import styled, { css } from "styled-components";
 import { RiFolderCloudLine } from "react-icons/ri";
 
 import NewButton from "./NewButton";
+import { IoSettingsOutline } from "react-icons/io5";
 
 const NavList = styled.ul`
   display: flex;
@@ -38,7 +39,7 @@ const StyledNavLink = styled(NavLink).withConfig({
   }
 
   & svg {
-    font-size: 2.3rem;
+    font-size: 1.5rem;
   }
 
   &:hover svg,
@@ -62,28 +63,27 @@ const StyledNavLink = styled(NavLink).withConfig({
     `}
 `;
 
-function MainNav({ isDark }: { isDark?: boolean }) {
+function ProfileNav({ isDark }: { isDark?: boolean }) {
   return (
     <>
-      <NewButton />
       <nav>
         <NavList>
           <li>
-            <StyledNavLink to="all" isdark={isDark}>
-              <FaHome />
-              <span>Home</span>
+            <StyledNavLink to="/profile" isdark={isDark} end>
+              <FaRegUser />
+              <span>Profile</span>
             </StyledNavLink>
           </li>
           <li>
-            <StyledNavLink to="myFolders" isdark={isDark}>
-              <PiFolderSimpleUserBold />
-              <span>My Drive</span>
+            <StyledNavLink to="/profile/password" isdark={isDark}>
+              <FaLock />
+              <span>Change Password</span>
             </StyledNavLink>
           </li>
           <li>
-            <StyledNavLink to="shared" isdark={isDark}>
-              <RiFolderCloudLine />
-              <span>Shared with me</span>
+            <StyledNavLink to="profile/settings" isdark={isDark}>
+              <IoSettingsOutline />
+              <span>Settings</span>
             </StyledNavLink>
           </li>
         </NavList>
@@ -92,4 +92,4 @@ function MainNav({ isDark }: { isDark?: boolean }) {
   );
 }
 
-export default MainNav;
+export default ProfileNav;

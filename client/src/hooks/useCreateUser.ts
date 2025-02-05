@@ -1,6 +1,8 @@
-import { useNavigate } from "react-router";
-import { createUser } from "../services/apiUser";
 import { useState } from "react";
+import { useNavigate } from "react-router";
+
+import { createUser } from "../services/apiUser";
+
 import { User } from "../types/models";
 
 type SignupData = User & { confirmPassword: string };
@@ -35,9 +37,6 @@ function useCreateUser() {
       setIsLoading(false);
     }
   }
-  // function onError(errors: Error) {
-  //   setErrors(errors);
-  // }
 
   return { onSubmit, errors, isLoading };
 }

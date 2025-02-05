@@ -10,7 +10,7 @@ const StyledBackButton = styled.button<{ poscontext: string }>`
   position: absolute;
   background: none;
 
-  left: -7rem;
+  left: -4rem;
   top: -3rem;
   z-index: 1000;
 
@@ -42,8 +42,6 @@ function BackButton({ posContext = "other" }: BackButtonProps) {
   pathSegments.shift();
   const isSubRoot = pathSegments.length > 1;
   const isSignup = pathSegments[0] === "signup";
-  // const isSharedSubRoot = pathSegments[0] === "sharedurl";
-  // console.log(isSharedSubRoot);
   return (
     (isSubRoot || isSignup) && (
       <>

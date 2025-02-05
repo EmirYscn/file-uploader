@@ -26,7 +26,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(userRouter);
-// app.use(authController.isAuth);
 app.use(fileRouter);
 app.use(folderRouter);
 

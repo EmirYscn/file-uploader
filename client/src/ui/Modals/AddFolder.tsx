@@ -1,10 +1,13 @@
-import styled, { css } from "styled-components";
-import Heading from "../Heading";
+import { useContext } from "react";
 import { useForm } from "react-hook-form";
+import styled, { css } from "styled-components";
+
 import { Folder } from "../../types/models";
+
+import Heading from "../Heading";
 import Input from "../Input";
 import Button from "../Button";
-import { useContext } from "react";
+
 import { ThemeContext } from "../../contexts/themeContext";
 
 const StyledAddFolder = styled.div<{ isdark?: boolean }>`

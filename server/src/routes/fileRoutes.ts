@@ -12,7 +12,6 @@ router.get(
   "/api/shared/:shareUrl/files/:folderId",
   filesController.getSharedSubFiles
 );
-// new
 router.get(
   "/api/files/main/:userId",
   authController.isAuth,
@@ -47,16 +46,5 @@ router.delete(
   authController.isAuth,
   filesController.deleteFile
 );
-
-// old
-// router.get(
-//   "/api/files/:type/byUserId/:userId",
-//   filesController.getFilesByUserId
-// );
-// router.get(
-//   "/api/files/byFolderId/:folderId",
-//   filesController.getFilesByFolderId
-// );
-// router.get("/api/files/download/:fileId", filesController.downloadFile);
 
 export { router };

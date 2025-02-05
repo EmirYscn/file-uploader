@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { IoSunny } from "react-icons/io5";
 import { MdDarkMode } from "react-icons/md";
 import styled, { css } from "styled-components";
+
 import { ThemeContext } from "../contexts/themeContext";
 
 const StyledDarkModeToggle = styled.button.withConfig({

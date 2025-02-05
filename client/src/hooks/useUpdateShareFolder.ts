@@ -1,7 +1,6 @@
-import { useContext, useState } from "react";
-import { shareFolder, updateShareFolder } from "../services/apiFolders";
-import { UserContext } from "../contexts/userContext";
-import { Data } from "../ui/Modals/ShareFolder";
+import { useState } from "react";
+import { updateShareFolder } from "../services/apiFolders";
+
 import { UserWithShareInfo } from "../types/models";
 
 function useUpdateShareFolder() {

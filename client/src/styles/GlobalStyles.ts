@@ -61,6 +61,19 @@ const GlobalStyles = createGlobalStyle`
   --color-black-400: #333333;
   --color-black-500: #404040;
 
+  // DROP ZONE
+  --primary: #17d5ff;
+  --primary-dark: #00aacf;
+  --bg: #fdfdfd;
+  --secondary: #ecf0f1;
+  --dropzone-bg: #fdfdfd;
+  --gray: #444;
+  --border: #eedfef;
+  --dropzone-border: #95a5a6;
+  --text: #0a0e12;
+  --headline: var(--text);
+  --primary-text: #2c3e50;
+  --dropzone-over: #00aacf10
 }
 
 *,

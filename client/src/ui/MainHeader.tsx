@@ -1,6 +1,7 @@
-import styled from "styled-components";
-import Button from "./Button";
 import { useNavigate } from "react-router";
+import styled from "styled-components";
+
+import Button from "./Button";
 import Logo from "./Logo";
 
 const StyledHeader = styled.header`
@@ -24,10 +25,10 @@ function MainHeader() {
     <StyledHeader>
       <Logo />
       <Buttons>
-        <Button onClick={() => navigate("/signup")} type="header-button">
+        <Button onClick={() => navigate("/signup")} styletype="header-button">
           Sign up
         </Button>
-        <Button onClick={() => navigate("/login")} type="header-button">
+        <Button onClick={() => navigate("/login")} styletype="header-button">
           Log in
         </Button>
       </Buttons>
