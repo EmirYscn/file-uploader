@@ -4,6 +4,7 @@ import styled, { css } from "styled-components";
 import useCreateFile from "../hooks/useCreateFile";
 import { FilesContext } from "../contexts/filesContext";
 import { ThemeContext } from "../contexts/themeContext";
+import FilesLoadingSpinner from "./FilesLoadingSpinner";
 
 const DropZoneBox = styled.div<{ isDark?: boolean }>`
   border-radius: 1em;
@@ -237,7 +238,6 @@ function DragDropBox({ onCancel }: { onCancel: () => void }) {
 
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
-    e.currentTarget.classList.remove("drag-over");
     processFiles(Array.from(e.dataTransfer.files));
   };
 
@@ -253,7 +253,8 @@ function DragDropBox({ onCancel }: { onCancel: () => void }) {
 
   const handleFileUpload = async () => {
     if (files.length > 0) {
-      await handleCreateFile(files[0]);
+      console.log(files);
+      await handleCreateFile(files);
       onCancel();
     }
   };
@@ -297,6 +298,7 @@ function DragDropBox({ onCancel }: { onCancel: () => void }) {
                 {files.map((file, index) => (
                   <li key={index}>
                     {file.name} - {(file.size / 1024 / 1024).toFixed(2)} MB
+                    {isCreatingFile && <FilesLoadingSpinner />}
                   </li>
                 ))}
               </ul>

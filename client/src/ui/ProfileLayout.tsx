@@ -8,6 +8,8 @@ import Sidebar from "./Sidebar";
 import { UserContext } from "../contexts/userContext";
 import { ThemeContext } from "../contexts/themeContext";
 import ProfileSidebar from "./ProfileSidebar";
+import ProfileHeader from "./ProfileHeader";
+import BackButton from "./BackButton";
 
 const StyledProfileLayout = styled.div`
   display: grid;
@@ -15,6 +17,7 @@ const StyledProfileLayout = styled.div`
   grid-template-rows: auto 1fr;
   height: 100vh;
   justify-content: center;
+  position: relative;
 `;
 
 const Main = styled.main.withConfig({
@@ -50,10 +53,11 @@ function ProfileLayout() {
 
   return (
     <StyledProfileLayout>
-      <Header isDark={isDark} />
+      <ProfileHeader isDark={isDark} />
       <ProfileSidebar isDark={isDark} />
       <Main isdark={isDark}>
         <Container>
+          <BackButton to={"/"} />
           <Outlet />
         </Container>
       </Main>

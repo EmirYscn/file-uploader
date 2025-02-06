@@ -25,7 +25,8 @@ router.get(
 
 router.post(
   "/api/files/upload",
-  upload.single("file"),
+  // upload.single("file"),
+  upload.array("files"),
   authController.isAuth,
   filesController.uploadFile
 );

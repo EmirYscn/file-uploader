@@ -74,7 +74,10 @@ export const updateFile = async (fileId: number, data: Partial<File>) => {
   }
 };
 
-export const createFile = async (data: FormData) => {
+export const createFile = async (
+  data: FormData
+): Promise<File[] | undefined> => {
+  console.log(data);
   try {
     const res = await fetch("/api/files/upload", {
       method: "POST",

@@ -67,3 +67,23 @@ export const logout = async () => {
     throw error;
   }
 };
+
+export const updateUser = async (
+  data: Partial<User>,
+  userId: number | undefined
+) => {
+  const response = await fetch(`/api/user/${userId}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+
+  if (!response.ok) {
+    const errorData: Errors = await response.json();
+    throw errorData;
+  }
+
+  return await response.json();
+};

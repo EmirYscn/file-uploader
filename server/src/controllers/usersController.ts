@@ -3,6 +3,7 @@ import passport from "../strategies/passport";
 import { User } from "@prisma/client";
 
 import * as db from "../db/user.queries";
+import { validationResult } from "express-validator";
 
 export const login = async (
   req: Request,
@@ -49,5 +50,24 @@ export const searchUser = async (req: Request, res: Response): Promise<any> => {
     console.error("Error searching users:", error);
 
     return res.status(500).json({ message: "Error searching for users" });
+  }
+};
+
+export const updateUser = async (req: Request, res: Response): Promise<any> => {
+  const { id } = req.params;
+
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
+  try {
+    await db.updateUser(req.body, +id);
+
+    return res.status(200).json({ message: "Successfully updated user" });
+  } catch (error) {
+    console.error("Error searching users:", error);
+
+    return res.status(500).json({ message: "Error updating user" });
   }
 };

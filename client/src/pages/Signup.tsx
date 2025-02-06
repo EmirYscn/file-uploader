@@ -90,8 +90,14 @@ function Signup() {
                 id="username"
                 {...register("username", {
                   required: "This field is required",
-                  minLength: 2,
-                  maxLength: 30,
+                  minLength: {
+                    value: 2,
+                    message: "Username must be at least 3 characters long",
+                  },
+                  maxLength: {
+                    value: 20,
+                    message: "Username must be at most 20 characters long",
+                  },
                 })}
               />
             </FormRow>

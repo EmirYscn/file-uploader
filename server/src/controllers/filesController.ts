@@ -120,20 +120,36 @@ export const updateFile = async (req: Request, res: Response): Promise<any> => {
 };
 
 export const uploadFile = async (req: Request, res: Response): Promise<any> => {
-  if (!req.file) return res.status(400).json({ message: "No file uploaded" });
+  const files = req.files as Express.Multer.File[];
+
+  if (!files || files.length === 0) {
+    return res.status(400).json({ message: "No files uploaded" });
+  }
 
   const { userId, folderId } = req.body;
+  console.log(req.files);
 
   try {
-    const fileUrl = await sb.uploadFile(req.file, userId);
-    const file = await db.createFile(
-      req.file,
-      fileUrl,
-      +userId,
-      folderId === "" ? null : +folderId
+    const uploadedFiles = await Promise.all(
+      files.map(async (file: Express.Multer.File) => {
+        const fileUrl = await sb.uploadFile(file, userId);
+        return db.createFile(
+          file,
+          fileUrl,
+          +userId,
+          folderId === "" ? null : +folderId
+        );
+      })
     );
+    // const fileUrl = await sb.uploadFile(req.files, userId);
+    // const file = await db.createFile(
+    //   req.file,
+    //   fileUrl,
+    //   +userId,
+    //   folderId === "" ? null : +folderId
+    // );
 
-    return res.status(201).json(file);
+    return res.status(201).json(uploadedFiles);
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: "Failed to create file" });

@@ -66,20 +66,6 @@ function NewButton() {
   const { handleCreateFolder, isLoading: isCreatingFolder } =
     useCreateFolder(setFolders);
 
-  // const { setFiles, isLoading: isFilesLoading } = useContext(FilesContext);
-
-  // const { handleCreateFile, isLoading: isCreatingFile } =
-  //   useCreateFile(setFiles);
-
-  // function handleAddFile() {
-  //   fileInputRef.current?.click();
-  // }
-  // async function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
-  //   const file = event.target.files?.[0];
-  //   if (file) {
-  //     handleCreateFile(file);
-  //   }
-  // }
   return (
     <>
       {!dragDropModalOpen ? (
@@ -98,7 +84,10 @@ function NewButton() {
             </Modal.Window>
           </Modal>
 
-          <Button onClick={() => setDragDropModalOpen(true)}>
+          <Button
+            onClick={() => setDragDropModalOpen(true)}
+            disabled={isInShared}
+          >
             <BsFileEarmarkPlusFill />
           </Button>
         </StyledNewButton>

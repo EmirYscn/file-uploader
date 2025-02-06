@@ -1,7 +1,7 @@
 import express from "express";
 import * as authController from "../controllers/authController";
 import * as usersController from "../controllers/usersController";
-import { validateForm } from "../middlewares/validateForm";
+import { validateForm, validateUpdateForm } from "../middlewares/validateForm";
 
 const router = express.Router();
 
@@ -19,5 +19,7 @@ router.get("/api/current-user", (req, res) => {
 router.get("/api/logout", usersController.logout);
 
 router.get("/api/search/user/", usersController.searchUser);
+
+router.patch("/api/user/:id", validateUpdateForm, usersController.updateUser);
 
 export { router };

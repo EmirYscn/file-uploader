@@ -80,12 +80,12 @@ function ProfileNav({ isDark }: { isDark?: boolean }) {
               <span>Change Password</span>
             </StyledNavLink>
           </li>
-          <li>
+          {/* <li>
             <StyledNavLink to="profile/settings" isdark={isDark}>
               <IoSettingsOutline />
               <span>Settings</span>
             </StyledNavLink>
-          </li>
+          </li>*/}
         </NavList>
       </nav>
     </>

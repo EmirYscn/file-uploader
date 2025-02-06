@@ -33,19 +33,24 @@ const StyledBackButton = styled.button<{ poscontext: string }>`
 
 type BackButtonProps = {
   posContext?: "signup" | "other";
+  to?: string;
 };
 
-function BackButton({ posContext = "other" }: BackButtonProps) {
+function BackButton({ posContext = "other", to }: BackButtonProps) {
   const navigate = useNavigate();
   const location = useLocation();
   const pathSegments = location.pathname.split("/");
   pathSegments.shift();
   const isSubRoot = pathSegments.length > 1;
   const isSignup = pathSegments[0] === "signup";
+  const isProfile = pathSegments[0] === "profile";
   return (
-    (isSubRoot || isSignup) && (
+    (isSubRoot || isSignup || isProfile) && (
       <>
-        <StyledBackButton onClick={() => navigate(-1)} poscontext={posContext}>
+        <StyledBackButton
+          onClick={() => (to ? navigate(to) : navigate(-1))}
+          poscontext={posContext}
+        >
           <FaArrowCircleLeft />
         </StyledBackButton>
       </>

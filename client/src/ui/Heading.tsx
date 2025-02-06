@@ -33,7 +33,7 @@ const StyledHeading = styled.h1.withConfig({
       font-size: 5em;
       opacity: 0.1;
       position: absolute;
-      left: -11rem;
+      left: -6rem;
       top: -7.7rem;
       color: var(--color-grey-400);
       pointer-events: none;

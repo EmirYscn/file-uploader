@@ -17,20 +17,22 @@ function useCreateFile(
   const pathSegments = location.pathname.split("/");
   const folderId = Number(pathSegments[pathSegments.length - 1]);
 
-  async function handleCreateFile(file: File | null) {
-    if (!file) return;
+  async function handleCreateFile(files: File[] | null) {
+    if (!files || files.length === 0) return;
+
     const formData = new FormData();
-    formData.append("file", file);
+    files.forEach((file) => formData.append("files", file));
     formData.append("userId", user!.id.toString());
     formData.append("folderId", isNaN(folderId) ? "" : folderId.toString());
 
     try {
       setIsLoading(true);
-      const newFile = await createFile(formData);
+      const newFiles = await createFile(formData);
+      console.log(newFiles);
       setFiles((prevFiles) => {
         if (!prevFiles) return prevFiles;
 
-        const updatedFiles = [...prevFiles, newFile!];
+        const updatedFiles = [...prevFiles, ...newFiles!];
         return updatedFiles;
       });
     } catch (error) {
