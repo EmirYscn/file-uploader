@@ -10,6 +10,7 @@ import DarkModeToggle from "./DarkModeToggle";
 import { UserContext } from "../contexts/userContext";
 
 import { logout } from "../services/apiUser";
+import ProfileImage from "./ProfileImage";
 
 const StyledHeader = styled.header.withConfig({
   shouldForwardProp: (prop) => prop !== "isdark",

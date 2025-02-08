@@ -2,6 +2,8 @@ import express from "express";
 import * as authController from "../controllers/authController";
 import * as usersController from "../controllers/usersController";
 import { validateForm, validateUpdateForm } from "../middlewares/validateForm";
+import { uploadUserPhoto } from "../middlewares/multer";
+import { resizeUserPhoto } from "../middlewares/sharp";
 
 const router = express.Router();
 
@@ -21,5 +23,11 @@ router.get("/api/logout", usersController.logout);
 router.get("/api/search/user/", usersController.searchUser);
 
 router.patch("/api/user/:id", validateUpdateForm, usersController.updateUser);
+router.post(
+  "/api/user/:id/uploadAvatar",
+  uploadUserPhoto,
+  resizeUserPhoto,
+  usersController.uploadUserPhoto
+);
 
 export { router };

@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import styled, { css } from "styled-components";
 import { UserContext } from "../contexts/userContext";
 import Input from "../ui/Input";
@@ -8,8 +8,9 @@ import { User } from "../types/models";
 import Form from "../ui/Form";
 import { ThemeContext } from "../contexts/themeContext";
 import Button from "../ui/Button";
-import { updateUser } from "../services/apiUser";
+import { updateUser, uploadAvatar } from "../services/apiUser";
 import { set } from "date-fns";
+import ProfileImage from "../ui/ProfileImage";
 
 const StyledProfile = styled.div`
   padding: 1em 2em;
@@ -32,6 +33,58 @@ const FormContainer = styled.div<{ isdark?: boolean }>`
     `}
 `;
 
+// const ProfileContainer = styled.div`
+//   display: flex;
+//   align-items: center;
+//   gap: 1rem;
+//   margin-top: 1rem;
+//   padding-top: 1rem;
+//   cursor: pointer;
+
+//   & p:hover {
+//     /* text-decoration: underline; */
+//     cursor: pointer;
+//     border-bottom: 1px solid var(--color-grey-50);
+//   }
+// `;
+
+// const ImageWrapper = styled.div`
+//   position: relative;
+//   width: 10rem;
+//   height: 10rem;
+//   border-radius: 50%;
+//   overflow: hidden;
+//   cursor: pointer;
+// `;
+
+// const ProfileImage = styled.img`
+//   width: 100%;
+//   height: 100%;
+//   border-radius: 50%;
+//   object-fit: cover;
+//   transition: filter 0.3s ease-in-out;
+// `;
+// const OverlayText = styled.div`
+//   position: absolute;
+//   top: 0;
+//   left: 0;
+//   width: 100%;
+//   height: 100%;
+//   background: rgba(0, 0, 0, 0.5); /* Dark overlay */
+//   color: white;
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   font-size: 1rem;
+//   font-weight: bold;
+//   opacity: 0;
+//   transition: opacity 0.3s ease-in-out;
+
+//   ${ImageWrapper}:hover & {
+//     opacity: 1; /* Show on hover */
+//   }
+// `;
+
 type ProfileData = User & { confirmPassword: string };
 
 type Error = {
@@ -48,7 +101,7 @@ type Errors = {
 };
 
 function Profile() {
-  const { user } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
   const { isDark } = useContext(ThemeContext);
   const {
     register,
@@ -62,12 +115,39 @@ function Profile() {
   const [isLoading, setIsLoading] = useState(false);
   const [apiErrors, setApiErrors] = useState<Errors | null>(null);
 
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+
   useEffect(() => {
     if (user) {
       setValue("email", user.email || "");
       setValue("username", user.username || "");
     }
   }, [user, setValue]);
+
+  function handleImageClick() {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  }
+
+  async function handleAvatarUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+
+    if (file) {
+      const formData = new FormData();
+      formData.append("avatar", file);
+
+      try {
+        const userAvatar = await uploadAvatar(formData, user?.id);
+        const refreshedAvatarUrl = `${userAvatar}?t=${Date.now()}`;
+        setUser((prevUser) =>
+          prevUser ? { ...prevUser, avatarUrl: refreshedAvatarUrl } : prevUser
+        );
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }
 
   async function onSubmit(data: User) {
     // Filter only changed fields
@@ -150,6 +230,16 @@ function Profile() {
               onChange={() => setIsEdited(true)}
             />
           </FormRow>
+          <ProfileImage onClick={handleImageClick} imgSize={"lg"}>
+            <p>Choose new photo</p>
+            <input
+              type="file"
+              ref={fileInputRef}
+              style={{ display: "none" }}
+              accept="image/*"
+              onChange={handleAvatarUpload}
+            />
+          </ProfileImage>
 
           {isEdited && (
             <FormRow>
@@ -170,8 +260,9 @@ function Profile() {
                 type="submit"
                 styletype="form-button-submit"
                 disabled={isLoading}
+                style={{ textTransform: "uppercase" }}
               >
-                Done
+                Save settings
               </Button>
             </FormRow>
           )}

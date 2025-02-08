@@ -39,6 +39,22 @@ const Container = styled.div`
   position: relative;
 `;
 
+const ButtonContainer = styled.div`
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  align-self: flex-end;
+
+  & button {
+    padding: 0.5rem 1rem;
+    /* background-color: var(--color-primary-400); */
+    /* color: var(--color-grey-100); */
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+  }
+`;
+
 function AppLayout() {
   const { isDark } = useContext(ThemeContext);
 
@@ -48,6 +64,10 @@ function AppLayout() {
       <Sidebar isDark={isDark} />
       <Main isdark={isDark}>
         <Container>
+          <ButtonContainer>
+            <button>Sort</button>
+            <button>Filter</button>
+          </ButtonContainer>
           <Outlet />
         </Container>
       </Main>

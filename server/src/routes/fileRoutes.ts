@@ -2,6 +2,7 @@ import express from "express";
 import * as filesController from "../controllers/filesController";
 import multer from "multer";
 import * as authController from "../controllers/authController";
+import { uploadFiles } from "../middlewares/multer";
 
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
@@ -25,8 +26,7 @@ router.get(
 
 router.post(
   "/api/files/upload",
-  // upload.single("file"),
-  upload.array("files"),
+  uploadFiles,
   authController.isAuth,
   filesController.uploadFile
 );

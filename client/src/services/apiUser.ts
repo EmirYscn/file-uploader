@@ -87,3 +87,20 @@ export const updateUser = async (
 
   return await response.json();
 };
+
+export const uploadAvatar = async (
+  data: FormData,
+  userId: number | undefined
+) => {
+  const response = await fetch(`/api/user/${userId}/uploadAvatar`, {
+    method: "POST",
+    body: data,
+  });
+
+  if (!response.ok) {
+    const errorData: Errors = await response.json();
+    throw errorData;
+  }
+  const user: User = await response.json();
+  return user.avatarUrl;
+};

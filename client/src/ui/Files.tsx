@@ -97,7 +97,7 @@ function Files() {
                 <Img
                   src="/file.svg"
                   id={file.id.toString()}
-                  draggable
+                  draggable={file.userId === currentUser?.id}
                   onDragStart={(e) => handleDragStart(e, file.folderId)}
                 />
                 <FileInfo file={file} />

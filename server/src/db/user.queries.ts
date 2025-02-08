@@ -67,10 +67,11 @@ export const updateUser = async (
       const hashedPassword = await bcrypt.hash(password, 10);
       newFields.password = hashedPassword;
     }
-    await prisma.user.update({
+    const updatedUser = await prisma.user.update({
       where: { id: userId },
       data: newFields,
     });
+    return updatedUser;
   } catch (error) {
     console.error("Database error:", error);
     throw new Error("Failed to update user");

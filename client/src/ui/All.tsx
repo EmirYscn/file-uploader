@@ -9,14 +9,26 @@ const StyledAll = styled.div`
   grid-template-columns: repeat(auto-fit, minmax(auto, 140px));
   gap: 3rem;
 `;
+const ButtonContainer = styled.div`
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+`;
 
 function All() {
   return (
-    <StyledAll>
-      <BackButton />
-      <Folders />
-      <Files />
-    </StyledAll>
+    <>
+      {/* <ButtonContainer>
+        <button>Sort</button>
+        <button>Filter</button>
+      </ButtonContainer> */}
+      <StyledAll>
+        <BackButton />
+
+        <Folders />
+        <Files />
+      </StyledAll>
+    </>
   );
 }
 

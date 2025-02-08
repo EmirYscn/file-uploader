@@ -37,10 +37,14 @@ const StyledFolder = styled.div`
   align-items: center;
 `;
 
-const Img = styled.img<{ $isDragOver?: boolean | null }>`
+const Img = styled.img<{
+  $isDragOver?: boolean | null;
+  $isDraggable?: boolean;
+}>`
   height: 8rem;
   width: auto;
   cursor: pointer;
+  /* opacity: ${(props) => (props.$isDraggable ? "1" : "0.5")}; */
   transition: all 0.3s;
 
   ${(props) =>
@@ -102,7 +106,13 @@ function Folders() {
             <Img
               src="/folder.svg"
               id={folder.id.toString()}
-              draggable
+              draggable={folder.userId === currentUser?.id}
+              $isDraggable={folder.userId === currentUser?.id}
+              title={
+                folder.userId === currentUser?.id
+                  ? ""
+                  : "You cannot move this folder"
+              }
               onDragStart={handleDragStart}
               onDragOver={(e) => handleDragOver(e, folder.id)}
               onDragLeave={handleDragLeave}

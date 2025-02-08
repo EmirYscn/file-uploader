@@ -3,14 +3,14 @@ import styled from "styled-components";
 const StyledFormRow = styled.div`
   display: grid;
   align-items: center;
-  grid-template-columns: auto 35rem;
+  grid-template-columns: 1fr;
   gap: 1rem;
   padding: 1.2rem 0;
-  color: black
+  /* color: black; */
 
-  &:not(:last-child) {
+  /* &:not(:last-child) {
     border-top: 1px solid var(--color-grey-100);
-  }
+  } */
 
   &:first-child {
     padding-top: 0;
@@ -28,6 +28,11 @@ const StyledFormRow = styled.div`
     display: flex;
     justify-content: flex-end;
     gap: 1.2rem;
+  }
+
+  @media (max-width: 1000px) {
+    grid-template-columns: 1fr; /* Stack label and input on smaller screens */
+    gap: 1rem;
   }
 `;
 

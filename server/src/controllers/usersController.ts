@@ -4,6 +4,7 @@ import { User } from "@prisma/client";
 
 import * as db from "../db/user.queries";
 import { validationResult } from "express-validator";
+import { uploadAvatar } from "../middlewares/supabase";
 
 export const login = async (
   req: Request,
@@ -65,6 +66,31 @@ export const updateUser = async (req: Request, res: Response): Promise<any> => {
     await db.updateUser(req.body, +id);
 
     return res.status(200).json({ message: "Successfully updated user" });
+  } catch (error) {
+    console.error("Error searching users:", error);
+
+    return res.status(500).json({ message: "Error updating user" });
+  }
+};
+
+export const uploadUserPhoto = async (
+  req: Request,
+  res: Response
+): Promise<any> => {
+  const file = req.file as Express.Multer.File;
+
+  if (!file) {
+    return res.status(400).json({ message: "No files uploaded" });
+  }
+
+  const { id } = req.params;
+  console.log(req.file);
+
+  try {
+    const publicUrl = await uploadAvatar(file, +id);
+    const user = await db.updateUser({ avatarUrl: publicUrl }, +id);
+
+    return res.status(200).json(user);
   } catch (error) {
     console.error("Error searching users:", error);
 

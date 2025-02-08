@@ -25,6 +25,34 @@ export const uploadFile = async (file: Express.Multer.File, userId: number) => {
   return fileUrl;
 };
 
+export const uploadAvatar = async (
+  file: Express.Multer.File,
+  userId: number
+) => {
+  const { buffer } = file;
+  const filePath = `user-${userId}/avatar.jpeg`; // Ensure only one file per user
+
+  try {
+    // 🗑️ Delete existing file first (if it exists)
+    await supabase.storage.from("avatars").remove([filePath]);
+
+    // 📤 Upload the new file (ensuring the same file path)
+    const { error: uploadError } = await supabase.storage
+      .from("avatars")
+      .upload(filePath, buffer, { contentType: "image/jpeg" });
+
+    if (uploadError) throw uploadError;
+
+    // 🔗 Get Public URL
+    const { data } = supabase.storage.from("avatars").getPublicUrl(filePath);
+
+    return data.publicUrl;
+  } catch (error) {
+    console.error("Error uploading avatar:", error);
+    throw error;
+  }
+};
+
 export const deleteFile = async (fileUrl: string) => {
   const { data, error } = await supabase.storage
     .from("files")
