@@ -3,6 +3,7 @@ import styled from "styled-components";
 import BackButton from "./BackButton";
 import Files from "./Files";
 import Folders from "./Folders";
+import Sort from "./Sort";
 
 const StyledShared = styled.div`
   display: grid;
@@ -12,11 +13,14 @@ const StyledShared = styled.div`
 
 function Shared() {
   return (
-    <StyledShared>
-      <BackButton />
-      <Folders />
-      <Files />
-    </StyledShared>
+    <>
+      <Sort />
+      <StyledShared>
+        <BackButton />
+        <Folders />
+        <Files />
+      </StyledShared>
+    </>
   );
 }
 

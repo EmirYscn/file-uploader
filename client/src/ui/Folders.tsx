@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { Link, useLocation } from "react-router";
+import { Link, useLocation, useParams, useSearchParams } from "react-router";
 
 import styled, { css } from "styled-components";
 import { MdDriveFileRenameOutline, MdPersonAddAlt1 } from "react-icons/md";
@@ -82,6 +82,10 @@ function Folders() {
     dragOverFolderId,
   } = useHandleDrop();
 
+  const [searchParams] = useSearchParams();
+  const sort = searchParams.get("sort");
+  const order = searchParams.get("order");
+
   const location = useLocation();
   const mainRoute = location.pathname.split("/")[1];
 
@@ -95,6 +99,24 @@ function Folders() {
   filteredFolders = filteredFolders?.filter(
     (folder) => !isExpired(folder.expireDate?.toString())
   );
+
+  if (filteredFolders && sort) {
+    filteredFolders = [...filteredFolders].sort((a, b) => {
+      let comparison = 0;
+
+      if (sort === "name") {
+        comparison = a.name.localeCompare(b.name); // Alphabetical sorting
+      } else if (sort === "size") {
+        comparison = (a.size ?? 0) - (b.size ?? 0); // Sort by size
+      } else if (sort === "date") {
+        comparison =
+          new Date(a.createdAt ?? 0).getTime() -
+          new Date(b.createdAt ?? 0).getTime(); // Sort by date
+      }
+
+      return order === "desc" ? -comparison : comparison; // Reverse if descending
+    });
+  }
 
   return isLoading ? (
     <Spinner />

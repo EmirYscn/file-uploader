@@ -63,14 +63,14 @@ const UserCardWrapper = styled.div`
   gap: 1rem;
 `;
 
-const UserCard = styled.div`
+const UserCard = styled.div<{ isdark?: boolean }>`
   display: grid;
   grid-template-columns: 1fr auto auto auto auto;
   align-items: center;
   row-gap: 1rem;
   column-gap: 2rem;
   padding: 1rem 2rem;
-  background-color: var(--color-black-400);
+  background-color: var(--color-grey-100);
   border-radius: 10px;
 
   & button {
@@ -87,6 +87,12 @@ const UserCard = styled.div`
       }
     }
   }
+  ${(props) =>
+    props.isdark &&
+    css`
+      background-color: var(--color-black-400);
+      color: var(--color-grey-200);
+    `}
 `;
 
 const NoUsers = styled.h2`
@@ -255,11 +261,7 @@ function ManageShare({
             ) : (
               users.map((user) => (
                 <UserCardWrapper key={user.user.id}>
-                  <UserCard>
-                    {/* <span>Email</span>
-                    <span>Access Type</span>
-                    <span>Expiration Date</span>
-                    <span>Delete</span> */}
+                  <UserCard isdark={isDark}>
                     <span>{user.user.email}</span>
                     <Select
                       {...register(`${user.user.id}-accessType`)}

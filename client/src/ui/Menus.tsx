@@ -66,6 +66,8 @@ const StyledList = styled.ul.withConfig({
       background-color: var(--color-black-300);
       color: var(--color-grey-200);
     `}
+
+  z-index: 9999999999;
 `;
 
 // Forward the ref within the same file
@@ -76,7 +78,7 @@ const StyledList = styled.ul.withConfig({
 
 const StyledButton = styled.button.withConfig({
   shouldForwardProp: (prop) => prop !== "isdark",
-})<{ isdark?: boolean }>`
+})<{ isdark?: boolean; selected?: boolean }>`
   width: 100%;
   text-align: left;
   background: none;
@@ -105,6 +107,12 @@ const StyledButton = styled.button.withConfig({
     color: var(--color-grey-400);
     transition: all 0.3s;
   }
+
+  ${(props) =>
+    props.selected &&
+    css`
+      background-color: var(--color-brand-900);
+    `}
 `;
 
 type Position = { x: number; y: number } | null;
@@ -144,9 +152,10 @@ function Menus({ children }: MenusProps) {
 type ToggleProps = {
   id: number | string;
   children?: React.ReactNode;
+  icon?: React.ReactNode;
 };
 
-function Toggle({ id, children }: ToggleProps) {
+function Toggle({ id, children, icon }: ToggleProps) {
   const context = useContext(MenusContext);
   if (!context) {
     throw new Error("Toggle must be used within a MenusProvider");
@@ -176,7 +185,7 @@ function Toggle({ id, children }: ToggleProps) {
 
   return (
     <StyledToggle onClick={handleClick} isdark={isDark}>
-      <HiEllipsisVertical />
+      {icon ? icon : <HiEllipsisVertical />}
     </StyledToggle>
   );
 }
@@ -212,6 +221,7 @@ type ButtonProps = {
   isFolderOwner?: boolean | undefined;
   accessType?: accessType | null;
   disabled?: boolean | undefined;
+  isSelected?: boolean | undefined;
 };
 
 function Button({
@@ -220,6 +230,7 @@ function Button({
   onClick,
   isFolderOwner,
   accessType,
+  isSelected,
 }: ButtonProps) {
   const context = useContext(MenusContext);
   const { close, isDark } = context;
@@ -238,7 +249,12 @@ function Button({
 
   return (
     <li>
-      <StyledButton onClick={handleClick} disabled={isDisabled} isdark={isDark}>
+      <StyledButton
+        onClick={handleClick}
+        disabled={isDisabled}
+        isdark={isDark}
+        selected={isSelected}
+      >
         {icon}
         <span>{children}</span>
       </StyledButton>

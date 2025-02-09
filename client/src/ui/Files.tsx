@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { Link, useLocation } from "react-router";
+import { Link, useLocation, useSearchParams } from "react-router";
 import styled from "styled-components";
 import { RiDeleteBin2Line } from "react-icons/ri";
 import { AiOutlineDownload } from "react-icons/ai";
@@ -75,15 +75,37 @@ function Files() {
     e.dataTransfer.effectAllowed = "move";
   }
 
+  const [searchParams] = useSearchParams();
+  const sort = searchParams.get("sort");
+  const order = searchParams.get("order");
+
   const location = useLocation();
   const mainRoute = location.pathname.split("/")[1];
 
-  const filteredFiles =
+  let filteredFiles =
     mainRoute === "myFolders"
       ? files?.filter((file) => file.userId === currentUser?.id)
       : mainRoute === "shared"
       ? files?.filter((file) => file.userId !== currentUser?.id)
       : files;
+
+  if (filteredFiles && sort) {
+    filteredFiles = [...filteredFiles].sort((a, b) => {
+      let comparison = 0;
+
+      if (sort === "name") {
+        comparison = a.name.localeCompare(b.name); // Alphabetical sorting
+      } else if (sort === "size") {
+        comparison = (a.size ?? 0) - (b.size ?? 0); // Sort by size
+      } else if (sort === "date") {
+        comparison =
+          new Date(a.uploadDate ?? 0).getTime() -
+          new Date(b.uploadDate ?? 0).getTime(); // Sort by date
+      }
+
+      return order === "desc" ? -comparison : comparison; // Reverse if descending
+    });
+  }
 
   return (
     <>
