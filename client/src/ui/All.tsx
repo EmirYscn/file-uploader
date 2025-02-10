@@ -3,7 +3,8 @@ import styled from "styled-components";
 import BackButton from "./BackButton";
 import Files from "./Files";
 import Folders from "./Folders";
-import Sort from "./Sort";
+
+import { useOutletContext } from "react-router";
 
 const StyledAll = styled.div`
   display: grid;
@@ -12,13 +13,22 @@ const StyledAll = styled.div`
 `;
 
 function All() {
+  const { isMultiSelect, selectedIds, setSelectedIds } = useOutletContext<{
+    isMultiSelect: boolean;
+    selectedIds: number[];
+    setSelectedIds: React.Dispatch<React.SetStateAction<number[]>>;
+  }>();
+
   return (
     <>
-      <Sort />
       <StyledAll>
         <BackButton />
         <Folders />
-        <Files />
+        <Files
+          isMultiSelect={isMultiSelect}
+          selectedIds={selectedIds}
+          setSelectedIds={setSelectedIds}
+        />
       </StyledAll>
     </>
   );

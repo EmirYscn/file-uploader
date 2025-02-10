@@ -38,6 +38,28 @@ export const deleteFile = async (fileId: number) => {
   }
 };
 
+export const deleteFiles = async (fileIds: number[]) => {
+  try {
+    const deleteRequests = fileIds.map(async (fileId) => {
+      const response = await fetch(`/api/files/${fileId}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        throw new Error(
+          `Failed to delete file ${fileId}: ${response.statusText}`
+        );
+      }
+    });
+
+    await Promise.all(deleteRequests);
+
+    console.log(`Deleted ${fileIds.length} files successfully.`);
+  } catch (error) {
+    console.error("Error deleting files:", error);
+  }
+};
+
 export const renameFile = async (fileId: number, data: File) => {
   try {
     const response = await fetch(`/api/files/${fileId}`, {

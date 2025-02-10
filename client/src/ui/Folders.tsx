@@ -88,16 +88,20 @@ function Folders() {
 
   const location = useLocation();
   const mainRoute = location.pathname.split("/")[1];
+  const isSubRoute = !!location.pathname.split("/")[2];
 
-  let filteredFolders =
-    mainRoute === "myFolders"
+  let filteredFolders = !isSubRoute // Only filter if NOT in a sub-route
+    ? mainRoute === "myFolders"
       ? folders?.filter((folder) => folder.userId === currentUser?.id)
       : mainRoute === "shared"
       ? folders?.filter((folder) => folder.userId !== currentUser?.id)
-      : folders;
+      : folders
+    : folders;
 
-  filteredFolders = filteredFolders?.filter(
-    (folder) => !isExpired(folder.expireDate?.toString())
+  filteredFolders = filteredFolders?.filter((folder) =>
+    folder.userId === currentUser?.id
+      ? folder
+      : !isExpired(folder.expireDate?.toString())
   );
 
   if (filteredFolders && sort) {

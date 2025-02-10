@@ -23,6 +23,20 @@ function useHandleDrop() {
     e.preventDefault();
     e.dataTransfer.dropEffect = "move";
     setDragOverFolderId(folderId);
+
+    // Auto-scroll logic
+    const container = e.currentTarget.closest(".scroll-container"); // Adjust selector if needed
+    if (container) {
+      const { top, bottom } = container.getBoundingClientRect();
+      const scrollSpeed = 10; // Adjust speed as needed
+      const buffer = 50; // Distance from edge to trigger scroll
+
+      if (e.clientY < top + buffer) {
+        container.scrollTop -= scrollSpeed; // Scroll up
+      } else if (e.clientY > bottom - buffer) {
+        container.scrollTop += scrollSpeed; // Scroll down
+      }
+    }
   }
 
   function handleDragLeave() {

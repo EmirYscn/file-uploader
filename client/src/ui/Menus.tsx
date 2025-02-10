@@ -67,7 +67,7 @@ const StyledList = styled.ul.withConfig({
       color: var(--color-grey-200);
     `}
 
-  z-index: 9999999999;
+  z-index: 200;
 `;
 
 // Forward the ref within the same file

@@ -8,8 +8,8 @@ import { FaSortDown, FaSortUp } from "react-icons/fa";
 // import { BsSortDownAlt, BsSortUpAlt } from "react-icons/bs";
 
 const ButtonContainer = styled.div`
-  margin-top: -2rem;
-  margin-bottom: 3rem;
+  /* margin-top: -2rem;
+  margin-bottom: 3rem; */
   max-width: 10rem;
   justify-self: end;
 

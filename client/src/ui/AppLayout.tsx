@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { Outlet } from "react-router";
 import styled, { css } from "styled-components";
 
@@ -8,6 +8,7 @@ import Sidebar from "./Sidebar";
 import { UserContext } from "../contexts/userContext";
 import { ThemeContext } from "../contexts/themeContext";
 import Sort from "./Sort";
+import ActionNav from "./ActionNav";
 
 const StyledAppLayout = styled.div`
   display: grid;
@@ -116,13 +117,22 @@ const Select = styled.select<{ isdark?: boolean }>`
 function AppLayout() {
   const { isDark } = useContext(ThemeContext);
 
+  const [isMultiSelect, setIsMultiSelect] = useState(false);
+  const [selectedIds, setSelectedIds] = useState<number[]>([]);
+
   return (
     <StyledAppLayout>
       <Header isDark={isDark} />
       <Sidebar isDark={isDark} />
       <Main isdark={isDark}>
+        <ActionNav
+          isMultiSelect={isMultiSelect}
+          setIsMultiSelect={setIsMultiSelect}
+          selectedIds={selectedIds}
+          setSelectedIds={setSelectedIds}
+        />
         <Container>
-          <Outlet />
+          <Outlet context={{ isMultiSelect, selectedIds, setSelectedIds }} />
         </Container>
       </Main>
     </StyledAppLayout>

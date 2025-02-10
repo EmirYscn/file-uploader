@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { Link, useLocation, useSearchParams } from "react-router";
 import styled from "styled-components";
 import { RiDeleteBin2Line } from "react-icons/ri";
@@ -45,7 +45,77 @@ const Details = styled.div`
   align-items: center;
 `;
 
-function Files() {
+const CheckBox = styled.input`
+  position: absolute;
+  left: 1px;
+  width: 20px;
+  height: 20px;
+  -webkit-appearance: none;
+  appearance: none;
+  border: 2px solid #c8ccd4;
+  border-radius: 3px;
+  background-color: #fff;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
+
+  &:checked {
+    border-color: transparent;
+    background: #6871f1;
+    animation: jelly 0.6s ease;
+  }
+
+  &:checked::after {
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: 6px;
+    width: 5px;
+    height: 10px;
+    border-right: 2px solid #fff;
+    border-bottom: 2px solid #fff;
+    transform: rotate(45deg) scale(1);
+    opacity: 1;
+    transition: all 0.3s ease;
+  }
+
+  &:hover {
+    border-color: #777;
+  }
+
+  @keyframes jelly {
+    0% {
+      transform: scale(1, 1);
+    }
+    30% {
+      transform: scale(1.25, 0.75);
+    }
+    40% {
+      transform: scale(0.75, 1.25);
+    }
+    50% {
+      transform: scale(1.15, 0.85);
+    }
+    65% {
+      transform: scale(0.95, 1.05);
+    }
+    75% {
+      transform: scale(1.05, 0.95);
+    }
+    100% {
+      transform: scale(1, 1);
+    }
+  }
+`;
+
+function Files({
+  isMultiSelect,
+  selectedIds,
+  setSelectedIds,
+}: {
+  isMultiSelect: boolean;
+  selectedIds: number[];
+  setSelectedIds: React.Dispatch<React.SetStateAction<number[]>>;
+}) {
   const {
     files,
     setFiles,
@@ -81,13 +151,15 @@ function Files() {
 
   const location = useLocation();
   const mainRoute = location.pathname.split("/")[1];
+  const isSubRoute = !!location.pathname.split("/")[2];
 
-  let filteredFiles =
-    mainRoute === "myFolders"
+  let filteredFiles = !isSubRoute
+    ? mainRoute === "myFolders"
       ? files?.filter((file) => file.userId === currentUser?.id)
       : mainRoute === "shared"
       ? files?.filter((file) => file.userId !== currentUser?.id)
-      : files;
+      : files
+    : files;
 
   if (filteredFiles && sort) {
     filteredFiles = [...filteredFiles].sort((a, b) => {
@@ -115,6 +187,25 @@ function Files() {
         <>
           {filteredFiles?.map((file) => (
             <File key={file.id} draggable={true}>
+              {isMultiSelect && (
+                <CheckBox
+                  type="checkbox"
+                  name="delete"
+                  id={file.id.toString()}
+                  checked={selectedIds.includes(file.id)} // Bind directly to the state
+                  onChange={() => {
+                    // Update the state when checkbox is clicked
+                    setSelectedIds((prevIds) =>
+                      prevIds.includes(file.id)
+                        ? prevIds.filter((id) => id !== file.id)
+                        : [...prevIds, file.id]
+                    );
+                  }}
+                  onClick={(e) => {
+                    e.stopPropagation(); // Prevent link click
+                  }}
+                />
+              )}
               <Link to={`file/${file.id}`}>
                 <Img
                   src="/file.svg"

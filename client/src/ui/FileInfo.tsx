@@ -8,7 +8,7 @@ const StyledInfo = styled.div`
   position: absolute;
   right: 5px;
   top: 1px;
-  z-index: 99999;
+  z-index: 100;
 `;
 
 const InfoBox = styled.div`
