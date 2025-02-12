@@ -3,7 +3,7 @@ import styled from "styled-components";
 const StyledFormRow = styled.div`
   display: grid;
   align-items: center;
-  grid-template-columns: 1fr;
+  /* grid-template-columns: 1fr; */
   gap: 1rem;
   padding: 1.2rem 0;
   /* color: black; */
@@ -30,10 +30,10 @@ const StyledFormRow = styled.div`
     gap: 1.2rem;
   }
 
-  @media (max-width: 1000px) {
-    grid-template-columns: 1fr; /* Stack label and input on smaller screens */
+  /* @media (max-width: 1000px) {
+    grid-template-columns: 1fr;
     gap: 1rem;
-  }
+  } */
 `;
 
 const Label = styled.label`

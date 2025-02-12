@@ -3,6 +3,8 @@ import styled, { css } from "styled-components";
 import { ThemeContext } from "../contexts/themeContext";
 import { FilesContext } from "../contexts/filesContext";
 import { deleteFiles } from "../services/apiFiles";
+import { FoldersContext } from "../contexts/foldersContext";
+import { deleteFolders } from "../services/apiFolders";
 
 interface ToggleButtonProps {
   isActive?: boolean;
@@ -40,34 +42,56 @@ const StyledToggleSelect = styled.div`
 function ToggleSelect({
   isMultiSelect,
   setIsMultiSelect,
-  selectedIds,
-  setSelectedIds,
+  selectedFileIds,
+  setSelectedFileIds,
+  selectedFolderIds,
+  setSelectedFolderIds,
 }: {
   isMultiSelect: boolean;
   setIsMultiSelect: React.Dispatch<React.SetStateAction<boolean>>;
-  selectedIds: number[];
-  setSelectedIds: React.Dispatch<SetStateAction<number[]>>;
+  selectedFileIds: number[];
+  setSelectedFileIds: React.Dispatch<SetStateAction<number[]>>;
+  selectedFolderIds: number[];
+  setSelectedFolderIds: React.Dispatch<SetStateAction<number[]>>;
 }) {
   const { isDark } = useContext(ThemeContext);
   const { setFiles } = useContext(FilesContext);
-  const deleteCount = selectedIds.length;
+  const { setFolders } = useContext(FoldersContext);
+
+  const deleteCount = selectedFileIds.length + selectedFolderIds.length;
+
   const [isLoading, setIsLoading] = useState(false);
 
   async function handleDelete() {
-    if (selectedIds.length === 0) return;
+    if (deleteCount === 0) return;
 
     try {
       setIsLoading(true);
 
-      await deleteFiles(selectedIds);
+      if (selectedFileIds.length > 0) {
+        await deleteFiles(selectedFileIds);
 
-      setFiles((prevFiles) =>
-        prevFiles
-          ? prevFiles.filter((file) => !selectedIds.includes(file.id))
-          : prevFiles
-      );
+        setFiles((prevFiles) =>
+          prevFiles
+            ? prevFiles.filter((file) => !selectedFileIds.includes(file.id))
+            : prevFiles
+        );
+      }
 
-      setSelectedIds([]);
+      if (selectedFolderIds.length > 0) {
+        await deleteFolders(selectedFolderIds);
+
+        setFolders((prevFolders) =>
+          prevFolders
+            ? prevFolders.filter(
+                (folder) => !selectedFolderIds.includes(folder.id)
+              )
+            : prevFolders
+        );
+      }
+
+      setSelectedFileIds([]);
+      setSelectedFolderIds([]);
       setIsMultiSelect(false);
     } catch (error) {
       console.log("Error deleting files:", error);
@@ -94,7 +118,8 @@ function ToggleSelect({
         isDark={isDark}
         onClick={() => {
           setIsMultiSelect((prev) => !prev);
-          setSelectedIds([]);
+          setSelectedFileIds([]);
+          setSelectedFolderIds([]);
         }}
         disabled={isLoading}
       >

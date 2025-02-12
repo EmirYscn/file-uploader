@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import styled, { css } from "styled-components";
 
@@ -12,6 +12,9 @@ import Button from "../ui/Button";
 import useLoginUser from "../hooks/useLoginUser";
 
 import { ThemeContext } from "../contexts/themeContext";
+import GoogleButton from "../ui/GoogleButton";
+import { Link, useNavigate } from "react-router";
+import { AuthContext } from "../contexts/authContext";
 
 const StyledLogin = styled.div`
   display: grid;
@@ -73,6 +76,10 @@ function Login() {
               })}
             />
           </FormRow>
+          <FormRow>
+            <GoogleButton />
+          </FormRow>
+          <Link to={"/signup"}>Don't have an account?</Link>
           <FormRow>
             <Button type="submit" styletype="form-button-submit">
               Login

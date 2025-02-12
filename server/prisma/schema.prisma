@@ -17,7 +17,7 @@ model User {
   id          Int           @id @default(autoincrement())
   username    String
   email       String        @unique
-  password    String
+  password    String?
   avatarUrl   String?
   files       File[]
   folders     Folder[]

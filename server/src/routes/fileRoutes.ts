@@ -1,51 +1,42 @@
 import express from "express";
+
 import * as filesController from "../controllers/filesController";
-import multer from "multer";
 import * as authController from "../controllers/authController";
+
 import { uploadFiles } from "../middlewares/multer";
 
-const storage = multer.memoryStorage();
-const upload = multer({ storage: storage });
 const router = express.Router();
 
-router.get("/api/files/:shareUrl/shared", filesController.getSharedFile);
+router.get("/:shareUrl/shared", filesController.getSharedFile);
 router.get(
-  "/api/shared/:shareUrl/files/:folderId",
+  "/shared/:shareUrl/files/:folderId",
   filesController.getSharedSubFiles
 );
 router.get(
-  "/api/files/main/:userId",
+  "/main/:userId",
   authController.isAuth,
   filesController.getMainFiles
 );
 router.get(
-  "/api/files/:folderId",
+  "/:folderId",
   authController.isAuth,
   filesController.getFilesByFolder
 );
 
 router.post(
-  "/api/files/upload",
+  "/upload",
   uploadFiles,
   authController.isAuth,
   filesController.uploadFile
 );
 
-router.get("/api/files/:id/download", filesController.downloadFile);
+router.get("/:id/download", filesController.downloadFile);
 router.get(
-  "/api/files/:id/shareUrl",
+  "/:id/shareUrl",
   authController.isAuth,
   filesController.createShareUrl
 );
-router.patch(
-  "/api/files/:id",
-  authController.isAuth,
-  filesController.updateFile
-);
-router.delete(
-  "/api/files/:id",
-  authController.isAuth,
-  filesController.deleteFile
-);
+router.patch("/:id", authController.isAuth, filesController.updateFile);
+router.delete("/:id", authController.isAuth, filesController.deleteFile);
 
 export { router };

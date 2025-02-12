@@ -9,8 +9,9 @@ import DarkModeToggle from "./DarkModeToggle";
 
 import { UserContext } from "../contexts/userContext";
 
-import { logout } from "../services/apiUser";
+// import { logout } from "../services/apiUser";
 import ProfileImage from "./ProfileImage";
+import { logout } from "../services/apiAuth";
 
 const StyledHeader = styled.header.withConfig({
   shouldForwardProp: (prop) => prop !== "isdark",
@@ -52,9 +53,6 @@ function Header({ isDark }: { isDark?: boolean }) {
       <CurrentRouteDisplay />
       <ButtonContainer>
         <DarkModeToggle />
-        <Button onClick={() => navigate("/signup")} styletype="header-button">
-          Sign up
-        </Button>
         {user ? (
           <>
             <Profile isDark={isDark} />

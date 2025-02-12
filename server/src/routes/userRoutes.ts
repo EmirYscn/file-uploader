@@ -1,30 +1,19 @@
 import express from "express";
-import * as authController from "../controllers/authController";
+
 import * as usersController from "../controllers/usersController";
-import { validateForm, validateUpdateForm } from "../middlewares/validateForm";
+
+import { validateUpdateForm } from "../middlewares/validateForm";
 import { uploadUserPhoto } from "../middlewares/multer";
 import { resizeUserPhoto } from "../middlewares/sharp";
 
 const router = express.Router();
 
-router.post("/api/signup", validateForm, authController.signup);
-router.post("/api/login", usersController.login);
+router.get("/search/user", usersController.searchUser);
 
-router.get("/api/current-user", (req, res) => {
-  if (req.isAuthenticated()) {
-    res.json(req.user);
-  } else {
-    res.status(401).json({ message: "Not authenticated" });
-  }
-});
+router.patch("/:id", validateUpdateForm, usersController.updateUser);
 
-router.get("/api/logout", usersController.logout);
-
-router.get("/api/search/user/", usersController.searchUser);
-
-router.patch("/api/user/:id", validateUpdateForm, usersController.updateUser);
 router.post(
-  "/api/user/:id/uploadAvatar",
+  "/:id/uploadAvatar",
   uploadUserPhoto,
   resizeUserPhoto,
   usersController.uploadUserPhoto

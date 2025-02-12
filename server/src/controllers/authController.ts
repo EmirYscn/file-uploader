@@ -8,6 +8,8 @@ import bcrypt from "bcryptjs";
 
 import * as db from "../db/user.queries";
 
+import passport from "../strategies/passport";
+
 export const signup = async (
   req: Request<{}, {}, User>,
   res: Response
@@ -21,11 +23,8 @@ export const signup = async (
     });
   }
 
-  // Create User
-
-  // Hash Password
   const { password } = req.body;
-  const hashedPassword = await bcrypt.hash(password, 10);
+  const hashedPassword = await bcrypt.hash(password!, 10);
 
   const user = { ...req.body, password: hashedPassword };
   try {
@@ -42,26 +41,42 @@ export const signup = async (
       .json({ message: "Internal server error" }) as Response;
   }
 };
+
 export const login = async (
-  req: Request<{}, {}, User>,
-  res: Response
-): Promise<any> => {
-  const { email, password } = req.body;
-
-  try {
-    const user = await db.findUser(email);
-
-    if (password !== user?.password) {
-      return res.status(400).json({
-        error: {
-          message: "Passwords do not match",
-        },
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  passport.authenticate(
+    "local",
+    (err: Error | null, user: User | false, info: { message: string }) => {
+      if (err) {
+        return res.status(500).json({ error: "Internal server error" });
+      }
+      if (!user) {
+        return res.status(401).json({ error: "Invalid email or password" });
+      }
+      req.logIn(user, (err) => {
+        if (err) {
+          return res.status(500).json({ error: "Failed to log in user" });
+        }
+        return res.status(200).json(user);
       });
     }
+  )(req, res, next);
+};
 
-    return res.status(200).json(user);
-  } catch (error) {
-    console.log(error);
+export const logout = async (req: Request, res: Response) => {
+  req.logOut(() => {
+    res.status(200).json({ message: "Logged out successfully" });
+  });
+};
+
+export const verifyAuth = async (req: Request, res: Response) => {
+  if (req.isAuthenticated()) {
+    res.json({ isAuthenticated: true, user: req.user });
+  } else {
+    res.json({ isAuthenticated: false });
   }
 };
 

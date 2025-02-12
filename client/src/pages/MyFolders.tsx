@@ -3,10 +3,18 @@ import { Outlet, useOutletContext } from "react-router";
 import Heading from "../ui/Heading";
 
 function MyFolders() {
-  const { isMultiSelect, selectedIds, setSelectedIds } = useOutletContext<{
+  const {
+    isMultiSelect,
+    selectedFileIds,
+    setSelectedFileIds,
+    selectedFolderIds,
+    setSelectedFolderIds,
+  } = useOutletContext<{
     isMultiSelect: boolean;
-    selectedIds: number[];
-    setSelectedIds: React.Dispatch<React.SetStateAction<number[]>>;
+    selectedFileIds: number[];
+    setSelectedFileIds: React.Dispatch<React.SetStateAction<number[]>>;
+    selectedFolderIds: number[];
+    setSelectedFolderIds: React.Dispatch<React.SetStateAction<number[]>>;
   }>();
   return (
     <>
@@ -14,7 +22,15 @@ function MyFolders() {
         My Folders
       </Heading>
       <div>
-        <Outlet context={{ isMultiSelect, selectedIds, setSelectedIds }} />
+        <Outlet
+          context={{
+            isMultiSelect,
+            selectedFileIds,
+            setSelectedFileIds,
+            selectedFolderIds,
+            setSelectedFolderIds,
+          }}
+        />
       </div>
     </>
   );

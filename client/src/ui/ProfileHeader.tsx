@@ -8,8 +8,9 @@ import Profile from "./Profile";
 import DarkModeToggle from "./DarkModeToggle";
 
 import { UserContext } from "../contexts/userContext";
+import { logout } from "../services/apiAuth";
 
-import { logout } from "../services/apiUser";
+// import { logout } from "../services/apiUser";
 
 const StyledHeader = styled.header.withConfig({
   shouldForwardProp: (prop) => prop !== "isdark",

@@ -109,12 +109,12 @@ const CheckBox = styled.input`
 
 function Files({
   isMultiSelect,
-  selectedIds,
-  setSelectedIds,
+  selectedFileIds,
+  setSelectedFileIds,
 }: {
   isMultiSelect: boolean;
-  selectedIds: number[];
-  setSelectedIds: React.Dispatch<React.SetStateAction<number[]>>;
+  selectedFileIds: number[];
+  setSelectedFileIds: React.Dispatch<React.SetStateAction<number[]>>;
 }) {
   const {
     files,
@@ -192,10 +192,10 @@ function Files({
                   type="checkbox"
                   name="delete"
                   id={file.id.toString()}
-                  checked={selectedIds.includes(file.id)} // Bind directly to the state
+                  checked={selectedFileIds.includes(file.id)} // Bind directly to the state
                   onChange={() => {
                     // Update the state when checkbox is clicked
-                    setSelectedIds((prevIds) =>
+                    setSelectedFileIds((prevIds) =>
                       prevIds.includes(file.id)
                         ? prevIds.filter((id) => id !== file.id)
                         : [...prevIds, file.id]

@@ -14,23 +14,29 @@ const ActionContainer = styled.div`
 type ActionNavProps = {
   isMultiSelect: boolean;
   setIsMultiSelect: React.Dispatch<React.SetStateAction<boolean>>;
-  selectedIds: number[];
-  setSelectedIds: React.Dispatch<React.SetStateAction<number[]>>;
+  selectedFileIds: number[];
+  setSelectedFileIds: React.Dispatch<React.SetStateAction<number[]>>;
+  selectedFolderIds: number[];
+  setSelectedFolderIds: React.Dispatch<React.SetStateAction<number[]>>;
 };
 
 function ActionNav({
   isMultiSelect,
   setIsMultiSelect,
-  selectedIds,
-  setSelectedIds,
+  selectedFileIds,
+  setSelectedFileIds,
+  selectedFolderIds,
+  setSelectedFolderIds,
 }: ActionNavProps) {
   return (
     <ActionContainer>
       <ToggleSelect
         isMultiSelect={isMultiSelect}
         setIsMultiSelect={setIsMultiSelect}
-        selectedIds={selectedIds}
-        setSelectedIds={setSelectedIds}
+        selectedFileIds={selectedFileIds}
+        setSelectedFileIds={setSelectedFileIds}
+        selectedFolderIds={selectedFolderIds}
+        setSelectedFolderIds={setSelectedFolderIds}
       />
       <Sort />
     </ActionContainer>

@@ -158,7 +158,7 @@ export async function getFilesByShareUrlAndFolderId(
   shareUrl: string,
   folderId: number
 ) {
-  const res = await fetch(`/api/shared/${shareUrl}/files/${folderId}`);
+  const res = await fetch(`/api/files/shared/${shareUrl}/files/${folderId}`);
 
   if (!res.ok) throw new Error("Failed to fetch shared files");
 

@@ -13,21 +13,33 @@ const StyledAll = styled.div`
 `;
 
 function All() {
-  const { isMultiSelect, selectedIds, setSelectedIds } = useOutletContext<{
+  const {
+    isMultiSelect,
+    selectedFileIds,
+    setSelectedFileIds,
+    selectedFolderIds,
+    setSelectedFolderIds,
+  } = useOutletContext<{
     isMultiSelect: boolean;
-    selectedIds: number[];
-    setSelectedIds: React.Dispatch<React.SetStateAction<number[]>>;
+    selectedFileIds: number[];
+    setSelectedFileIds: React.Dispatch<React.SetStateAction<number[]>>;
+    selectedFolderIds: number[];
+    setSelectedFolderIds: React.Dispatch<React.SetStateAction<number[]>>;
   }>();
 
   return (
     <>
       <StyledAll>
         <BackButton />
-        <Folders />
+        <Folders
+          isMultiSelect={isMultiSelect}
+          selectedFolderIds={selectedFolderIds}
+          setSelectedFolderIds={setSelectedFolderIds}
+        />
         <Files
           isMultiSelect={isMultiSelect}
-          selectedIds={selectedIds}
-          setSelectedIds={setSelectedIds}
+          selectedFileIds={selectedFileIds}
+          setSelectedFileIds={setSelectedFileIds}
         />
       </StyledAll>
     </>

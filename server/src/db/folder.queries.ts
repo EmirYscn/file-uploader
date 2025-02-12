@@ -341,10 +341,10 @@ export const deleteFolder = async (folderId: number) => {
     await prisma.folder.delete({
       where: { id: folderId },
     });
-    console.log(`File with ID ${folderId} deleted successfully.`);
+    console.log(`Folder with ID ${folderId} deleted successfully.`);
   } catch (error) {
-    console.error("Error deleting file:", error);
-    throw new Error("Failed to delete file");
+    console.error("Error deleting folder:", error);
+    throw new Error("Failed to delete folder");
   }
 };
 

@@ -35,6 +35,7 @@ const StyledFolder = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative;
 `;
 
 const Img = styled.img<{
@@ -56,13 +57,84 @@ const Img = styled.img<{
       transform: scale(1.1);
     `}
 `;
+
 const Details = styled.div`
   display: grid;
   grid-template-columns: auto 1fr;
   align-items: center;
 `;
 
-function Folders() {
+const CheckBox = styled.input`
+  position: absolute;
+  left: 1px;
+  width: 20px;
+  height: 20px;
+  -webkit-appearance: none;
+  appearance: none;
+  border: 2px solid #c8ccd4;
+  border-radius: 3px;
+  background-color: #fff;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
+
+  &:checked {
+    border-color: transparent;
+    background: #6871f1;
+    animation: jelly 0.6s ease;
+  }
+
+  &:checked::after {
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: 6px;
+    width: 5px;
+    height: 10px;
+    border-right: 2px solid #fff;
+    border-bottom: 2px solid #fff;
+    transform: rotate(45deg) scale(1);
+    opacity: 1;
+    transition: all 0.3s ease;
+  }
+
+  &:hover {
+    border-color: #777;
+  }
+
+  @keyframes jelly {
+    0% {
+      transform: scale(1, 1);
+    }
+    30% {
+      transform: scale(1.25, 0.75);
+    }
+    40% {
+      transform: scale(0.75, 1.25);
+    }
+    50% {
+      transform: scale(1.15, 0.85);
+    }
+    65% {
+      transform: scale(0.95, 1.05);
+    }
+    75% {
+      transform: scale(1.05, 0.95);
+    }
+    100% {
+      transform: scale(1, 1);
+    }
+  }
+`;
+
+function Folders({
+  isMultiSelect,
+  selectedFolderIds,
+  setSelectedFolderIds,
+}: {
+  isMultiSelect: boolean;
+  selectedFolderIds: number[];
+  setSelectedFolderIds: React.Dispatch<React.SetStateAction<number[]>>;
+}) {
   const { user: currentUser } = useContext(UserContext);
   const { folders, setFolders, isLoading } = useContext(FoldersContext);
 
@@ -128,6 +200,25 @@ function Folders() {
     <>
       {filteredFolders?.map((folder) => (
         <StyledFolder key={folder.id}>
+          {folder.userId === currentUser?.id && isMultiSelect && (
+            <CheckBox
+              type="checkbox"
+              name="delete"
+              id={folder.id.toString()}
+              checked={selectedFolderIds.includes(folder.id)} // Bind directly to the state
+              onChange={() => {
+                // Update the state when checkbox is clicked
+                setSelectedFolderIds((prevIds) =>
+                  prevIds.includes(folder.id)
+                    ? prevIds.filter((id) => id !== folder.id)
+                    : [...prevIds, folder.id]
+                );
+              }}
+              onClick={(e) => {
+                e.stopPropagation(); // Prevent link click
+              }}
+            />
+          )}
           <Link to={`/${mainRoute}/folder/${folder.id}`}>
             <Img
               src="/folder.svg"

@@ -24,7 +24,13 @@ import ProfileLayout from "./ui/ProfileLayout";
 import Profile from "./pages/Profile";
 import Password from "./pages/Password";
 
+import ProtectedRoute from "./ui/ProtectedRoute";
+import { useContext } from "react";
+import { AuthContext } from "./contexts/authContext";
+
 function App() {
+  const { auth } = useContext(AuthContext);
+
   return (
     <>
       <UserContextProvider>
@@ -39,17 +45,44 @@ function App() {
                       <Route element={<AppLayout />}>
                         <Route index element={<Navigate replace to="all" />} />
 
-                        <Route path="all/*" element={<Home />}>
+                        <Route
+                          path="all/*"
+                          element={
+                            <ProtectedRoute
+                              isAuthenticated={auth.isAuthenticated}
+                            >
+                              <Home />
+                            </ProtectedRoute>
+                          }
+                        >
                           <Route index element={<All />} />
                           <Route path="folder/:folderId" element={<All />} />
                         </Route>
 
-                        <Route path="myFolders/*" element={<MyFolders />}>
+                        <Route
+                          path="myFolders/*"
+                          element={
+                            <ProtectedRoute
+                              isAuthenticated={auth.isAuthenticated}
+                            >
+                              <MyFolders />
+                            </ProtectedRoute>
+                          }
+                        >
                           <Route index element={<Own />} />
                           <Route path="folder/:folderId" element={<Own />} />
                         </Route>
 
-                        <Route path="shared/*" element={<SharedPage />}>
+                        <Route
+                          path="shared/*"
+                          element={
+                            <ProtectedRoute
+                              isAuthenticated={auth.isAuthenticated}
+                            >
+                              <SharedPage />
+                            </ProtectedRoute>
+                          }
+                        >
                           <Route index element={<Shared />} />
                           <Route path="folder/:folderId" element={<Shared />} />
                         </Route>
@@ -65,7 +98,16 @@ function App() {
                         </Route>
                       </Route>
 
-                      <Route path="profile" element={<ProfileLayout />}>
+                      <Route
+                        path="profile"
+                        element={
+                          <ProtectedRoute
+                            isAuthenticated={auth.isAuthenticated}
+                          >
+                            <ProfileLayout />
+                          </ProtectedRoute>
+                        }
+                      >
                         <Route index element={<Profile />} />
                         <Route path="password" element={<Password />} />
                         {/* <Route path="settings" element={<Settings />} /> */}

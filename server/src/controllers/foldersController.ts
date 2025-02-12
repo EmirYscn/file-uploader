@@ -89,11 +89,11 @@ export const deleteFolder = async (
   try {
     await db.deleteFolder(+id);
 
-    return res.status(200).json({ message: "File deleted successfully" });
+    return res.status(200).json({ message: "Folder deleted successfully" });
   } catch (error) {
     console.error(error);
 
-    return res.status(500).json({ error: "Failed to delete file" });
+    return res.status(500).json({ error: "Failed to delete folder" });
   }
 };
 

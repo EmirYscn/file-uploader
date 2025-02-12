@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
 
-import { createUser } from "../services/apiUser";
+// import { createUser } from "../services/apiUser";
 
 import { User } from "../types/models";
+import { createUser } from "../services/apiAuth";
 
 type SignupData = User & { confirmPassword: string };
 

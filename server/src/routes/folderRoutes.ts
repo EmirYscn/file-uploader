@@ -4,26 +4,27 @@ import * as authController from "../controllers/authController";
 
 const router = express.Router();
 
-router.get("/api/folders/:shareUrl/shared", foldersController.getSharedFolder);
+router.get("/:shareUrl/shared", foldersController.getSharedFolder);
 router.get(
-  "/api/shared/:shareUrl/folders/:folderId",
+  "/shared/:shareUrl/folders/:folderId",
   foldersController.getSharedSubFolder
 );
 router.use(authController.isAuth);
 
-router.get("/api/folders/main/:userId", foldersController.getMainFolders);
-router.post("/api/folders", foldersController.createFolder);
-router.patch("/api/folders/folderShare", foldersController.updateFolderShare);
-router.delete("/api/folders/folderShare", foldersController.deleteFolderShare);
-router.post("/api/folders/share", foldersController.shareFolder);
+router.get("/main/:userId", foldersController.getMainFolders);
+router.post("/", foldersController.createFolder);
+router.patch("/folderShare", foldersController.updateFolderShare);
+router.delete("/folderShare", foldersController.deleteFolderShare);
+router.post("/share", foldersController.shareFolder);
 router
-  .route("/api/folders/:id")
+  .route("/:id")
   .get(foldersController.getFolder)
   .patch(foldersController.updateFolder)
   .delete(foldersController.deleteFolder);
 
-router.get("/api/folders/:id/shareUrl", foldersController.createShareUrl);
-router.get("/api/folder/:id", foldersController.getFolderNameAndParentId);
-router.get("/api/folder/:id/sharedUsers", foldersController.getSharedUsers);
+router.get("/:id/shareUrl", foldersController.createShareUrl);
+
+router.get("/folder/:id", foldersController.getFolderNameAndParentId);
+router.get("/folder/:id/sharedUsers", foldersController.getSharedUsers);
 
 export { router };

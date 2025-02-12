@@ -13,6 +13,7 @@ import { accessType } from "../../types/enums";
 
 import { ThemeContext } from "../../contexts/themeContext";
 import { UserContext } from "../../contexts/userContext";
+import { searchUsers } from "../../services/apiUser";
 
 const StyledSharedFolder = styled.div`
   width: 40rem;
@@ -200,9 +201,10 @@ function ShareFolder({ onConfirm, disabled, onCloseModal }: ShareFolderProps) {
       }
 
       try {
-        const res = await fetch(`/api/search/user?email=${debouncedValue}`);
-        if (!res.ok) throw new Error("Failed to fetch users");
-        const users = await res.json();
+        const users = await searchUsers(debouncedValue);
+        // const res = await fetch(`/api/search/user?email=${debouncedValue}`);
+        // if (!res.ok) throw new Error("Failed to fetch users");
+        // const users = await res.json();
         const filteredUsers = users.filter(
           (user: User) => user.id !== currentUser?.id
         );

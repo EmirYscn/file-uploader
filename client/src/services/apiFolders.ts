@@ -66,6 +66,28 @@ export const deleteFolder = async (folderId: number) => {
   }
 };
 
+export const deleteFolders = async (folderIds: number[]) => {
+  try {
+    const deleteRequests = folderIds.map(async (folderId) => {
+      const response = await fetch(`/api/folders/${folderId}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        throw new Error(
+          `Failed to delete file ${folderId}: ${response.statusText}`
+        );
+      }
+    });
+
+    await Promise.all(deleteRequests);
+
+    console.log(`Deleted ${folderIds.length} files successfully.`);
+  } catch (error) {
+    console.error("Error deleting files:", error);
+  }
+};
+
 export const renameFolder = async (folderId: number, data: Folder) => {
   try {
     const response = await fetch(`/api/folders/${folderId}`, {
@@ -161,7 +183,9 @@ export async function getFoldersByShareUrlAndFolderId(
   shareUrl: string,
   folderId: number
 ) {
-  const res = await fetch(`/api/shared/${shareUrl}/folders/${folderId}`);
+  const res = await fetch(
+    `/api/folders/shared/${shareUrl}/folders/${folderId}`
+  );
 
   if (!res.ok) throw new Error("Failed to fetch shared folders");
 
@@ -171,7 +195,7 @@ export async function getFoldersByShareUrlAndFolderId(
 }
 
 export async function getFolderNameAndParentIdById(folderId: number) {
-  const res = await fetch(`/api/folder/${folderId}`);
+  const res = await fetch(`/api/folders/folder/${folderId}`);
 
   if (!res.ok) throw new Error("Failed to fetch shared folders");
 
@@ -181,7 +205,7 @@ export async function getFolderNameAndParentIdById(folderId: number) {
 }
 
 export async function getSharedUsers(folderId: number) {
-  const res = await fetch(`/api/folder/${folderId}/sharedUsers`);
+  const res = await fetch(`/api/folders/folder/${folderId}/sharedUsers`);
 
   if (!res.ok) throw new Error("Failed to fetch shared users");
 

@@ -19,7 +19,7 @@ function UserContextProvider({ children }: UserContextProviderProps) {
   useEffect(() => {
     async function fetchCurrentUser() {
       try {
-        const response = await fetch("/api/current-user", {
+        const response = await fetch("/api/auth/current-user", {
           method: "GET",
           credentials: "include",
         });

@@ -118,7 +118,8 @@ function AppLayout() {
   const { isDark } = useContext(ThemeContext);
 
   const [isMultiSelect, setIsMultiSelect] = useState(false);
-  const [selectedIds, setSelectedIds] = useState<number[]>([]);
+  const [selectedFileIds, setSelectedFileIds] = useState<number[]>([]);
+  const [selectedFolderIds, setSelectedFolderIds] = useState<number[]>([]);
 
   return (
     <StyledAppLayout>
@@ -128,11 +129,21 @@ function AppLayout() {
         <ActionNav
           isMultiSelect={isMultiSelect}
           setIsMultiSelect={setIsMultiSelect}
-          selectedIds={selectedIds}
-          setSelectedIds={setSelectedIds}
+          selectedFileIds={selectedFileIds}
+          setSelectedFileIds={setSelectedFileIds}
+          selectedFolderIds={selectedFolderIds}
+          setSelectedFolderIds={setSelectedFolderIds}
         />
         <Container>
-          <Outlet context={{ isMultiSelect, selectedIds, setSelectedIds }} />
+          <Outlet
+            context={{
+              isMultiSelect,
+              selectedFileIds,
+              setSelectedFileIds,
+              selectedFolderIds,
+              setSelectedFolderIds,
+            }}
+          />
         </Container>
       </Main>
     </StyledAppLayout>
