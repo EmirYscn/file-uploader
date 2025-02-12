@@ -6,6 +6,7 @@ import { Folder as FolderType, FolderWithShareInfo } from "../types/models";
 import { createFolder } from "../services/apiFolders";
 
 import { UserContext } from "../contexts/userContext";
+import { AuthContext } from "../contexts/authContext";
 
 function useCreateFolder(
   setFolders: React.Dispatch<
@@ -13,7 +14,11 @@ function useCreateFolder(
   >
 ) {
   const [isLoading, setIsLoading] = useState(false);
-  const { user } = useContext(UserContext);
+  // const { user } = useContext(UserContext);
+  const {
+    auth: { user },
+  } = useContext(AuthContext);
+
   const location = useLocation();
   const pathSegments = location.pathname.split("/");
   const folderId = Number(pathSegments[pathSegments.length - 1]);

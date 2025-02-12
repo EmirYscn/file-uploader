@@ -3,9 +3,9 @@ import { useNavigate } from "react-router";
 import { IoPerson, IoSettingsOutline } from "react-icons/io5";
 import styled, { css } from "styled-components";
 
-import Menus from "./Menus";
+import { AuthContext } from "../contexts/authContext";
 
-import { UserContext } from "../contexts/userContext";
+import Menus from "./Menus";
 import ProfileImage from "./ProfileImage";
 
 const StyledProfileInfo = styled.div.withConfig({
@@ -29,13 +29,11 @@ const StyledProfileInfo = styled.div.withConfig({
     `}
 `;
 
-// const StyledProfile = styled.div`
-//   display: flex;
-//   align-items: center;
-// `;
-
 function Profile({ isDark }: { isDark?: boolean }) {
-  const { user } = useContext(UserContext);
+  const {
+    auth: { user },
+  } = useContext(AuthContext);
+
   const navigate = useNavigate();
 
   return (

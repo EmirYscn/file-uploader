@@ -10,9 +10,8 @@ import Spinner from "./Spinner";
 import Modal from "./Modal";
 import Menus from "./Menus";
 
-import { UserContext } from "../contexts/userContext";
 import { FoldersContext } from "../contexts/foldersContext";
-import { CurrentRouteContext } from "../contexts/currentRouteContext";
+import { AuthContext } from "../contexts/authContext";
 
 import { Folder, UserWithShareInfo } from "../types/models";
 
@@ -135,7 +134,11 @@ function Folders({
   selectedFolderIds: number[];
   setSelectedFolderIds: React.Dispatch<React.SetStateAction<number[]>>;
 }) {
-  const { user: currentUser } = useContext(UserContext);
+  // const { user: currentUser } = useContext(UserContext);
+  const {
+    auth: { user: currentUser },
+  } = useContext(AuthContext);
+
   const { folders, setFolders, isLoading } = useContext(FoldersContext);
 
   const { handleDeleteFolder, isLoading: isDeletingFolder } =

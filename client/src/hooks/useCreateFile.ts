@@ -6,11 +6,15 @@ import { UserContext } from "../contexts/userContext";
 import { createFile } from "../services/apiFiles";
 
 import { File as FileType } from "../types/models";
+import { AuthContext } from "../contexts/authContext";
 
 function useCreateFile(
   setFiles: React.Dispatch<React.SetStateAction<FileType[] | undefined>>
 ) {
-  const { user } = useContext(UserContext);
+  // const { user } = useContext(UserContext);
+  const {
+    auth: { user },
+  } = useContext(AuthContext);
   const [isLoading, setIsLoading] = useState(false);
   const location = useLocation();
 

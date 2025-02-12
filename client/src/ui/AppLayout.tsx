@@ -5,9 +5,8 @@ import styled, { css } from "styled-components";
 import Header from "./Header";
 import Sidebar from "./Sidebar";
 
-import { UserContext } from "../contexts/userContext";
 import { ThemeContext } from "../contexts/themeContext";
-import Sort from "./Sort";
+
 import ActionNav from "./ActionNav";
 
 const StyledAppLayout = styled.div`

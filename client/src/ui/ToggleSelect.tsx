@@ -1,9 +1,11 @@
 import { SetStateAction, useContext, useState } from "react";
 import styled, { css } from "styled-components";
+
 import { ThemeContext } from "../contexts/themeContext";
 import { FilesContext } from "../contexts/filesContext";
-import { deleteFiles } from "../services/apiFiles";
 import { FoldersContext } from "../contexts/foldersContext";
+
+import { deleteFiles } from "../services/apiFiles";
 import { deleteFolders } from "../services/apiFolders";
 
 interface ToggleButtonProps {

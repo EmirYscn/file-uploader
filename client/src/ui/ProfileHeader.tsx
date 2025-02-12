@@ -2,15 +2,13 @@ import { useContext } from "react";
 import { useNavigate } from "react-router";
 import styled, { css } from "styled-components";
 
-import CurrentRouteDisplay from "./CurrentRouteDisplay";
 import Button from "./Button";
 import Profile from "./Profile";
 import DarkModeToggle from "./DarkModeToggle";
 
-import { UserContext } from "../contexts/userContext";
-import { logout } from "../services/apiAuth";
+import { AuthContext } from "../contexts/authContext";
 
-// import { logout } from "../services/apiUser";
+import { logout } from "../services/apiAuth";
 
 const StyledHeader = styled.header.withConfig({
   shouldForwardProp: (prop) => prop !== "isdark",
@@ -40,11 +38,15 @@ const ButtonContainer = styled.div`
 function ProfileHeader({ isDark }: { isDark?: boolean }) {
   const navigate = useNavigate();
 
-  const { user, setUser } = useContext(UserContext);
+  const {
+    auth: { user },
+    setAuth,
+  } = useContext(AuthContext);
 
   async function handleLogout() {
     await logout();
-    setUser(null);
+
+    setAuth({ isAuthenticated: false, user: null });
     navigate("/login");
   }
   return (

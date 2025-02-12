@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import Sort from "./Sort";
 import ToggleSelect from "./ToggleSelect";
-import { useState } from "react";
 
 const ActionContainer = styled.div`
   display: flex;

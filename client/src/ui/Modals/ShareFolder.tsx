@@ -12,8 +12,8 @@ import { User } from "../../types/models";
 import { accessType } from "../../types/enums";
 
 import { ThemeContext } from "../../contexts/themeContext";
-import { UserContext } from "../../contexts/userContext";
 import { searchUsers } from "../../services/apiUser";
+import { AuthContext } from "../../contexts/authContext";
 
 const StyledSharedFolder = styled.div`
   width: 40rem;
@@ -173,7 +173,11 @@ const expirationMap: Record<string, number | null> = {
 
 function ShareFolder({ onConfirm, disabled, onCloseModal }: ShareFolderProps) {
   const { isDark } = useContext(ThemeContext);
-  const { user: currentUser } = useContext(UserContext);
+  // const { user: currentUser } = useContext(UserContext);
+  const {
+    auth: { user: currentUser },
+  } = useContext(AuthContext);
+
   const { handleSubmit, register } = useForm<FormData>();
   const [value, setValue] = useState("");
   const [users, setUsers] = useState<User[]>([]);

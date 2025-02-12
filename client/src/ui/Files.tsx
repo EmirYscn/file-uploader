@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { Link, useLocation, useSearchParams } from "react-router";
 import styled from "styled-components";
 import { RiDeleteBin2Line } from "react-icons/ri";
@@ -20,7 +20,7 @@ import useDownloadFile from "../hooks/useDownloadFile";
 import useCopyFileLink from "../hooks/useCopyFileLink";
 
 import { FilesContext } from "../contexts/filesContext";
-import { UserContext } from "../contexts/userContext";
+import { AuthContext } from "../contexts/authContext";
 
 import { File as FileType } from "../types/models";
 
@@ -121,7 +121,11 @@ function Files({
     setFiles,
     isLoading: isFilesLoading,
   } = useContext(FilesContext);
-  const { user: currentUser } = useContext(UserContext);
+  // const { user: currentUser } = useContext(UserContext);
+  const {
+    auth: { user: currentUser },
+  } = useContext(AuthContext);
+
   const { handleDeleteFile, isLoading: isDeletingFile } =
     useDeleteFile(setFiles);
   const { handleRenameFile, isLoading: isRenaming } = useRenameFile(setFiles);

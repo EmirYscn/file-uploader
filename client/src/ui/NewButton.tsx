@@ -1,5 +1,5 @@
 import { useLocation } from "react-router";
-import { useContext, useRef, useState } from "react";
+import { useContext, useState } from "react";
 import styled from "styled-components";
 import { BsFileEarmarkPlusFill } from "react-icons/bs";
 import { FiFolderPlus } from "react-icons/fi";
@@ -8,10 +8,9 @@ import Modal from "./Modal";
 import AddFolder from "./Modals/AddFolder";
 
 import useCreateFolder from "../hooks/useCreateFolder";
-import useCreateFile from "../hooks/useCreateFile";
 
 import { FoldersContext } from "../contexts/foldersContext";
-import { FilesContext } from "../contexts/filesContext";
+
 import DragDropBox from "./DragDropBox";
 
 const StyledNewButton = styled.div`

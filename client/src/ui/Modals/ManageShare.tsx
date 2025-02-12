@@ -13,7 +13,7 @@ import Spinner from "../Spinner";
 
 import { ThemeContext } from "../../contexts/themeContext";
 import { isExpired } from "../../utils/dateCompare";
-import { add, set } from "date-fns";
+import { add } from "date-fns";
 import {
   deleteFolderShare,
   getSharedUsers,

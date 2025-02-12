@@ -7,10 +7,8 @@ import Button from "./Button";
 import Profile from "./Profile";
 import DarkModeToggle from "./DarkModeToggle";
 
-import { UserContext } from "../contexts/userContext";
+import { AuthContext } from "../contexts/authContext";
 
-// import { logout } from "../services/apiUser";
-import ProfileImage from "./ProfileImage";
 import { logout } from "../services/apiAuth";
 
 const StyledHeader = styled.header.withConfig({
@@ -41,11 +39,16 @@ const ButtonContainer = styled.div`
 function Header({ isDark }: { isDark?: boolean }) {
   const navigate = useNavigate();
 
-  const { user, setUser } = useContext(UserContext);
+  // const { user, setUser } = useContext(UserContext);
+  const {
+    auth: { user },
+    setAuth,
+  } = useContext(AuthContext);
 
   async function handleLogout() {
     await logout();
-    setUser(null);
+    // setUser(null);
+    setAuth({ isAuthenticated: false, user: null });
     navigate("/login");
   }
   return (

@@ -1,7 +1,7 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import styled, { css } from "styled-components";
-import { UserContext } from "../contexts/userContext";
-import { getUserImage } from "../services/supabase";
+
+import { AuthContext } from "../contexts/authContext";
 
 const ProfileContainer = styled.div<{ context?: "header" | "settings" }>`
   display: flex;
@@ -92,14 +92,9 @@ function ProfileImage({
   imgSize,
   context = "settings",
 }: ProfileImageProps) {
-  const { user } = useContext(UserContext);
-  // const [avatarUrl, setAvatarUrl] = useState(user?.avatarUrl);
-
-  // useEffect(() => {
-  //   if (user?.avatarUrl) {
-  //     setAvatarUrl(`${user.avatarUrl}?t=${Date.now()}`);
-  //   }
-  // }, [user?.avatarUrl]); // Only update when the user avatar changes
+  const {
+    auth: { user },
+  } = useContext(AuthContext);
 
   return (
     <ProfileContainer onClick={onClick} context={context}>

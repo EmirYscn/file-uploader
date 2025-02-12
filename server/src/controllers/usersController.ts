@@ -63,9 +63,9 @@ export const updateUser = async (req: Request, res: Response): Promise<any> => {
   }
 
   try {
-    await db.updateUser(req.body, +id);
+    const updatedUser = await db.updateUser(req.body, +id);
 
-    return res.status(200).json({ message: "Successfully updated user" });
+    return res.status(200).json(updatedUser);
   } catch (error) {
     console.error("Error searching users:", error);
 

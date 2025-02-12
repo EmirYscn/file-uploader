@@ -1,11 +1,7 @@
 import { NavLink } from "react-router";
-import { FaHome, FaLock, FaRegUser } from "react-icons/fa";
-import { PiFolderSimpleUserBold } from "react-icons/pi";
-import styled, { css } from "styled-components";
-import { RiFolderCloudLine } from "react-icons/ri";
+import { FaLock, FaRegUser } from "react-icons/fa";
 
-import NewButton from "./NewButton";
-import { IoSettingsOutline } from "react-icons/io5";
+import styled, { css } from "styled-components";
 
 const NavList = styled.ul`
   display: flex;

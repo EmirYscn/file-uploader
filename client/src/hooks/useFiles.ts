@@ -6,6 +6,7 @@ import { getFilesByFolder, getMainFiles } from "../services/apiFiles";
 import { UserContext } from "../contexts/userContext";
 
 import { File } from "../types/models";
+import { AuthContext } from "../contexts/authContext";
 
 function useFiles(): {
   files: File[] | undefined;
@@ -16,7 +17,10 @@ function useFiles(): {
   const location = useLocation();
   const [files, setFiles] = useState<File[] | undefined>();
   const [isLoading, setIsLoading] = useState(false);
-  const { user } = useContext(UserContext);
+  // const { user } = useContext(UserContext);
+  const {
+    auth: { user },
+  } = useContext(AuthContext);
 
   useEffect(() => {
     async function fetchFiles() {

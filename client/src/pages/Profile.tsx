@@ -11,6 +11,7 @@ import Button from "../ui/Button";
 import { updateUser, uploadAvatar } from "../services/apiUser";
 import { set } from "date-fns";
 import ProfileImage from "../ui/ProfileImage";
+import { AuthContext } from "../contexts/authContext";
 
 const StyledProfile = styled.div`
   padding: 1em 2em;
@@ -101,7 +102,11 @@ type Errors = {
 };
 
 function Profile() {
-  const { user, setUser } = useContext(UserContext);
+  // const { user, setUser } = useContext(UserContext);
+  const {
+    auth: { user },
+    setAuth,
+  } = useContext(AuthContext);
   const { isDark } = useContext(ThemeContext);
   const {
     register,
@@ -140,9 +145,19 @@ function Profile() {
       try {
         const userAvatar = await uploadAvatar(formData, user?.id);
         const refreshedAvatarUrl = `${userAvatar}?t=${Date.now()}`;
-        setUser((prevUser) =>
-          prevUser ? { ...prevUser, avatarUrl: refreshedAvatarUrl } : prevUser
+
+        setAuth((prevAuth) =>
+          prevAuth.user
+            ? {
+                ...prevAuth,
+                user: { ...prevAuth.user, avatarUrl: refreshedAvatarUrl },
+              }
+            : prevAuth
         );
+
+        // setUser((prevUser) =>
+        //   prevUser ? { ...prevUser, avatarUrl: refreshedAvatarUrl } : prevUser
+        // );
       } catch (error) {
         console.log(error);
       }
@@ -175,7 +190,17 @@ function Profile() {
     try {
       setIsLoading(true);
       console.log(updatedFields);
-      await updateUser(updatedFields, user?.id);
+      const updatedUser = await updateUser(updatedFields, user?.id);
+
+      setAuth((prevAuth) =>
+        prevAuth.user
+          ? {
+              ...prevAuth,
+              user: updatedUser,
+            }
+          : prevAuth
+      );
+
       setIsEdited(false);
     } catch (error: any) {
       setApiErrors(error);

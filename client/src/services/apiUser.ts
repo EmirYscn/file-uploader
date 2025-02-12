@@ -15,59 +15,6 @@ type Errors = {
   error?: Error[];
 };
 
-// export const createUser = async (data: User) => {
-//   const response = await fetch("/api/signup", {
-//     method: "POST",
-//     headers: {
-//       "Content-Type": "application/json",
-//     },
-//     body: JSON.stringify(data),
-//   });
-
-//   if (!response.ok) {
-//     const errorData: Errors = await response.json();
-//     throw errorData;
-//   }
-
-//   return await response.json();
-// };
-
-// export const login = async (data: User): Promise<User> => {
-//   const response = await fetch("/api/login", {
-//     method: "POST",
-//     headers: {
-//       "Content-Type": "application/json",
-//     },
-//     body: JSON.stringify(data),
-//   });
-
-//   if (!response.ok) {
-//     const errorData: Errors = await response.json();
-//     throw errorData;
-//   }
-
-//   return await response.json();
-// };
-
-// export const logout = async () => {
-//   try {
-//     const response = await fetch("/api/logout", {
-//       method: "GET",
-//       credentials: "include",
-//     });
-
-//     if (!response.ok) {
-//       const errorData = await response.json();
-//       throw new Error(
-//         errorData.error || `HTTP error! status: ${response.status}`
-//       );
-//     }
-//   } catch (error) {
-//     console.error("Failed to log out user:", error);
-//     throw error;
-//   }
-// };
-
 export const updateUser = async (
   data: Partial<User>,
   userId: number | undefined

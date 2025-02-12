@@ -15,6 +15,7 @@ import { ThemeContext } from "../contexts/themeContext";
 import GoogleButton from "../ui/GoogleButton";
 import { Link, useNavigate } from "react-router";
 import { AuthContext } from "../contexts/authContext";
+import GitHubButton from "../ui/GithubButton";
 
 const StyledLogin = styled.div`
   display: grid;
@@ -78,6 +79,9 @@ function Login() {
           </FormRow>
           <FormRow>
             <GoogleButton />
+          </FormRow>
+          <FormRow>
+            <GitHubButton />
           </FormRow>
           <Link to={"/signup"}>Don't have an account?</Link>
           <FormRow>

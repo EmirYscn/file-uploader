@@ -35,7 +35,7 @@ function AuthContextProvider({ children }: UserContextProviderProps) {
   }, []);
 
   if (isLoading) {
-    return <Spinner />; // or return a loading spinner
+    return <Spinner />;
   }
 
   return (

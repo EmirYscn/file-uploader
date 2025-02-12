@@ -6,6 +6,7 @@ import { getFolder, getMainFolders } from "../services/apiFolders";
 import { UserContext } from "../contexts/userContext";
 
 import { FolderWithShareInfo } from "../types/models";
+import { AuthContext } from "../contexts/authContext";
 
 function useFolders(): {
   folders: FolderWithShareInfo[] | undefined;
@@ -17,7 +18,10 @@ function useFolders(): {
   const location = useLocation();
   const [folders, setFolders] = useState<FolderWithShareInfo[] | undefined>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const { user } = useContext(UserContext);
+  // const { user } = useContext(UserContext);
+  const {
+    auth: { user },
+  } = useContext(AuthContext);
 
   useEffect(() => {
     async function fetchFolders() {

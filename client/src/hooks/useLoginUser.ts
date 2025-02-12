@@ -19,7 +19,8 @@ type Errors = {
 function useLoginUser() {
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<Errors | null>(null);
-  const { setUser } = useContext(UserContext);
+  // const { setUser } = useContext(UserContext);
+  const { setAuth } = useContext(AuthContext);
   // const { refreshAuth } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -29,7 +30,8 @@ function useLoginUser() {
       setIsLoading(true);
       const user = await login(data);
 
-      setUser(user);
+      // setUser(user);
+      setAuth({ isAuthenticated: true, user: user });
       // await refreshAuth();
       navigate("/all");
     } catch (error: any) {

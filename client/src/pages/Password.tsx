@@ -9,6 +9,7 @@ import Form from "../ui/Form";
 import { ThemeContext } from "../contexts/themeContext";
 import Button from "../ui/Button";
 import { updateUser } from "../services/apiUser";
+import { AuthContext } from "../contexts/authContext";
 
 const StyledProfile = styled.div`
   padding: 1em 2em;
@@ -51,7 +52,10 @@ type Errors = {
 };
 
 function Password() {
-  const { user } = useContext(UserContext);
+  // const { user } = useContext(UserContext);
+  const {
+    auth: { user },
+  } = useContext(AuthContext);
   const { isDark } = useContext(ThemeContext);
   const {
     register,

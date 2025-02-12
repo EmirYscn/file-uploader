@@ -1,7 +1,5 @@
 import styled, { css } from "styled-components";
 
-import Logo from "./Logo";
-import MainNav from "./MainNav";
 import ProfileNav from "./ProfileNav";
 
 const StyledSidebar = styled.header.withConfig({

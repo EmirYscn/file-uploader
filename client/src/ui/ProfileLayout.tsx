@@ -2,23 +2,15 @@ import { useContext } from "react";
 import { Outlet } from "react-router";
 import styled, { css } from "styled-components";
 
-import Header from "./Header";
-import Sidebar from "./Sidebar";
-
-import { UserContext } from "../contexts/userContext";
-import { ThemeContext } from "../contexts/themeContext";
 import ProfileSidebar from "./ProfileSidebar";
 import ProfileHeader from "./ProfileHeader";
 import BackButton from "./BackButton";
 
+import { ThemeContext } from "../contexts/themeContext";
+
 const StyledProfileLayout = styled.div<{ isdark?: boolean }>`
   display: flex;
   flex-direction: column;
-  /* display: grid;
-  grid-template-columns: 26rem 1fr;
-  grid-template-rows: auto 1fr;
-  justify-content: center;
-  position: relative; */
   height: 100vh;
 
   ${(props) =>
@@ -29,35 +21,24 @@ const StyledProfileLayout = styled.div<{ isdark?: boolean }>`
     `}
 `;
 
-// const ProfileContainer = styled.div`
-//   display: grid;
-//   grid-template-columns: 26rem 1fr;
-//   justify-content: center;
-//   position: relative;
-//   max-width: 1200px; /* Prevents layout from being too wide */
-//   margin: 5rem 15em;
-//   height: 100vh;
-//   box-shadow: var(--shadow-lg);
-// `;
-
 const ProfileContainer = styled.div`
   display: grid;
   grid-template-columns: 26rem 1fr;
   justify-content: center;
   position: relative;
   width: 80%;
-  margin: 5rem 15rem; /* Centers the container with dynamic spacing */
+  margin: 5rem 15rem;
   height: 100vh;
   box-shadow: var(--shadow-lg);
   background: var(--color-grey-50);
   border-radius: var(--border-radius-md);
 
   @media (max-width: 1024px) {
-    grid-template-columns: 20rem 1fr; /* Shrink sidebar on medium screens */
+    grid-template-columns: 20rem 1fr;
   }
 
   @media (max-width: 768px) {
-    grid-template-columns: 1fr; /* Stack sidebar and main content */
+    grid-template-columns: 1fr;
     height: auto;
   }
 `;
@@ -71,8 +52,7 @@ const Main = styled.main.withConfig({
   display: flex;
   flex-direction: column;
   justify-content: center;
-  /* height: auto; */
-  /* box-shadow: var(--shadow-lg); */
+
   ${(props) =>
     props.isdark &&
     css`
@@ -80,29 +60,6 @@ const Main = styled.main.withConfig({
       color: var(--color-grey-200);
     `}
 `;
-
-// const Main = styled.main.withConfig({
-//   shouldForwardProp: (prop) => prop !== "isdark",
-// })<{ isdark: boolean }>`
-//   background-color: var(--color-grey-100);
-//   padding: 4rem 4.8rem 6.4rem;
-//   overflow: auto; /* Change from scroll to auto */
-//   display: flex;
-//   flex-direction: column;
-//   justify-content: center;
-//   width: 100%;
-
-//   ${(props) =>
-//     props.isdark &&
-//     css`
-//       background-color: var(--color-black-200);
-//       color: var(--color-grey-200);
-//     `}
-
-//   @media (max-width: 768px) {
-//     padding: 2rem; /* Reduce padding on mobile */
-//   }
-// `;
 
 const Container = styled.div`
   width: 100%;
@@ -123,7 +80,7 @@ function ProfileLayout() {
         <ProfileSidebar isDark={isDark} />
         <Main isdark={isDark}>
           <Container>
-            <BackButton to={"/"} />
+            <BackButton to={"/all"} />
             <Outlet />
           </Container>
         </Main>

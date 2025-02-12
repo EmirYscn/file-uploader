@@ -1,7 +1,12 @@
 import passport from "passport";
 
 import { Strategy as LocalStrategy } from "passport-local";
+
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
+import { Profile as GoogleProfile } from "passport-google-oauth20";
+
+import { Strategy as GithubStrategy } from "passport-github2";
+import { Profile as GithubProfile } from "passport-github2";
 
 import bcrypt from "bcryptjs";
 
@@ -34,7 +39,12 @@ const googleStrategy = new GoogleStrategy(
     clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     callbackURL: "http://localhost:3000/api/auth/google/callback",
   },
-  async function (accessToken, refreshToken, profile, done) {
+  async function (
+    accessToken: string,
+    refreshToken: string,
+    profile: GoogleProfile,
+    done: (error: any, user?: any) => void
+  ) {
     let findUser;
 
     try {
@@ -62,31 +72,55 @@ const googleStrategy = new GoogleStrategy(
       console.log(error);
       return done(error);
     }
+  }
+);
 
-    // try {
-    //   let user = await prisma.user.findUnique({
-    //     where: { email: profile.emails?.[0]?.value },
-    //   });
+const githubStrategy = new GithubStrategy(
+  {
+    clientID: process.env.GITHUB_CLIENT_ID!,
+    clientSecret: process.env.GITHUB_CLIENT_SECRET!,
+    callbackURL: "http://localhost:3000/api/auth/github/callback",
+    scope: ["user:email"],
+  },
+  async function (
+    accessToken: string,
+    refreshToken: string,
+    profile: GithubProfile,
+    done: (error: any, user?: any) => void
+  ) {
+    let findUser;
 
-    //   if (!user) {
-    //     user = await prisma.user.create({
-    //       data: {
-    //         email: profile.emails![0].value,
-    //         username: profile.displayName,
-    //         avatarUrl: profile.photos?.[0]?.value,
-    //       },
-    //     });
-    //   }
+    try {
+      findUser = await prisma.user.findUnique({
+        where: { email: profile.emails?.[0]?.value },
+      });
+    } catch (error) {
+      return done(error);
+    }
 
-    //   return done(null, user);
-    // } catch (error) {
-    //   return done(error);
-    // }
+    try {
+      if (!findUser) {
+        const newUser = await prisma.user.create({
+          data: {
+            email: profile.emails![0].value,
+            username: profile.username || profile.displayName,
+            avatarUrl: profile.photos?.[0]?.value,
+          },
+        });
+
+        return done(null, newUser);
+      }
+      return done(null, findUser);
+    } catch (error) {
+      console.log(error);
+      return done(error);
+    }
   }
 );
 
 passport.use("local", localStrategy);
 passport.use("google", googleStrategy);
+passport.use("github", githubStrategy);
 
 passport.serializeUser((user, done) => {
   done(null, (user as User).id);

@@ -1,10 +1,13 @@
-import { set } from "date-fns";
 import { useContext, useState } from "react";
 import styled, { css } from "styled-components";
+
 import useCreateFile from "../hooks/useCreateFile";
+
 import { FilesContext } from "../contexts/filesContext";
 import { ThemeContext } from "../contexts/themeContext";
+
 import FilesLoadingSpinner from "./FilesLoadingSpinner";
+import { formatString } from "../utils/formatString";
 
 const DropZoneBox = styled.div<{ isDark?: boolean }>`
   border-radius: 1em;
@@ -297,7 +300,8 @@ function DragDropBox({ onCancel }: { onCancel: () => void }) {
               <ul>
                 {files.map((file, index) => (
                   <li key={index}>
-                    {file.name} - {(file.size / 1024 / 1024).toFixed(2)} MB
+                    {formatString(file.name, 30)} -{" "}
+                    {(file.size / 1024 / 1024).toFixed(2)} MB
                     {isCreatingFile && <FilesLoadingSpinner />}
                   </li>
                 ))}
