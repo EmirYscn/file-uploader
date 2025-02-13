@@ -1,3 +1,4 @@
+import { isValidElement } from "react";
 import styled from "styled-components";
 
 const StyledFormRow = styled.div`
@@ -53,10 +54,12 @@ type FormRowProps = {
 };
 
 function FormRow({ label, apiError, formError, children }: FormRowProps) {
+  const childElement = isValidElement(children) ? children : null;
+  const childId = childElement?.props.id;
   return (
     <StyledFormRow>
       {apiError && <FormError>*{apiError}</FormError>}
-      {label && children && <Label htmlFor={children.props.id}>{label}</Label>}
+      {label && childElement && <Label htmlFor={childId}>{label}</Label>}
       {children}
       {formError && <ApiError>*{formError}</ApiError>}
     </StyledFormRow>

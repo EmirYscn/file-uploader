@@ -227,6 +227,9 @@ function Button({
   isSelected,
 }: ButtonProps) {
   const context = useContext(MenusContext);
+  if (!context) {
+    throw new Error("Toggle must be used within a MenusProvider");
+  }
   const { close, isDark } = context;
 
   const isDisabled =

@@ -35,8 +35,13 @@ const StyledDarkModeToggle = styled.button.withConfig({
 
 function DarkModeToggle() {
   const { isDark, toggleDarkMode } = useContext(ThemeContext);
+
+  const handleToggle = () => {
+    toggleDarkMode((prev) => !prev);
+  };
+
   return (
-    <StyledDarkModeToggle onClick={toggleDarkMode} isdark={isDark}>
+    <StyledDarkModeToggle onClick={handleToggle} isdark={isDark}>
       {isDark ? <MdDarkMode /> : <IoSunny />}
     </StyledDarkModeToggle>
   );
