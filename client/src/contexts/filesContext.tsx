@@ -4,7 +4,9 @@ import { File, FileWithUserInfo } from "../types/models";
 
 type FilesContextType = {
   files: FileWithUserInfo[] | undefined;
-  setFiles: React.Dispatch<React.SetStateAction<File[] | undefined>>;
+  setFiles: React.Dispatch<
+    React.SetStateAction<FileWithUserInfo[] | undefined>
+  >;
   isLoading: boolean;
 };
 

@@ -3,17 +3,19 @@ import { useLocation } from "react-router";
 
 import { getFilesByFolder, getMainFiles } from "../services/apiFiles";
 
-import { File } from "../types/models";
+import { File, FileWithUserInfo } from "../types/models";
 import { AuthContext } from "../contexts/authContext";
 
 function useFiles(): {
-  files: File[] | undefined;
-  setFiles: React.Dispatch<React.SetStateAction<File[] | undefined>>;
+  files: FileWithUserInfo[] | undefined;
+  setFiles: React.Dispatch<
+    React.SetStateAction<FileWithUserInfo[] | undefined>
+  >;
   isLoading: boolean;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
 } {
   const location = useLocation();
-  const [files, setFiles] = useState<File[] | undefined>();
+  const [files, setFiles] = useState<FileWithUserInfo[] | undefined>();
   const [isLoading, setIsLoading] = useState(false);
 
   const {

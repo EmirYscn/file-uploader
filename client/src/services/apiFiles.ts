@@ -1,10 +1,10 @@
-import { File } from "../types/models";
+import { File, FileWithUserInfo } from "../types/models";
 
 export const getMainFiles = async (userId: number) => {
   try {
     const res = await fetch(`/api/files/main/${userId}`);
 
-    const files: File[] = await res.json();
+    const files: FileWithUserInfo[] = await res.json();
 
     return files;
   } catch (error) {
@@ -16,7 +16,7 @@ export const getFilesByFolder = async (folderId: number) => {
   try {
     const res = await fetch(`/api/files/${folderId}`);
 
-    const files: File[] = await res.json();
+    const files: FileWithUserInfo[] = await res.json();
 
     return files;
   } catch (error) {
