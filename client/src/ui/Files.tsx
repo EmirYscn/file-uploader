@@ -22,7 +22,7 @@ import useCopyFileLink from "../hooks/useCopyFileLink";
 import { FilesContext } from "../contexts/filesContext";
 import { AuthContext } from "../contexts/authContext";
 
-import { File as FileType } from "../types/models";
+import { FileWithUserInfo as FileType } from "../types/models";
 
 import { formatString } from "../utils/formatString";
 import { AccessType } from "shared-types";
