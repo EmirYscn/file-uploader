@@ -22,7 +22,12 @@ const allowedOrigins = [
   "https://file-uploader-azure.vercel.app",
 ];
 
-app.use(cors({ origin: allowedOrigins, credentials: true }));
+app.use(
+  cors({
+    origin: allowedOrigins,
+    credentials: true,
+  })
+);
 
 // app middleware to use form body in post router
 app.use(express.json());
