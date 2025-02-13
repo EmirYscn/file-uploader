@@ -1,9 +1,9 @@
 import { createContext } from "react";
 
-import { File } from "../types/models";
+import { File, FileWithUserInfo } from "../types/models";
 
 type FilesContextType = {
-  files: File[] | undefined;
+  files: FileWithUserInfo[] | undefined;
   setFiles: React.Dispatch<React.SetStateAction<File[] | undefined>>;
   isLoading: boolean;
 };
