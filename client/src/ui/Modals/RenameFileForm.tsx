@@ -5,7 +5,7 @@ import Button from "../Button";
 import Heading from "../Heading";
 import Input from "../Input";
 
-import { File } from "../../types/models";
+import { FileWithUserInfo } from "../../types/models";
 
 const StyledConfirmDelete = styled.div`
   width: 40rem;
@@ -26,11 +26,11 @@ const Form = styled.form`
   gap: 1.2rem;
 `;
 
-type FormData = File;
+type FormData = FileWithUserInfo;
 
 type RenameFileProps = {
   resourceName: string;
-  onConfirm?: (data: File) => Promise<void>;
+  onConfirm?: (data: FileWithUserInfo) => Promise<void>;
   disabled?: boolean;
   onCloseModal?: () => void;
 };
