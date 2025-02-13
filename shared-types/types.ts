@@ -13,24 +13,17 @@ export type User = {
   email: string;
   password?: string | null;
   avatarUrl?: string | null;
-  files?: File[];
-  folders?: Folder[];
-  folderShare?: FolderShare[];
-  fileShare?: FileShare[];
 };
 
 export type File = {
   id: number;
   name: string;
-  url: string;
   size: number;
-  uploadDate: Date;
   userId: number;
-  folderId?: number | null;
-  shareUrl?: string | null;
-  uploadedBy?: User;
-  folder?: Folder | null;
-  sharedTo?: FileShare[];
+  shareUrl: string | null;
+  folderId: number | null;
+  url: string;
+  uploadDate: Date;
 };
 
 export type Folder = {
@@ -39,34 +32,25 @@ export type Folder = {
   fileCount: number;
   size: number;
   createdAt: Date;
-  parentId?: number | null;
+  parentId: number | null;
   userId: number;
-  shareUrl?: string | null;
-  parent?: Folder | null;
-  children?: Folder[];
-  files?: File[];
-  createdBy?: User;
-  sharedTo?: FolderShare[];
+  shareUrl: string | null;
 };
 
 export type FolderShare = {
   id: number;
-  folderId: number;
   userId: number;
-  expireDate?: Date | null;
-  accessType?: AccessType | null;
-  folder?: Folder;
-  user?: User;
+  folderId: number;
+  expireDate: Date | null;
+  accessType: AccessType | null;
 };
 
 export type FileShare = {
   id: number;
-  fileId: number;
   userId: number;
-  expireDate?: Date | null;
-  accessType?: AccessType | null;
-  file?: File;
-  user?: User;
+  expireDate: Date | null;
+  accessType: AccessType | null;
+  fileId: number;
 };
 
 export type Session = {
@@ -77,16 +61,8 @@ export type Session = {
 };
 
 // Composite types
-export type FolderWithShareInfo = Folder & {
-  sharedTo: FolderShare[];
-};
+export type FolderWithShareInfo = Folder & FolderShare;
 
-export type FileWithUserInfo = File & {
-  uploadedBy: {
-    username: string;
-  };
-};
+export type FileWithUserInfo = File & FileShare;
 
-export type UserWithShareInfo = User & {
-  folderShare: FolderShare[];
-};
+export type UserWithShareInfo = User & FolderShare;
