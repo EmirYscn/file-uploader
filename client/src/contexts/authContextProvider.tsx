@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Auth, AuthContext } from "./authContext";
 import Spinner from "../ui/Spinner";
+import { verify } from "../services/apiAuth";
 
 type UserContextProviderProps = {
   children: React.ReactNode;
@@ -16,10 +17,7 @@ function AuthContextProvider({ children }: UserContextProviderProps) {
   const verifyAuth = async () => {
     try {
       setIsLoading(true);
-      const response = await fetch("/api/auth/verify", {
-        credentials: "include",
-      });
-      const data = await response.json();
+      const data = await verify();
       setAuth(data);
     } catch (error) {
       console.error("Auth verification failed:", error);
