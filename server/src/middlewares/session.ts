@@ -15,6 +15,6 @@ export const sessionMiddleware = expressSession({
     maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     sameSite: "none",
     secure: true, // ✅ Use secure cookies only in production
-    httpOnly: false, // ✅ Prevents client-side access
+    httpOnly: true, // ✅ Prevents client-side access
   },
 });
