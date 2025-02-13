@@ -9,7 +9,7 @@ router.get(
   "/shared/:shareUrl/folders/:folderId",
   foldersController.getSharedSubFolder
 );
-router.use(authController.isAuth);
+// router.use(authController.isAuth);
 
 router.get("/main/:userId", foldersController.getMainFolders);
 router.post("/", foldersController.createFolder);

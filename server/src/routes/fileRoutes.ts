@@ -12,31 +12,14 @@ router.get(
   "/shared/:shareUrl/files/:folderId",
   filesController.getSharedSubFiles
 );
-router.get(
-  "/main/:userId",
-  authController.isAuth,
-  filesController.getMainFiles
-);
-router.get(
-  "/:folderId",
-  authController.isAuth,
-  filesController.getFilesByFolder
-);
+router.get("/main/:userId", filesController.getMainFiles);
+router.get("/:folderId", filesController.getFilesByFolder);
 
-router.post(
-  "/upload",
-  uploadFiles,
-  authController.isAuth,
-  filesController.uploadFile
-);
+router.post("/upload", uploadFiles, filesController.uploadFile);
 
 router.get("/:id/download", filesController.downloadFile);
-router.get(
-  "/:id/shareUrl",
-  authController.isAuth,
-  filesController.createShareUrl
-);
-router.patch("/:id", authController.isAuth, filesController.updateFile);
-router.delete("/:id", authController.isAuth, filesController.deleteFile);
+router.get("/:id/shareUrl", filesController.createShareUrl);
+router.patch("/:id", filesController.updateFile);
+router.delete("/:id", filesController.deleteFile);
 
 export { router };
