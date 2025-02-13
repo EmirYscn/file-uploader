@@ -8,7 +8,10 @@ function useCopyFileLink() {
   async function handleCopyFileLink(fileId: number) {
     try {
       setIsLoading(true);
-      const res = await fetch(`${API_BASE_URL}/api/files/${fileId}/shareUrl`);
+      const res = await fetch(`${API_BASE_URL}/api/files/${fileId}/shareUrl`, {
+        method: "GET",
+        credentials: "include",
+      });
       if (!res.ok) {
         throw new Error("Failed to get share URL");
       }

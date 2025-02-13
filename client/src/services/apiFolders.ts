@@ -10,7 +10,10 @@ const API_BASE_URL = import.meta.env.VITE_API_URL || "/api";
 
 export const getMainFolders = async (userId: number) => {
   try {
-    const res = await fetch(`${API_BASE_URL}/api/folders/main/${userId}`);
+    const res = await fetch(`${API_BASE_URL}/api/folders/main/${userId}`, {
+      method: "GET",
+      credentials: "include",
+    });
 
     const folders: FolderWithShareInfo[] = await res.json();
 
@@ -22,7 +25,10 @@ export const getMainFolders = async (userId: number) => {
 
 export const getFolder = async (folderId: number) => {
   try {
-    const res = await fetch(`${API_BASE_URL}/api/folders/${folderId}`);
+    const res = await fetch(`${API_BASE_URL}/api/folders/${folderId}`, {
+      method: "GET",
+      credentials: "include",
+    });
 
     const folders: FolderWithShareInfo[] = await res.json();
 
@@ -38,6 +44,7 @@ export const createFolder = async (
   try {
     const response = await fetch(`${API_BASE_URL}/api/folders`, {
       method: "POST",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
@@ -58,6 +65,7 @@ export const deleteFolder = async (folderId: number) => {
   try {
     const response = await fetch(`${API_BASE_URL}/api/folders/${folderId}`, {
       method: "DELETE",
+      credentials: "include",
     });
 
     if (!response.ok) {
@@ -73,6 +81,7 @@ export const deleteFolders = async (folderIds: number[]) => {
     const deleteRequests = folderIds.map(async (folderId) => {
       const response = await fetch(`${API_BASE_URL}/api/folders/${folderId}`, {
         method: "DELETE",
+        credentials: "include",
       });
 
       if (!response.ok) {
@@ -94,6 +103,7 @@ export const renameFolder = async (folderId: number, data: Folder) => {
   try {
     const response = await fetch(`${API_BASE_URL}/api/folders/${folderId}`, {
       method: "PATCH",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
@@ -112,6 +122,7 @@ export const updateFolder = async (folderId: number, data: Partial<Folder>) => {
   try {
     const response = await fetch(`${API_BASE_URL}/api/folders/${folderId}`, {
       method: "PATCH",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
@@ -135,6 +146,7 @@ export const shareFolder = async (formData: Data, folderId: number) => {
 
     const response = await fetch(`${API_BASE_URL}/api/folders/share`, {
       method: "POST",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
@@ -155,6 +167,7 @@ export const updateShareFolder = async (
   try {
     const response = await fetch(`${API_BASE_URL}/api/folders/folderShare`, {
       method: "PATCH",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
@@ -171,7 +184,10 @@ export const updateShareFolder = async (
 
 export const getFolderByShareUrl = async (shareUrl: string) => {
   try {
-    const res = await fetch(`${API_BASE_URL}/api/folders/${shareUrl}/shared`);
+    const res = await fetch(`${API_BASE_URL}/api/folders/${shareUrl}/shared`, {
+      method: "GET",
+      credentials: "include",
+    });
 
     const folder: Folder[] = await res.json();
 
@@ -186,7 +202,8 @@ export async function getFoldersByShareUrlAndFolderId(
   folderId: number
 ) {
   const res = await fetch(
-    `${API_BASE_URL}/api/folders/shared/${shareUrl}/folders/${folderId}`
+    `${API_BASE_URL}/api/folders/shared/${shareUrl}/folders/${folderId}`,
+    { method: "GET", credentials: "include" }
   );
 
   if (!res.ok) throw new Error("Failed to fetch shared folders");
@@ -197,7 +214,10 @@ export async function getFoldersByShareUrlAndFolderId(
 }
 
 export async function getFolderNameAndParentIdById(folderId: number) {
-  const res = await fetch(`${API_BASE_URL}/api/folders/folder/${folderId}`);
+  const res = await fetch(`${API_BASE_URL}/api/folders/folder/${folderId}`, {
+    method: "GET",
+    credentials: "include",
+  });
 
   if (!res.ok) throw new Error("Failed to fetch shared folders");
 
@@ -208,7 +228,8 @@ export async function getFolderNameAndParentIdById(folderId: number) {
 
 export async function getSharedUsers(folderId: number) {
   const res = await fetch(
-    `${API_BASE_URL}/api/folders/folder/${folderId}/sharedUsers`
+    `${API_BASE_URL}/api/folders/folder/${folderId}/sharedUsers`,
+    { method: "GET", credentials: "include" }
   );
 
   if (!res.ok) throw new Error("Failed to fetch shared users");
@@ -222,6 +243,7 @@ export async function deleteFolderShare(userId: number, folderId: number) {
   try {
     const response = await fetch(`${API_BASE_URL}/api/folders/folderShare`, {
       method: "DELETE",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },

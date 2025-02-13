@@ -20,6 +20,7 @@ type Errors = {
 export const createUser = async (data: User) => {
   const response = await fetch(`${API_BASE_URL}/api/auth/signup`, {
     method: "POST",
+    credentials: "include",
     headers: {
       "Content-Type": "application/json",
     },
@@ -37,6 +38,7 @@ export const createUser = async (data: User) => {
 export const login = async (data: User): Promise<User> => {
   const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
     method: "POST",
+    credentials: "include",
     headers: {
       "Content-Type": "application/json",
     },

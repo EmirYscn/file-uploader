@@ -4,7 +4,10 @@ const API_BASE_URL = import.meta.env.VITE_API_URL || "/api";
 
 export const getMainFiles = async (userId: number) => {
   try {
-    const res = await fetch(`${API_BASE_URL}/api/files/main/${userId}`);
+    const res = await fetch(`${API_BASE_URL}/api/files/main/${userId}`, {
+      method: "GET",
+      credentials: "include",
+    });
 
     const files: FileWithUserInfo[] = await res.json();
 
@@ -16,7 +19,10 @@ export const getMainFiles = async (userId: number) => {
 
 export const getFilesByFolder = async (folderId: number) => {
   try {
-    const res = await fetch(`${API_BASE_URL}/api/files/${folderId}`);
+    const res = await fetch(`${API_BASE_URL}/api/files/${folderId}`, {
+      method: "GET",
+      credentials: "include",
+    });
 
     const files: FileWithUserInfo[] = await res.json();
 
@@ -30,6 +36,7 @@ export const deleteFile = async (fileId: number) => {
   try {
     const response = await fetch(`${API_BASE_URL}/api/files/${fileId}`, {
       method: "DELETE",
+      credentials: "include",
     });
 
     if (!response.ok) {
@@ -45,6 +52,7 @@ export const deleteFiles = async (fileIds: number[]) => {
     const deleteRequests = fileIds.map(async (fileId) => {
       const response = await fetch(`${API_BASE_URL}/api/files/${fileId}`, {
         method: "DELETE",
+        credentials: "include",
       });
 
       if (!response.ok) {
@@ -66,6 +74,7 @@ export const renameFile = async (fileId: number, data: FileWithUserInfo) => {
   try {
     const response = await fetch(`${API_BASE_URL}/api/files/${fileId}`, {
       method: "PATCH",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
@@ -87,6 +96,7 @@ export const updateFile = async (
   try {
     const response = await fetch(`${API_BASE_URL}/api/files/${fileId}`, {
       method: "PATCH",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
@@ -107,6 +117,7 @@ export const createFile = async (
   try {
     const res = await fetch(`${API_BASE_URL}/api/files/upload`, {
       method: "POST",
+      credentials: "include",
       body: data,
     });
 
@@ -122,7 +133,10 @@ export const createFile = async (
 
 export const downloadFile = async (fileId: number, fileName: string) => {
   try {
-    const res = await fetch(`${API_BASE_URL}/api/files/${fileId}/download`);
+    const res = await fetch(`${API_BASE_URL}/api/files/${fileId}/download`, {
+      method: "GET",
+      credentials: "include",
+    });
 
     if (!res.ok) {
       throw new Error("Error downloading file");
@@ -148,7 +162,10 @@ export const downloadFile = async (fileId: number, fileName: string) => {
 
 export const getFileByShareUrl = async (shareUrl: string) => {
   try {
-    const res = await fetch(`${API_BASE_URL}/api/files/${shareUrl}/shared`);
+    const res = await fetch(`${API_BASE_URL}/api/files/${shareUrl}/shared`, {
+      method: "GET",
+      credentials: "include",
+    });
 
     const files: FileWithUserInfo[] = await res.json();
 
@@ -163,7 +180,8 @@ export async function getFilesByShareUrlAndFolderId(
   folderId: number
 ) {
   const res = await fetch(
-    `${API_BASE_URL}/api/files/shared/${shareUrl}/files/${folderId}`
+    `${API_BASE_URL}/api/files/shared/${shareUrl}/files/${folderId}`,
+    { method: "GET", credentials: "include" }
   );
 
   if (!res.ok) throw new Error("Failed to fetch shared files");

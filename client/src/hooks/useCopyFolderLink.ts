@@ -9,7 +9,8 @@ function useCopyFolderLink() {
     try {
       setIsLoading(true);
       const res = await fetch(
-        `${API_BASE_URL}/api/folders/${folderId}/shareUrl`
+        `${API_BASE_URL}/api/folders/${folderId}/shareUrl`,
+        { method: "GET", credentials: "include" }
       );
       if (!res.ok) {
         throw new Error("Failed to get share URL");

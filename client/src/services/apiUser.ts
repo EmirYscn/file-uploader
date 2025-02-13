@@ -23,6 +23,7 @@ export const updateUser = async (
 ) => {
   const response = await fetch(`${API_BASE_URL}/api/user/${userId}`, {
     method: "PATCH",
+    credentials: "include",
     headers: {
       "Content-Type": "application/json",
     },
@@ -45,6 +46,7 @@ export const uploadAvatar = async (
     `${API_BASE_URL}/api/user/${userId}/uploadAvatar`,
     {
       method: "POST",
+      credentials: "include",
       body: data,
     }
   );
@@ -58,7 +60,10 @@ export const uploadAvatar = async (
 };
 
 export const searchUsers = async (user: string) => {
-  const res = await fetch(`${API_BASE_URL}/api/user/search/user?email=${user}`);
+  const res = await fetch(
+    `${API_BASE_URL}/api/user/search/user?email=${user}`,
+    { method: "GET", credentials: "include" }
+  );
   if (!res.ok) throw new Error("Failed to fetch users");
   const users = await res.json();
   return users;
