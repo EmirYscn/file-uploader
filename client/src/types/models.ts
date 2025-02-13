@@ -1,4 +1,5 @@
-import type { Models } from "../../../server/src/types/models";
+// import type { Models } from "../../../server/src/types/models";
+import { Models } from "shared-types/models";
 
 export type User = Models["User"];
 export type File = Models["File"];
