@@ -3,7 +3,7 @@ import { useLocation } from "react-router";
 
 import { createFile } from "../services/apiFiles";
 
-import { File as FileType } from "../types/models";
+import { FileWithUserInfo as FileType } from "../types/models";
 import { AuthContext } from "../contexts/authContext";
 
 function useCreateFile(

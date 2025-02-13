@@ -1,6 +1,6 @@
 import { createContext } from "react";
 
-import { File, FileWithUserInfo } from "../types/models";
+import { FileWithUserInfo } from "../types/models";
 
 type FilesContextType = {
   files: FileWithUserInfo[] | undefined;

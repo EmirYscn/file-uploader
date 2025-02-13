@@ -1,4 +1,4 @@
-import { File, FileWithUserInfo } from "../types/models";
+import { FileWithUserInfo } from "../types/models";
 
 export const getMainFiles = async (userId: number) => {
   try {
@@ -60,7 +60,7 @@ export const deleteFiles = async (fileIds: number[]) => {
   }
 };
 
-export const renameFile = async (fileId: number, data: File) => {
+export const renameFile = async (fileId: number, data: FileWithUserInfo) => {
   try {
     const response = await fetch(`/api/files/${fileId}`, {
       method: "PATCH",
@@ -78,7 +78,10 @@ export const renameFile = async (fileId: number, data: File) => {
   }
 };
 
-export const updateFile = async (fileId: number, data: Partial<File>) => {
+export const updateFile = async (
+  fileId: number,
+  data: Partial<FileWithUserInfo>
+) => {
   try {
     const response = await fetch(`/api/files/${fileId}`, {
       method: "PATCH",
@@ -98,8 +101,7 @@ export const updateFile = async (fileId: number, data: Partial<File>) => {
 
 export const createFile = async (
   data: FormData
-): Promise<File[] | undefined> => {
-  console.log(data);
+): Promise<FileWithUserInfo[] | undefined> => {
   try {
     const res = await fetch("/api/files/upload", {
       method: "POST",
@@ -146,7 +148,7 @@ export const getFileByShareUrl = async (shareUrl: string) => {
   try {
     const res = await fetch(`/api/files/${shareUrl}/shared`);
 
-    const files: File[] = await res.json();
+    const files: FileWithUserInfo[] = await res.json();
 
     return files;
   } catch (error) {
@@ -162,7 +164,7 @@ export async function getFilesByShareUrlAndFolderId(
 
   if (!res.ok) throw new Error("Failed to fetch shared files");
 
-  const files: File[] = await res.json();
+  const files: FileWithUserInfo[] = await res.json();
 
   return files;
 }

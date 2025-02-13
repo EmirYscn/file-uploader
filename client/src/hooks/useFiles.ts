@@ -3,7 +3,7 @@ import { useLocation } from "react-router";
 
 import { getFilesByFolder, getMainFiles } from "../services/apiFiles";
 
-import { File, FileWithUserInfo } from "../types/models";
+import { FileWithUserInfo } from "../types/models";
 import { AuthContext } from "../contexts/authContext";
 
 function useFiles(): {

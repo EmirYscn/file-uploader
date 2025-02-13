@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { File as FileType } from "../types/models";
+import { FileWithUserInfo as FileType } from "../types/models";
 import { renameFile } from "../services/apiFiles";
 
 function useRenameFile(
