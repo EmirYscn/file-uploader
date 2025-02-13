@@ -3,18 +3,35 @@ import { PrismaSessionStore } from "@quixo3/prisma-session-store";
 import { PrismaClient } from "@prisma/client";
 import { prisma } from "../db/queries";
 
+// export const sessionMiddleware = expressSession({
+//   secret: process.env.SESSION_SECRET || "default_secret_key",
+//   resave: false, // ❌ Prevents re-saving sessions when unchanged
+//   saveUninitialized: false, // ❌ Prevents creating empty sessions
+//   store: new PrismaSessionStore(prisma, {
+//     checkPeriod: 2 * 60 * 1000, // Cleans expired sessions every 2 min
+//     dbRecordIdIsSessionId: true,
+//   }),
+//   cookie: {
+//     maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+//     sameSite: "none",
+//     secure: true, // ✅ Use secure cookies only in production
+//     httpOnly: true, // ✅ Prevents client-side access
+//   },
+// });
+
 export const sessionMiddleware = expressSession({
   secret: process.env.SESSION_SECRET || "default_secret_key",
-  resave: false, // ❌ Prevents re-saving sessions when unchanged
-  saveUninitialized: false, // ❌ Prevents creating empty sessions
+  resave: false,
+  saveUninitialized: false,
   store: new PrismaSessionStore(prisma, {
-    checkPeriod: 2 * 60 * 1000, // Cleans expired sessions every 2 min
+    checkPeriod: 2 * 60 * 1000,
     dbRecordIdIsSessionId: true,
   }),
   cookie: {
-    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    maxAge: 7 * 24 * 60 * 60 * 1000,
     sameSite: "none",
-    secure: true, // ✅ Use secure cookies only in production
-    httpOnly: true, // ✅ Prevents client-side access
+    secure: true,
+    httpOnly: true,
   },
+  proxy: true, // Add this for secure cookies behind a proxy
 });

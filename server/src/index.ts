@@ -26,9 +26,12 @@ app.use(
   cors({
     origin: allowedOrigins,
     credentials: true,
-    exposedHeaders: ["set-cookie"],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
   })
 );
+
+app.set("trust proxy", 1);
 
 // app middleware to use form body in post router
 app.use(express.json());
