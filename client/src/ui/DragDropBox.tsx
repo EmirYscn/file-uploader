@@ -82,12 +82,6 @@ const DropZoneArea = styled.div<{ $isDragOver: boolean; isDark?: boolean }>`
     `}
 `;
 
-const DropZoneDescription = styled.div<{ isDark?: boolean }>`
-  margin-top: 1rem;
-  display: flex;
-  justify-content: space-between;
-`;
-
 const FileInfo = styled.div<{ isDark?: boolean }>`
   font-size: 1.1rem;
 
@@ -219,11 +213,7 @@ const ActionButtons = styled.div<{ isDark?: boolean }>`
 `;
 
 function DragDropBox({ onCancel }: { onCancel: () => void }) {
-  const {
-    files: filesContext,
-    setFiles: setFilesContext,
-    isLoading: isFilesLoading,
-  } = useContext(FilesContext);
+  const { setFiles: setFilesContext } = useContext(FilesContext);
   const { handleCreateFile, isLoading: isCreatingFile } =
     useCreateFile(setFilesContext);
   const { isDark } = useContext(ThemeContext);
@@ -311,10 +301,6 @@ function DragDropBox({ onCancel }: { onCancel: () => void }) {
             )}
           </FileInfo>
         </DropZoneArea>
-        {/* <DropZoneDescription>
-          <span>Supported Formats: JPEG, JPG, PNG, ...</span>
-          <span>Max file size: 25MB</span>
-        </DropZoneDescription> */}
         <DropZoneActions isDark={isDark}>
           <DropZoneHelp isDark={isDark}>Max file size: 25MB</DropZoneHelp>
           <ActionButtons isDark={isDark}>

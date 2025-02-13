@@ -121,7 +121,7 @@ function Files({
     setFiles,
     isLoading: isFilesLoading,
   } = useContext(FilesContext);
-  // const { user: currentUser } = useContext(UserContext);
+
   const {
     auth: { user: currentUser },
   } = useContext(AuthContext);

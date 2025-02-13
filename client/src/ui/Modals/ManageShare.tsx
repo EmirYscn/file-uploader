@@ -166,14 +166,9 @@ type ManageShareProps = {
   folderId: number;
 };
 
-function ManageShare({
-  onConfirm,
-  disabled,
-  onCloseModal,
-  folderId,
-}: ManageShareProps) {
+function ManageShare({ onConfirm, disabled, folderId }: ManageShareProps) {
   const { isDark } = useContext(ThemeContext);
-  const { register, handleSubmit, setValue, reset } =
+  const { register, handleSubmit, setValue } =
     useForm<Record<string, string>>();
 
   const [users, setUsers] = useState<UserWithShareInfo[]>([]);

@@ -173,7 +173,7 @@ const expirationMap: Record<string, number | null> = {
 
 function ShareFolder({ onConfirm, disabled, onCloseModal }: ShareFolderProps) {
   const { isDark } = useContext(ThemeContext);
-  // const { user: currentUser } = useContext(UserContext);
+
   const {
     auth: { user: currentUser },
   } = useContext(AuthContext);
@@ -206,9 +206,7 @@ function ShareFolder({ onConfirm, disabled, onCloseModal }: ShareFolderProps) {
 
       try {
         const users = await searchUsers(debouncedValue);
-        // const res = await fetch(`/api/search/user?email=${debouncedValue}`);
-        // if (!res.ok) throw new Error("Failed to fetch users");
-        // const users = await res.json();
+
         const filteredUsers = users.filter(
           (user: User) => user.id !== currentUser?.id
         );
@@ -219,7 +217,7 @@ function ShareFolder({ onConfirm, disabled, onCloseModal }: ShareFolderProps) {
     }
 
     searchUser();
-  }, [debouncedValue]);
+  }, [debouncedValue, currentUser?.id]);
 
   function handleSelectedUsersChange(selectedUser: SelectedUser) {
     if (!selectedUsers.some((user) => user.id === selectedUser.id)) {

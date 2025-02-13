@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Folder as FolderType } from "../types/models";
 import { File as FileType } from "../types/models";
 import { renameFile } from "../services/apiFiles";
 

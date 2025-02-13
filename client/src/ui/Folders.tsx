@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { Link, useLocation, useParams, useSearchParams } from "react-router";
+import { Link, useLocation, useSearchParams } from "react-router";
 
 import styled, { css } from "styled-components";
 import { MdDriveFileRenameOutline, MdPersonAddAlt1 } from "react-icons/md";
@@ -44,7 +44,6 @@ const Img = styled.img<{
   height: 8rem;
   width: auto;
   cursor: pointer;
-  /* opacity: ${(props) => (props.$isDraggable ? "1" : "0.5")}; */
   transition: all 0.3s;
 
   ${(props) =>
@@ -134,7 +133,6 @@ function Folders({
   selectedFolderIds: number[];
   setSelectedFolderIds: React.Dispatch<React.SetStateAction<number[]>>;
 }) {
-  // const { user: currentUser } = useContext(UserContext);
   const {
     auth: { user: currentUser },
   } = useContext(AuthContext);

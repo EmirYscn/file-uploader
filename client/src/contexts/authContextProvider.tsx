@@ -14,7 +14,6 @@ function AuthContextProvider({ children }: UserContextProviderProps) {
   const [isLoading, setIsLoading] = useState(true);
 
   const verifyAuth = async () => {
-    // if (auth.isAuthenticated) return;
     try {
       setIsLoading(true);
       const response = await fetch("/api/auth/verify", {

@@ -71,8 +71,6 @@ function useHandleDrop() {
       } catch (error) {
         console.log(error);
       }
-
-      console.log(dataType, folderId);
     } else if (dataType === "file") {
       const fileId = Number(e.dataTransfer.getData("fileId"));
       const fileParentId = Number(e.dataTransfer.getData("parentId"));
@@ -92,7 +90,6 @@ function useHandleDrop() {
       } catch (error) {
         console.log(error);
       }
-      console.log(dataType, fileId);
     }
   }
   return {

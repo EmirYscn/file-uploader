@@ -39,7 +39,6 @@ const ButtonContainer = styled.div`
 function Header({ isDark }: { isDark?: boolean }) {
   const navigate = useNavigate();
 
-  // const { user, setUser } = useContext(UserContext);
   const {
     auth: { user },
     setAuth,
@@ -47,7 +46,7 @@ function Header({ isDark }: { isDark?: boolean }) {
 
   async function handleLogout() {
     await logout();
-    // setUser(null);
+
     setAuth({ isAuthenticated: false, user: null });
     navigate("/login");
   }

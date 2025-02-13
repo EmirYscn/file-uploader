@@ -5,7 +5,6 @@ import { Folder as FolderType, FolderWithShareInfo } from "../types/models";
 
 import { createFolder } from "../services/apiFolders";
 
-import { UserContext } from "../contexts/userContext";
 import { AuthContext } from "../contexts/authContext";
 
 function useCreateFolder(
@@ -14,7 +13,7 @@ function useCreateFolder(
   >
 ) {
   const [isLoading, setIsLoading] = useState(false);
-  // const { user } = useContext(UserContext);
+
   const {
     auth: { user },
   } = useContext(AuthContext);

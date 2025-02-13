@@ -1,6 +1,7 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { useForm } from "react-hook-form";
 import styled, { css } from "styled-components";
+import { Link } from "react-router";
 
 import Form from "../ui/Form";
 import FormRow from "../ui/FormRow";
@@ -8,14 +9,12 @@ import Input from "../ui/Input";
 import { User } from "../types/models";
 import Wall from "../ui/Wall";
 import Button from "../ui/Button";
+import GitHubButton from "../ui/GithubButton";
+import GoogleButton from "../ui/GoogleButton";
 
 import useLoginUser from "../hooks/useLoginUser";
 
 import { ThemeContext } from "../contexts/themeContext";
-import GoogleButton from "../ui/GoogleButton";
-import { Link, useNavigate } from "react-router";
-import { AuthContext } from "../contexts/authContext";
-import GitHubButton from "../ui/GithubButton";
 
 const StyledLogin = styled.div`
   display: grid;
@@ -44,8 +43,7 @@ function Login() {
     handleSubmit,
     formState: { errors },
   } = useForm<User>();
-  const { onSubmit, errors: apiErrors, isLoading } = useLoginUser();
-  console.log(apiErrors);
+  const { onSubmit, errors: apiErrors } = useLoginUser();
 
   return (
     <StyledLogin>

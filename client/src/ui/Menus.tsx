@@ -70,12 +70,6 @@ const StyledList = styled.ul.withConfig({
   z-index: 200;
 `;
 
-// Forward the ref within the same file
-// const ForwardedStyledList = React.forwardRef<
-//   HTMLUListElement,
-//   { position: Position }
-// >((props, ref) => <StyledList {...props} ref={ref} />);
-
 const StyledButton = styled.button.withConfig({
   shouldForwardProp: (prop) => prop !== "isdark",
 })<{ isdark?: boolean; selected?: boolean }>`

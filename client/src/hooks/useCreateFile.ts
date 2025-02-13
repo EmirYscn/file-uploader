@@ -1,8 +1,6 @@
 import { useContext, useState } from "react";
 import { useLocation } from "react-router";
 
-import { UserContext } from "../contexts/userContext";
-
 import { createFile } from "../services/apiFiles";
 
 import { File as FileType } from "../types/models";
@@ -11,7 +9,6 @@ import { AuthContext } from "../contexts/authContext";
 function useCreateFile(
   setFiles: React.Dispatch<React.SetStateAction<FileType[] | undefined>>
 ) {
-  // const { user } = useContext(UserContext);
   const {
     auth: { user },
   } = useContext(AuthContext);
@@ -32,7 +29,6 @@ function useCreateFile(
     try {
       setIsLoading(true);
       const newFiles = await createFile(formData);
-      console.log(newFiles);
       setFiles((prevFiles) => {
         if (!prevFiles) return prevFiles;
 

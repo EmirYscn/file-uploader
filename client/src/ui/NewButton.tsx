@@ -58,7 +58,6 @@ function NewButton() {
   const [dragDropModalOpen, setDragDropModalOpen] = useState(false);
   const location = useLocation();
   const isInShared = location.pathname.includes("shared");
-  // const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const { setFolders, isLoading: isFoldersLoading } =
     useContext(FoldersContext);

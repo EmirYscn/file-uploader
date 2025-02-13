@@ -1,10 +1,10 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { useSearchParams } from "react-router";
-import styled, { css } from "styled-components";
-import { ThemeContext } from "../contexts/themeContext";
-import Menus from "./Menus";
-import { CgSortAz } from "react-icons/cg";
+import styled from "styled-components";
 import { FaSortDown, FaSortUp } from "react-icons/fa";
+import { CgSortAz } from "react-icons/cg";
+
+import Menus from "./Menus";
 
 const ButtonContainer = styled.div`
   max-width: 10rem;
@@ -20,7 +20,6 @@ const ButtonContainer = styled.div`
 `;
 
 function Sort() {
-  const { isDark } = useContext(ThemeContext);
   const [searchParams, setSearchParams] = useSearchParams();
   const [selectedId, setSelectedId] = useState<number | null>(null);
 
@@ -103,25 +102,3 @@ function Sort() {
 }
 
 export default Sort;
-
-{
-  /* <Select
-        name="sort"
-        id="sort"
-        value={sortValue}
-        onChange={handleSortChange}
-        isdark={isDark}
-      >
-        <option value="default" disabled>
-          Sort By
-        </option>
-        <option value="name">Name</option>
-        <option value="size">Size</option>
-        <option value="date">Date</option>
-      </Select> */
-}
-{
-  /* <SortButton onClick={toggleSortOrder} isdark={isDark}>
-        {sortOrder === "asc" ? "⬆️ Asc" : "⬇️ Desc"}
-      </SortButton> */
-}

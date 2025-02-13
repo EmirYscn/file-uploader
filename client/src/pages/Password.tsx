@@ -1,14 +1,15 @@
 import { useContext, useState } from "react";
+import { useForm } from "react-hook-form";
 import styled, { css } from "styled-components";
-import { UserContext } from "../contexts/userContext";
+
 import Input from "../ui/Input";
 import FormRow from "../ui/FormRow";
-import { useForm } from "react-hook-form";
-import { User } from "../types/models";
 import Form from "../ui/Form";
-import { ThemeContext } from "../contexts/themeContext";
 import Button from "../ui/Button";
+
 import { updateUser } from "../services/apiUser";
+
+import { ThemeContext } from "../contexts/themeContext";
 import { AuthContext } from "../contexts/authContext";
 
 const StyledProfile = styled.div`
@@ -47,12 +48,10 @@ type Error = {
 };
 
 type Errors = {
-  // body?: ProfileData;
   errors?: Error[];
 };
 
 function Password() {
-  // const { user } = useContext(UserContext);
   const {
     auth: { user },
   } = useContext(AuthContext);
@@ -64,7 +63,7 @@ function Password() {
     getValues,
     formState: { errors },
   } = useForm<PasswordData>();
-  // const [isEdited, setIsEdited] = useState(false);
+
   const [isLoading, setIsLoading] = useState(false);
   const [apiErrors, setApiErrors] = useState<Errors | null>(null);
 
@@ -139,13 +138,6 @@ function Password() {
           </FormRow>
 
           <FormRow>
-            {/* <Button
-              styletype="form-button-cancel"
-              onClick={() => reset()}
-              disabled={isLoading}
-            >
-              Reset
-            </Button> */}
             <Button
               type="submit"
               styletype="form-button-submit"
