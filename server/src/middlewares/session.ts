@@ -1,17 +1,20 @@
 import expressSession from "express-session";
 import { PrismaSessionStore } from "@quixo3/prisma-session-store";
 import { PrismaClient } from "@prisma/client";
+import { prisma } from "../db/queries";
 
 export const sessionMiddleware = expressSession({
-  cookie: {
-    maxAge: 7 * 24 * 60 * 60 * 1000, // ms
-  },
   secret: process.env.SESSION_SECRET || "default_secret_key",
-  resave: true,
-  saveUninitialized: true,
-  store: new PrismaSessionStore(new PrismaClient(), {
-    checkPeriod: 2 * 60 * 1000, //ms
+  resave: false, // ❌ Prevents re-saving sessions when unchanged
+  saveUninitialized: false, // ❌ Prevents creating empty sessions
+  store: new PrismaSessionStore(prisma, {
+    checkPeriod: 2 * 60 * 1000, // Cleans expired sessions every 2 min
     dbRecordIdIsSessionId: true,
-    dbRecordIdFunction: undefined,
   }),
+  cookie: {
+    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    secure: true, // ✅ Use secure cookies only in production
+    httpOnly: true, // ✅ Prevents client-side access
+    sameSite: "lax", // ✅ Adjust based on frontend/backend setup
+  },
 });
