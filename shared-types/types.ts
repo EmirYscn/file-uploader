@@ -24,6 +24,7 @@ export type File = {
   folderId: number | null;
   url: string;
   uploadDate: Date;
+  uploadedBy?: User;
 };
 
 export type Folder = {

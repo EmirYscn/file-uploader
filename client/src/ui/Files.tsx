@@ -25,6 +25,7 @@ import { AuthContext } from "../contexts/authContext";
 import { File as FileType } from "../types/models";
 
 import { formatString } from "../utils/formatString";
+import { AccessType } from "shared-types";
 
 const File = styled.div`
   display: flex;
@@ -230,7 +231,7 @@ function Files({
                           icon={<AiOutlineDownload />}
                           onClick={() => handleDownloadFile(file.id, file.name)}
                           isFolderOwner={file.userId === currentUser?.id}
-                          accessType={"FULL"}
+                          accessType={AccessType.FULL}
                         >
                           Download
                         </Menus.Button>
