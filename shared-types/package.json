@@ -1,6 +1,10 @@
 {
   "name": "shared-types",
   "version": "1.0.0",
-  "main": "index.ts",
-  "types": "index.d.ts"
+  "main": "types.js",
+  "types": "types.d.ts",
+  "files": [
+    "types.ts",
+    "types.d.ts"
+  ]
 }
