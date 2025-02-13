@@ -14,6 +14,8 @@ import * as db from "../db/user.queries";
 import { User } from "@prisma/client";
 import { prisma } from "../db/prismaClient";
 
+const SERVER_URL = process.env.SERVER_URL || "http://localhost:3000";
+
 const verifyCallback = async (email: string, password: string, done: any) => {
   try {
     const user = await db.findUser(email);
@@ -37,7 +39,7 @@ const googleStrategy = new GoogleStrategy(
   {
     clientID: process.env.GOOGLE_CLIENT_ID!,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-    callbackURL: "http://localhost:3000/api/auth/google/callback",
+    callbackURL: `${SERVER_URL}/api/auth/google/callback`,
   },
   async function (
     accessToken: string,
@@ -79,7 +81,7 @@ const githubStrategy = new GithubStrategy(
   {
     clientID: process.env.GITHUB_CLIENT_ID!,
     clientSecret: process.env.GITHUB_CLIENT_SECRET!,
-    callbackURL: "http://localhost:3000/api/auth/github/callback",
+    callbackURL: `${SERVER_URL}/api/auth/google/callback`,
     scope: ["user:email"],
   },
   async function (

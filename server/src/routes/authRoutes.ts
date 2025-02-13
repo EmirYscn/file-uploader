@@ -8,6 +8,8 @@ import passport from "../strategies/passport";
 
 const router = express.Router();
 
+const CLIENT_URL = process.env.CLIENT_URL || "http://localhost:5173";
+
 router.post("/signup", validateForm, authController.signup);
 router.post("/login", authController.login);
 router.get("/logout", authController.logout);
@@ -22,8 +24,8 @@ router.get(
 router.get(
   "/google/callback",
   passport.authenticate("google", {
-    failureRedirect: "http://localhost:5173/login",
-    successRedirect: "http://localhost:5173/all",
+    failureRedirect: `${CLIENT_URL}/login`,
+    successRedirect: `${CLIENT_URL}/all`,
   })
 );
 
@@ -35,8 +37,8 @@ router.get(
 router.get(
   "/github/callback",
   passport.authenticate("github", {
-    failureRedirect: "http://localhost:5173/login",
-    successRedirect: "http://localhost:5173/all",
+    failureRedirect: `${CLIENT_URL}/login`,
+    successRedirect: `${CLIENT_URL}/all`,
   })
 );
 

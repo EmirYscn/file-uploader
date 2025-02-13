@@ -6,8 +6,6 @@ import cors from "cors";
 
 import { sessionMiddleware } from "./middlewares/session";
 
-import * as authController from "./controllers/authController";
-
 import passport from "./strategies/passport";
 
 import { router as folderRouter } from "./routes/folderRoutes";
@@ -18,7 +16,9 @@ import { router as authRouter } from "./routes/authRoutes";
 dotenv.config({ path: "./.env" });
 
 const app = express();
-app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+const allowedOrigins = [process.env.CLIENT_URL!, "http://localhost:5173"];
+
+app.use(cors({ origin: allowedOrigins, credentials: true }));
 
 // app middleware to use form body in post router
 app.use(express.json());

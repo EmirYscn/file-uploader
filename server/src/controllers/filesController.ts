@@ -141,13 +141,6 @@ export const uploadFile = async (req: Request, res: Response): Promise<any> => {
         );
       })
     );
-    // const fileUrl = await sb.uploadFile(req.files, userId);
-    // const file = await db.createFile(
-    //   req.file,
-    //   fileUrl,
-    //   +userId,
-    //   folderId === "" ? null : +folderId
-    // );
 
     return res.status(201).json(uploadedFiles);
   } catch (error) {

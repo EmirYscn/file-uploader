@@ -1,6 +1,6 @@
 import { Prisma, User } from "@prisma/client";
 import { prisma } from "./queries";
-import bcrypt, { hash } from "bcryptjs";
+import bcrypt from "bcryptjs";
 
 export const createUser = async (user: Prisma.UserCreateInput) => {
   try {
