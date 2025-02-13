@@ -1,8 +1,10 @@
 import { FileWithUserInfo } from "../types/models";
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || "/api";
+
 export const getMainFiles = async (userId: number) => {
   try {
-    const res = await fetch(`/api/files/main/${userId}`);
+    const res = await fetch(`${API_BASE_URL}/api/files/main/${userId}`);
 
     const files: FileWithUserInfo[] = await res.json();
 
@@ -14,7 +16,7 @@ export const getMainFiles = async (userId: number) => {
 
 export const getFilesByFolder = async (folderId: number) => {
   try {
-    const res = await fetch(`/api/files/${folderId}`);
+    const res = await fetch(`${API_BASE_URL}/api/files/${folderId}`);
 
     const files: FileWithUserInfo[] = await res.json();
 
@@ -26,7 +28,7 @@ export const getFilesByFolder = async (folderId: number) => {
 
 export const deleteFile = async (fileId: number) => {
   try {
-    const response = await fetch(`/api/files/${fileId}`, {
+    const response = await fetch(`${API_BASE_URL}/api/files/${fileId}`, {
       method: "DELETE",
     });
 
@@ -41,7 +43,7 @@ export const deleteFile = async (fileId: number) => {
 export const deleteFiles = async (fileIds: number[]) => {
   try {
     const deleteRequests = fileIds.map(async (fileId) => {
-      const response = await fetch(`/api/files/${fileId}`, {
+      const response = await fetch(`${API_BASE_URL}/api/files/${fileId}`, {
         method: "DELETE",
       });
 
@@ -62,7 +64,7 @@ export const deleteFiles = async (fileIds: number[]) => {
 
 export const renameFile = async (fileId: number, data: FileWithUserInfo) => {
   try {
-    const response = await fetch(`/api/files/${fileId}`, {
+    const response = await fetch(`${API_BASE_URL}/api/files/${fileId}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -83,7 +85,7 @@ export const updateFile = async (
   data: Partial<FileWithUserInfo>
 ) => {
   try {
-    const response = await fetch(`/api/files/${fileId}`, {
+    const response = await fetch(`${API_BASE_URL}/api/files/${fileId}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -103,7 +105,7 @@ export const createFile = async (
   data: FormData
 ): Promise<FileWithUserInfo[] | undefined> => {
   try {
-    const res = await fetch("/api/files/upload", {
+    const res = await fetch(`${API_BASE_URL}/api/files/upload`, {
       method: "POST",
       body: data,
     });
@@ -120,7 +122,7 @@ export const createFile = async (
 
 export const downloadFile = async (fileId: number, fileName: string) => {
   try {
-    const res = await fetch(`/api/files/${fileId}/download`);
+    const res = await fetch(`${API_BASE_URL}/api/files/${fileId}/download`);
 
     if (!res.ok) {
       throw new Error("Error downloading file");
@@ -146,7 +148,7 @@ export const downloadFile = async (fileId: number, fileName: string) => {
 
 export const getFileByShareUrl = async (shareUrl: string) => {
   try {
-    const res = await fetch(`/api/files/${shareUrl}/shared`);
+    const res = await fetch(`${API_BASE_URL}/api/files/${shareUrl}/shared`);
 
     const files: FileWithUserInfo[] = await res.json();
 
@@ -160,7 +162,9 @@ export async function getFilesByShareUrlAndFolderId(
   shareUrl: string,
   folderId: number
 ) {
-  const res = await fetch(`/api/files/shared/${shareUrl}/files/${folderId}`);
+  const res = await fetch(
+    `${API_BASE_URL}/api/files/shared/${shareUrl}/files/${folderId}`
+  );
 
   if (!res.ok) throw new Error("Failed to fetch shared files");
 

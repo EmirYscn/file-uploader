@@ -1,5 +1,7 @@
 import { User } from "../types/models";
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || "/api";
+
 type SignupData = User & { confirmPassword: string };
 
 type Error = {
@@ -16,7 +18,7 @@ type Errors = {
 };
 
 export const createUser = async (data: User) => {
-  const response = await fetch("/api/auth/signup", {
+  const response = await fetch(`${API_BASE_URL}/api/auth/signup`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -33,7 +35,7 @@ export const createUser = async (data: User) => {
 };
 
 export const login = async (data: User): Promise<User> => {
-  const response = await fetch("/api/auth/login", {
+  const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -51,7 +53,7 @@ export const login = async (data: User): Promise<User> => {
 
 export const logout = async () => {
   try {
-    const response = await fetch("/api/auth/logout", {
+    const response = await fetch(`${API_BASE_URL}/api/auth/logout`, {
       method: "GET",
       credentials: "include",
     });

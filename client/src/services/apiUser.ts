@@ -1,5 +1,7 @@
 import { User } from "../types/models";
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || "/api";
+
 type SignupData = User & { confirmPassword: string };
 
 type Error = {
@@ -19,7 +21,7 @@ export const updateUser = async (
   data: Partial<User>,
   userId: number | undefined
 ) => {
-  const response = await fetch(`/api/user/${userId}`, {
+  const response = await fetch(`${API_BASE_URL}/api/user/${userId}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
@@ -39,10 +41,13 @@ export const uploadAvatar = async (
   data: FormData,
   userId: number | undefined
 ) => {
-  const response = await fetch(`/api/user/${userId}/uploadAvatar`, {
-    method: "POST",
-    body: data,
-  });
+  const response = await fetch(
+    `${API_BASE_URL}/api/user/${userId}/uploadAvatar`,
+    {
+      method: "POST",
+      body: data,
+    }
+  );
 
   if (!response.ok) {
     const errorData: Errors = await response.json();
@@ -53,7 +58,7 @@ export const uploadAvatar = async (
 };
 
 export const searchUsers = async (user: string) => {
-  const res = await fetch(`/api/user/search/user?email=${user}`);
+  const res = await fetch(`${API_BASE_URL}/api/user/search/user?email=${user}`);
   if (!res.ok) throw new Error("Failed to fetch users");
   const users = await res.json();
   return users;
