@@ -43,6 +43,8 @@ export type FolderShare = {
   folderId: number;
   expireDate: Date | null;
   accessType: AccessType | null;
+  folder?: Folder; // Optional relation
+  user?: User;
 };
 
 export type FileShare = {
@@ -63,6 +65,6 @@ export type Session = {
 // Composite types
 export type FolderWithShareInfo = Folder & FolderShare;
 
-export type FileWithUserInfo = File & FileShare;
+export type FileWithUserInfo = File & { uploadedBy: { username: string } };
 
 export type UserWithShareInfo = User & FolderShare;

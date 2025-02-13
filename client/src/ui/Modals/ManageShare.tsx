@@ -184,7 +184,7 @@ function ManageShare({ onConfirm, disabled, folderId }: ManageShareProps) {
 
         // Initialize form values
         users.forEach((user) => {
-          setValue(String(user.user.id), user.accessType || "FULL");
+          setValue(String(user.user?.id), user.accessType || "FULL");
         });
       } catch (error) {
         console.log(error);
@@ -221,7 +221,7 @@ function ManageShare({ onConfirm, disabled, folderId }: ManageShareProps) {
       await updateShareFolder(newData);
       setUsers((users) =>
         users.map((user) =>
-          user.user.id === userId ? { ...user, expireDate } : user
+          user.user?.id === userId ? { ...user, expireDate } : user
         )
       );
     } catch (error) {
@@ -235,7 +235,7 @@ function ManageShare({ onConfirm, disabled, folderId }: ManageShareProps) {
     try {
       setIsLoading(true);
       await deleteFolderShare(userId, folderId);
-      setUsers((users) => users.filter((user) => user.user.id !== userId));
+      setUsers((users) => users.filter((user) => user.user?.id !== userId));
     } catch (error) {
       console.log(error);
     } finally {
@@ -255,18 +255,18 @@ function ManageShare({ onConfirm, disabled, folderId }: ManageShareProps) {
               <Spinner />
             ) : (
               users.map((user) => (
-                <UserCardWrapper key={user.user.id}>
+                <UserCardWrapper key={user.user?.id}>
                   <UserCard isdark={isDark}>
-                    <span>{user.user.email}</span>
+                    <span>{user.user?.email}</span>
                     <Select
-                      {...register(`${user.user.id}-accessType`)}
+                      {...register(`${user.user?.id}-accessType`)}
                       isdark={isDark}
                       defaultValue={user.accessType!}
                       onChange={() =>
                         setIsEditedIds((prev) =>
                           prev
-                            ? [...new Set([...prev, user.user.id])]
-                            : [user.user.id]
+                            ? [...new Set([...prev, user.user!.id])]
+                            : [user.user!.id]
                         )
                       }
                     >
@@ -285,13 +285,13 @@ function ManageShare({ onConfirm, disabled, folderId }: ManageShareProps) {
                     >
                       {new Date(user.expireDate!).toDateString()}
                       <button
-                        onClick={() => handleRefreshExpireDate(user.user.id)}
+                        onClick={() => handleRefreshExpireDate(user.user!.id)}
                       >
                         <RxUpdate />
                       </button>
                     </span>
 
-                    <button onClick={() => handleDeleteUser(user.user.id)}>
+                    <button onClick={() => handleDeleteUser(user.user!.id)}>
                       <MdDelete />
                     </button>
                   </UserCard>
@@ -299,12 +299,12 @@ function ManageShare({ onConfirm, disabled, folderId }: ManageShareProps) {
                   <Button
                     styletype="modal-button-cancel"
                     onClick={() => {
-                      setValue(`${user.user.id}-accessType`, user.accessType!);
+                      setValue(`${user.user?.id}-accessType`, user.accessType!);
                       setIsEditedIds((prev) =>
-                        prev?.filter((id) => id !== user.user.id)
+                        prev?.filter((id) => id !== user.user?.id)
                       );
                     }}
-                    disabled={!isEditedIds?.includes(user.user.id)}
+                    disabled={!isEditedIds?.includes(user.user!.id)}
                   >
                     Cancel
                   </Button>
@@ -313,9 +313,9 @@ function ManageShare({ onConfirm, disabled, folderId }: ManageShareProps) {
                     styletype="modal-button-confirm"
                     type="submit"
                     onClick={handleSubmit((data) =>
-                      onSubmit(data, user.user.id)
+                      onSubmit(data, user.user!.id)
                     )}
-                    disabled={disabled || !isEditedIds?.includes(user.user.id)}
+                    disabled={disabled || !isEditedIds?.includes(user.user!.id)}
                   >
                     Done
                   </Button>

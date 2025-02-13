@@ -5,6 +5,7 @@ import { FaSortDown, FaSortUp } from "react-icons/fa";
 import { CgSortAz } from "react-icons/cg";
 
 import Menus from "./Menus";
+import { AccessType } from "shared-types";
 
 const ButtonContainer = styled.div`
   max-width: 10rem;
@@ -20,7 +21,7 @@ const ButtonContainer = styled.div`
 `;
 
 function Sort() {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [, setSearchParams] = useSearchParams();
   const [selectedId, setSelectedId] = useState<number | null>(null);
 
   return (
@@ -30,7 +31,7 @@ function Sort() {
         <Menus.List id={1}>
           <Menus.Button
             icon={<FaSortDown />}
-            accessType={"FULL"}
+            accessType={AccessType.FULL}
             onClick={() => {
               setSearchParams({ sort: "date", order: "desc" });
               setSelectedId(1);
@@ -41,7 +42,7 @@ function Sort() {
           </Menus.Button>
           <Menus.Button
             icon={<FaSortUp />}
-            accessType={"FULL"}
+            accessType={AccessType.FULL}
             onClick={() => {
               setSearchParams({ sort: "date", order: "asc" });
               setSelectedId(2);
@@ -52,7 +53,7 @@ function Sort() {
           </Menus.Button>
           <Menus.Button
             icon={<FaSortDown />}
-            accessType={"FULL"}
+            accessType={AccessType.FULL}
             onClick={() => {
               setSearchParams({ sort: "name", order: "desc" });
               setSelectedId(3);
@@ -63,7 +64,7 @@ function Sort() {
           </Menus.Button>
           <Menus.Button
             icon={<FaSortUp />}
-            accessType={"FULL"}
+            accessType={AccessType.FULL}
             onClick={() => {
               setSearchParams({ sort: "name", order: "asc" });
               setSelectedId(4);
@@ -75,7 +76,7 @@ function Sort() {
 
           <Menus.Button
             icon={<FaSortDown />}
-            accessType={"FULL"}
+            accessType={AccessType.FULL}
             onClick={() => {
               setSearchParams({ sort: "size", order: "desc" });
               setSelectedId(5);
@@ -86,7 +87,7 @@ function Sort() {
           </Menus.Button>
           <Menus.Button
             icon={<FaSortUp />}
-            accessType={"FULL"}
+            accessType={AccessType.FULL}
             onClick={() => {
               setSearchParams({ sort: "size", order: "asc" });
               setSelectedId(6);

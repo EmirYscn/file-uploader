@@ -16,6 +16,7 @@ import {
 } from "../services/apiFiles";
 
 import { File as FileType } from "../types/models";
+import { AccessType } from "shared-types";
 
 const File = styled.div`
   display: flex;
@@ -81,7 +82,7 @@ function SharedFiles() {
                         <Menus.Button
                           icon={<AiOutlineDownload />}
                           onClick={() => handleDownloadFile(file.id, file.name)}
-                          accessType={"FULL"}
+                          accessType={AccessType.FULL}
                         >
                           Download
                         </Menus.Button>
