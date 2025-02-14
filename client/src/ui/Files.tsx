@@ -108,6 +108,8 @@ const CheckBox = styled.input`
   }
 `;
 
+const FileWrapper = styled.div``;
+
 function Files({
   isMultiSelect,
   selectedFileIds,
@@ -211,7 +213,7 @@ function Files({
                   }}
                 />
               )}
-              <Link to={`file/${file.id}`}>
+              <FileWrapper>
                 <Img
                   src="/file.svg"
                   id={file.id.toString()}
@@ -219,7 +221,7 @@ function Files({
                   onDragStart={(e) => handleDragStart(e, file.folderId)}
                 />
                 <FileInfo file={file} />
-              </Link>
+              </FileWrapper>
               <Details>
                 <span>{formatString(file.name)}</span>
                 <Modal>
