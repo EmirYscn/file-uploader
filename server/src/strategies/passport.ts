@@ -81,7 +81,7 @@ const githubStrategy = new GithubStrategy(
   {
     clientID: process.env.GITHUB_CLIENT_ID!,
     clientSecret: process.env.GITHUB_CLIENT_SECRET!,
-    callbackURL: `${SERVER_URL}/api/auth/google/callback`,
+    callbackURL: `${SERVER_URL}/api/auth/github/callback`,
     scope: ["user:email"],
   },
   async function (
