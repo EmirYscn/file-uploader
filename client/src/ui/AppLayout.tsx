@@ -14,6 +14,7 @@ const StyledAppLayout = styled.div`
   grid-template-columns: 40rem 1fr;
   grid-template-rows: auto 1fr;
   height: 100vh;
+  overflow: hidden;
 `;
 
 const Main = styled.main.withConfig({
@@ -21,7 +22,7 @@ const Main = styled.main.withConfig({
 })<{ isdark: boolean }>`
   background-color: var(--color-grey-50);
   padding: 4rem 4.8rem 6.4rem;
-  overflow: scroll;
+  overflow: auto;
 
   ${(props) =>
     props.isdark &&
@@ -32,7 +33,7 @@ const Main = styled.main.withConfig({
 `;
 
 const Container = styled.div`
-  max-width: 120rem;
+  max-width: 100%;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
