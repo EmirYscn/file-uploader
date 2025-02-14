@@ -53,9 +53,6 @@ function ProfileHeader({ isDark }: { isDark?: boolean }) {
     <StyledHeader isdark={isDark}>
       <ButtonContainer>
         <DarkModeToggle />
-        <Button onClick={() => navigate("/signup")} styletype="header-button">
-          Sign up
-        </Button>
         {user ? (
           <>
             <Profile isDark={isDark} />
