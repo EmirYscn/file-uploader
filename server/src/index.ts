@@ -12,6 +12,7 @@ import { router as folderRouter } from "./routes/folderRoutes";
 import { router as fileRouter } from "./routes/fileRoutes";
 import { router as userRouter } from "./routes/userRoutes";
 import { router as authRouter } from "./routes/authRoutes";
+import { Session } from "express-session";
 
 dotenv.config({ path: "./.env" });
 
@@ -26,7 +27,7 @@ app.use(
   cors({
     origin: allowedOrigins,
     credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
   })
 );
@@ -39,6 +40,17 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "../public")));
 
 app.use(sessionMiddleware);
+// Add this after sessionMiddleware
+interface CustomSession extends Session {
+  isNew: boolean;
+}
+
+app.use((req, res, next) => {
+  const session = req.session as CustomSession;
+  console.log("Session ID:", req.sessionID);
+  console.log("Is new session?:", session.isNew);
+  next();
+});
 app.use(passport.initialize());
 app.use(passport.session());
 
