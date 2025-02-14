@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { Link, useLocation, useSearchParams } from "react-router";
+import { useLocation, useSearchParams } from "react-router";
 import styled from "styled-components";
 import { RiDeleteBin2Line } from "react-icons/ri";
 import { AiOutlineDownload } from "react-icons/ai";
