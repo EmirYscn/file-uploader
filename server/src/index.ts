@@ -40,17 +40,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "../public")));
 
 app.use(sessionMiddleware);
-// Add this after sessionMiddleware
-interface CustomSession extends Session {
-  isNew: boolean;
-}
-
-app.use((req, res, next) => {
-  const session = req.session as CustomSession;
-  console.log("Session ID:", req.sessionID);
-  console.log("Is new session?:", session.isNew);
-  next();
-});
 app.use(passport.initialize());
 app.use(passport.session());
 
